@@ -1,10 +1,22 @@
 import React, { Component } from 'react'
 import { Image, ScrollView, StyleSheet, View, Text } from 'react-native';
+import { Navigation } from 'react-native-navigation'
 import { Star } from '../../components/Star';
 import ListBook from '../../components/ListBook';
 import { books } from '../../data/dataDemo';
 
 export default class Detail extends Component {
+  constructor(props) {
+    super(props)
+    Navigation.events().bindComponent(this);
+  }
+
+  navigationButtonPressed = ({ buttonId }) => {
+    const { componentId } = this.props;
+    if (buttonId === 'close') {
+      Navigation.dismissModal(componentId);
+    }
+  }
   render() {
     var { Authors, Title, OverallStarRating, Price, Quantity, TotalReview, Content } = this.props.item;
     return (

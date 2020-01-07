@@ -49,6 +49,8 @@ export default class ListBook extends Component {
           horizontal={true}
           renderItem={({ item }) => <ItemBook item={item} flex='column'></ItemBook>}
           keyExtractor={item => item.id}
+          showsHorizontalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
         />
       </View>
     )
