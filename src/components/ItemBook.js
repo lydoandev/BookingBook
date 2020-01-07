@@ -25,12 +25,12 @@ export default class ItemBook extends Component {
                   text: item.Title,
                   alignment: 'center'
                 },
-                // backButton: {
-                //   id: 'close',
-                //   size: 5,
-                //   icon: require("../images/close.jpg"),
-                //   visible: true
-                // }
+                backButton: {
+                  id: 'close',
+                  size: 5,
+                  icon: require("../assets/images/nav.png"),
+                  visible: true
+                }
               }
             }
           }
