@@ -12,6 +12,7 @@ import Order from './src/screens/OrderScreen'
 import Profile from './src/screens/ProfileScreen'
 import Slide from './src/screens/SlideScreen'
 import Home from './src/screens/HomeScreen'
+import Login from './src/screens/LoginScreen'
 import { store, persistor } from './src/reduxs/store'
 import { Provider } from "react-redux";
 
@@ -23,6 +24,8 @@ Navigation.registerComponent('Notification', () => ReducerComponent(Notification
 Navigation.registerComponent('Order', () => ReducerComponent(Order), () => Order);
 Navigation.registerComponent('Profile', () => ReducerComponent(Profile), () => Profile);
 Navigation.registerComponent('Slide', () => ReducerComponent(Slide), () => Slide);
+Navigation.registerComponent('Login', () => ReducerComponent(Login), () => Login);
+Navigation.registerComponent('Profile', () => ReducerComponent(Profile), () => Profile);
 
 
 Navigation.events().registerAppLaunchedListener(() => {

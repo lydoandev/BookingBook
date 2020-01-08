@@ -76,7 +76,7 @@ export const bottomTabs = {
       options: {
         bottomTab: {
           titleDisplayMode: 'showWhenActive',
-          text: 'Profile',
+          text: 'Notification',
           icon: require('../assets/images/notification.png'),
           testID: 'SECOND_TAB_BAR_BUTTON'
         },
@@ -97,7 +97,7 @@ export const bottomTabs = {
       options: {
         bottomTab: {
           titleDisplayMode: 'showWhenActive',
-          text: 'Profile',
+          text: 'Library',
           icon: require('../assets/images/library.png'),
           testID: 'SECOND_TAB_BAR_BUTTON'
         },
