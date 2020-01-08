@@ -14,6 +14,7 @@ import Slide from './src/screens/SlideScreen'
 import Home from './src/screens/HomeScreen'
 import SeeAll from './src/screens/HomeScreen/SeeAll'
 import { store, persistor } from './src/reduxs/store'
+import Filter from './src/screens/filter';
 import { Provider } from "react-redux";
 
 console.disableYellowBox = true
@@ -26,13 +27,31 @@ Navigation.registerComponent('Profile', () => ReducerComponent(Profile), () => P
 Navigation.registerComponent('Slide', () => ReducerComponent(Slide), () => Slide);
 Navigation.registerComponent('SeeAll', () => ReducerComponent(SeeAll), () => SeeAll);
 
+Navigation.registerComponent('Filter', () => Filter);
 
 Navigation.events().registerAppLaunchedListener(() => {
   Navigation.setRoot({
-    root:
-    {
-      component: {
-        name: 'Slide',
+    root: {
+      stack: {
+        children: [
+          {
+            component: {
+              name: 'Slide',
+              options: {
+                topBar: {
+                  leftButtons: {
+                    id: 'slideBar',
+                    icon: require('./src/assets/closeCategory.png'),
+                  },
+                  rightButtons: {
+                    id: 'loadCategory',
+                    icon: require('./src/assets/crrowCycle.png'),
+                  },
+                },
+              },
+            },
+          },
+        ],
       },
     },
   });
