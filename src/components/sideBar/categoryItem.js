@@ -6,11 +6,11 @@ import SubCategory from './SubCategory';
 export default class categoryItem extends Component {
   constructor(props) {
     super(props);
-    this.state = {isShow: false};
+    this.state = {isShow: false, isTick: false};
   }
 
   renderItem = ({item}) => {
-    return <SubCategory subList={item} />;
+    return <SubCategory tick={item.Name} subList={item.Name} />;
   };
 
   render() {
@@ -18,12 +18,21 @@ export default class categoryItem extends Component {
       <View>
         <ListItem
           icon
-          onPress={() => this.setState({isShow: !this.state.isShow})}>
+          onPress={() =>
+            this.setState({
+              isShow: !this.state.isShow,
+              isTick: !this.state.isTick,
+            })
+          }>
           <Body>
             <Text>{this.props.name}</Text>
           </Body>
           <Right>
-            <Image source={require('./../assets/arrow.png')} />
+            {this.props.subList.length !== 0 ? (
+              <Image source={require('./../../assets/images/arrow.png')} />
+            ) : this.state.isTick ? (
+              <Image source={require('./../../assets/images/tickIcon.png')} />
+            ) : null}
           </Right>
         </ListItem>
         {this.state.isShow ? (
