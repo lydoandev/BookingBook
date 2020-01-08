@@ -1,304 +1,107 @@
 import React, {Component} from 'react';
-import {View, ScrollView, Alert} from 'react-native';
+import {
+  View,
+  ScrollView,
+  SectionList,
+  Text,
+  FlatList,
+  StyleSheet,
+  ActivityIndicator,
+} from 'react-native';
 import ListBook from '../../components/ListBook';
-import {Button} from 'native-base';
+import {offlineData} from '../../data/offlineData';
+import {connect} from 'react-redux';
 import {Navigation} from 'react-native-navigation';
 
-export default class Home extends Component {
-  navigationButtonPressed = ({buttonId}) => {
-    const {componentId} = this.props;
-    if (buttonId === 'sidebar') {
-      Navigation.mergeOptions(componentId, {
-        sideMenu: {
-          left: {
-            visible: true,
-          },
-        },
-      });
-    }
-  };
-
+import * as bookActions from '../../reduxs/bookRedux/actions';
+import TitleSection from '../../components/TitleSection';
+import navigateTo from '../../utils/navigateTo';
+class Home extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      books: [
-        {
-          Medias: [
-            {
-              ImageUrl:
-                'https://the-books-dev-files.s3.amazonaws.com/Image/1544513472791_1544538675183_web.jpg',
-              ImageAppUrl:
-                'https://the-books-dev-files.s3.amazonaws.com/Image/1544513472791_1544538675183_app.jpg',
-              ImageThumbUrl:
-                'https://the-books-dev-files.s3.amazonaws.com/Image/1544513472791_1544538675183_thumb.jpg',
-              Id: 'OXhjuoHo',
-              FileName: '1544513472791_1544538675183.jpg',
-            },
-          ],
-          TypeOfCover: 'Bìa Mềm',
-          IsPastedQrCode: true,
-          YearOfPublish: 2016,
-          Shelf: {
-            LibraryId: 'ppSKc0HJ',
-            Id: 'MeuEs6f6',
-            Capacity: 150,
-            Name: 'ENG.CHILD.03',
-            Position: '12 Cao Thắng',
-            Description: null,
-            IsDeleted: false,
-            BookCount: 103,
-          },
-          Publishers: [
-            {
-              Name: 'Parragon Books',
-            },
-          ],
-          Categories: [
-            {
-              Name: 'Truyện đọc thiếu nhi',
-            },
-            {
-              Name: 'Sách Tiếng Anh',
-            },
-          ],
-          Authors: [
-            {
-              Name: 'Disney',
-            },
-          ],
-          ReleaseCompanies: [
-            {
-              Name: 'Đang cập nhật',
-            },
-          ],
-          Title: 'Disney Storybook Collection - Frozen',
-          UrlName: 'disney-storybook-collection-frozen-e-4-d',
-          Content:
-            "Disney Storybook Collection - Frozen\nThis wonderful storybook collection of stories is perfect for any Frozen fan! Join Elsa, Anna, Olaf and friends for some adventure, mystery and fairytale fun in these exciting stories. Inside you'll find six stories: A Frozen Adventure Childhood Times A New Reindeer Friend Babysitting the Troll Tots Across the Sea Olaf's Perfect Summer Day Perfect for reading to your little one, or as a first book for them to read themselves!",
-          Url: '/books/disney-storybook-collection-frozen-e-4-d',
-          OverallStarRating: 4,
-          Quantity: 1,
-          Availability: 1,
-          TotalReview: 5,
-          Price: 300000,
-          FavoriteCount: 0,
-          WaitingUsersCount: 0,
-          IsTrending: false,
-          CreatedAt: '12/11/2018 2:31:52 PM +07:00',
-          IsDeleted: true,
-          Id: 'GjInf6TW',
-        },
-        {
-          Medias: [
-            {
-              ImageUrl:
-                'https://the-books-dev-files.s3.amazonaws.com/Image/1544513472791_1544538675183_web.jpg',
-              ImageAppUrl:
-                'https://the-books-dev-files.s3.amazonaws.com/Image/1544513472791_1544538675183_app.jpg',
-              ImageThumbUrl:
-                'https://the-books-dev-files.s3.amazonaws.com/Image/1544513472791_1544538675183_thumb.jpg',
-              Id: 'OXhjuoHo',
-              FileName: '1544513472791_1544538675183.jpg',
-            },
-          ],
-          TypeOfCover: 'Bìa Mềm',
-          IsPastedQrCode: true,
-          YearOfPublish: 2016,
-          Shelf: {
-            LibraryId: 'ppSKc0HJ',
-            Id: 'MeuEs6f6',
-            Capacity: 150,
-            Name: 'ENG.CHILD.03',
-            Position: '12 Cao Thắng',
-            Description: null,
-            IsDeleted: false,
-            BookCount: 103,
-          },
-          Publishers: [
-            {
-              Name: 'Parragon Books',
-            },
-          ],
-          Categories: [
-            {
-              Name: 'Truyện đọc thiếu nhi',
-            },
-            {
-              Name: 'Sách Tiếng Anh',
-            },
-          ],
-          Authors: [
-            {
-              Name: 'Disney',
-            },
-          ],
-          ReleaseCompanies: [
-            {
-              Name: 'Đang cập nhật',
-            },
-          ],
-          Title: 'Disney Storybook Collection - Frozen',
-          UrlName: 'disney-storybook-collection-frozen-e-4-d',
-          Content:
-            "Disney Storybook Collection - Frozen\nThis wonderful storybook collection of stories is perfect for any Frozen fan! Join Elsa, Anna, Olaf and friends for some adventure, mystery and fairytale fun in these exciting stories. Inside you'll find six stories: A Frozen Adventure Childhood Times A New Reindeer Friend Babysitting the Troll Tots Across the Sea Olaf's Perfect Summer Day Perfect for reading to your little one, or as a first book for them to read themselves!",
-          Url: '/books/disney-storybook-collection-frozen-e-4-d',
-          OverallStarRating: 5,
-          Quantity: 1,
-          Availability: 1,
-          TotalReview: 2,
-          Price: 300000,
-          FavoriteCount: 0,
-          WaitingUsersCount: 0,
-          IsTrending: false,
-          CreatedAt: '12/11/2018 2:31:52 PM +07:00',
-          IsDeleted: true,
-          Id: 'GjInf6TW',
-        },
-        {
-          Medias: [
-            {
-              ImageUrl:
-                'https://the-books-dev-files.s3.amazonaws.com/Image/1544513472791_1544538675183_web.jpg',
-              ImageAppUrl:
-                'https://the-books-dev-files.s3.amazonaws.com/Image/1544513472791_1544538675183_app.jpg',
-              ImageThumbUrl:
-                'https://the-books-dev-files.s3.amazonaws.com/Image/1544513472791_1544538675183_thumb.jpg',
-              Id: 'OXhjuoHo',
-              FileName: '1544513472791_1544538675183.jpg',
-            },
-          ],
-          TypeOfCover: 'Bìa Mềm',
-          IsPastedQrCode: true,
-          YearOfPublish: 2016,
-          Shelf: {
-            LibraryId: 'ppSKc0HJ',
-            Id: 'MeuEs6f6',
-            Capacity: 150,
-            Name: 'ENG.CHILD.03',
-            Position: '12 Cao Thắng',
-            Description: null,
-            IsDeleted: false,
-            BookCount: 103,
-          },
-          Publishers: [
-            {
-              Name: 'Parragon Books',
-            },
-          ],
-          Categories: [
-            {
-              Name: 'Truyện đọc thiếu nhi',
-            },
-            {
-              Name: 'Sách Tiếng Anh',
-            },
-          ],
-          Authors: [
-            {
-              Name: 'Disney',
-            },
-          ],
-          ReleaseCompanies: [
-            {
-              Name: 'Đang cập nhật',
-            },
-          ],
-          Title: 'Disney Storybook Collection - Frozen',
-          UrlName: 'disney-storybook-collection-frozen-e-4-d',
-          Content:
-            "This wonderful storybook collection of stories is perfect for any Frozen fan! Join Elsa, Anna, Olaf and friends for some adventure, mystery and fairytale fun in these exciting stories. Inside you'll find six stories: A Frozen Adventure Childhood Times A New Reindeer Friend Babysitting the Troll Tots Across the Sea Olaf's Perfect Summer Day Perfect for reading to your little one, or as a first book for them to read themselves!",
-          Url: '/books/disney-storybook-collection-frozen-e-4-d',
-          OverallStarRating: 3,
-          Quantity: 1,
-          Availability: 1,
-          TotalReview: 10,
-          Price: 300000,
-          FavoriteCount: 0,
-          WaitingUsersCount: 0,
-          IsTrending: false,
-          CreatedAt: '12/11/2018 2:31:52 PM +07:00',
-          IsDeleted: true,
-          Id: 'GjInf6TW',
-        },
-        {
-          Medias: [
-            {
-              ImageUrl:
-                'https://the-books-dev-files.s3.amazonaws.com/Image/1544513472791_1544538675183_web.jpg',
-              ImageAppUrl:
-                'https://the-books-dev-files.s3.amazonaws.com/Image/1544513472791_1544538675183_app.jpg',
-              ImageThumbUrl:
-                'https://the-books-dev-files.s3.amazonaws.com/Image/1544513472791_1544538675183_thumb.jpg',
-              Id: 'OXhjuoHo',
-              FileName: '1544513472791_1544538675183.jpg',
-            },
-          ],
-          TypeOfCover: 'Bìa Mềm',
-          IsPastedQrCode: true,
-          YearOfPublish: 2016,
-          Shelf: {
-            LibraryId: 'ppSKc0HJ',
-            Id: 'MeuEs6f6',
-            Capacity: 150,
-            Name: 'ENG.CHILD.03',
-            Position: '12 Cao Thắng',
-            Description: null,
-            IsDeleted: false,
-            BookCount: 103,
-          },
-          Publishers: [
-            {
-              Name: 'Parragon Books',
-            },
-          ],
-          Categories: [
-            {
-              Name: 'Truyện đọc thiếu nhi',
-            },
-            {
-              Name: 'Sách Tiếng Anh',
-            },
-          ],
-          Authors: [
-            {
-              Name: 'Disney',
-            },
-          ],
-          ReleaseCompanies: [
-            {
-              Name: 'Đang cập nhật',
-            },
-          ],
-          Title: 'Disney Storybook Collection - Frozen',
-          UrlName: 'disney-storybook-collection-frozen-e-4-d',
-          Content:
-            "Disney Storybook Collection - Frozen\nThis wonderful storybook collection of stories is perfect for any Frozen fan! Join Elsa, Anna, Olaf and friends for some adventure, mystery and fairytale fun in these exciting stories. Inside you'll find six stories: A Frozen Adventure Childhood Times A New Reindeer Friend Babysitting the Troll Tots Across the Sea Olaf's Perfect Summer Day Perfect for reading to your little one, or as a first book for them to read themselves!",
-          Url: '/books/disney-storybook-collection-frozen-e-4-d',
-          OverallStarRating: 5,
-          Quantity: 1,
-          Availability: 1,
-          TotalReview: 4,
-          Price: 300000,
-          FavoriteCount: 0,
-          WaitingUsersCount: 0,
-          IsTrending: false,
-          CreatedAt: '12/11/2018 2:31:52 PM +07:00',
-          IsDeleted: true,
-          Id: 'GjInf6TW',
-        },
-      ],
-    };
+    this.props.fetchCmsHome();
   }
 
+  filterData = booksHome => {
+    var books = [];
+    var title = '';
+    Object.keys(booksHome).forEach(function(key) {
+      if (Array.isArray(offlineData[key])) {
+        if (key == 'NewBooks') {
+          title = 'Sách mới nhất';
+        }
+        if (key == 'HotTrendBooks') {
+          title = 'Sách nổi bật nhất';
+        }
+        if (key == 'MostBorrowBooks') {
+          title = 'Sách mượn nhiều nhất';
+        }
+        if (offlineData[key].length > 0) {
+          books.push({
+            type: title,
+            data: [{bookList: offlineData[key]}],
+          });
+        }
+      }
+    });
+    return books;
+  };
+
+  navigateToDetailCall = item => {
+    navigateTo({item}, this.props.componentId, 'Detail', item.Title);
+  };
+
+  navigateToSeeAll = (data, type) => {
+    navigateTo({data}, this.props.componentId, 'SeeAll', type);
+  };
+
   render() {
-    const {books} = this.state;
-    return (
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{flex: 1, margin: 15}}>
-        <ListBook title="Đọc Nhiều" data={books} />
-        <ListBook title="Mua Nhiều" data={books} />
-      </ScrollView>
-    );
+    const {loading, booksHome} = this.props.data;
+    if (loading) {
+      return (
+        <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
+          <ActivityIndicator size="large" color="#ff6666" style={{flex: 1}} />
+        </View>
+      );
+    } else {
+      const books = this.filterData(booksHome) || [];
+      return (
+        <View style={{flex: 1, margin: 15}}>
+          <SectionList
+            showsVerticalScrollIndicator={false}
+            sections={books}
+            keyExtractor={(item, index) => item + index}
+            renderItem={item => (
+              <ListBook
+                data={item.section.data[0].bookList}
+                navigateToDetail={this.navigateToDetailCall}
+              />
+            )}
+            // renderItem={({ item }) => console.log(item)}
+            renderSectionHeader={({section: {type, data}}) => (
+              <TitleSection
+                type={type}
+                data={data[0].bookList}
+                navigateToSeeAll={this.navigateToSeeAll}
+              />
+            )}
+          />
+        </View>
+      );
+    }
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    data: state.bookReducer,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    fetchCmsHome: () => dispatch(bookActions.fetchCmsHome()),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

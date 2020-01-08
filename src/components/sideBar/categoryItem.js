@@ -20,8 +20,8 @@ export default class categoryItem extends Component {
           icon
           onPress={() =>
             this.setState({
-              isShow: !this.state.isShow,
               isTick: !this.state.isTick,
+              isShow: !this.state.isShow,
             })
           }>
           <Body>

@@ -1,76 +1,5 @@
-/**
- * @format
- */
-// import categoryScreen from './src/screens/categoryScreen';
-// Navigation.registerComponent('categoryScreen', () => categoryScreen);
-
-// Navigation.events().registerAppLaunchedListener(() => {
-//   Navigation.setRoot({
-//     root: {
-//       stack: {
-//         children: [
-//           {
-//             component: {
-//               name: 'categoryScreen',
-//               options: {
-//                 topBar: {
-//                   title: {
-//                     text: 'Thể loại',
-//                     alignment: 'center',
-//                   },
-//                   leftButtons: {
-//                     id: 'closeCategory',
-//                     icon: require('./src/assets/closeCategory.png'),
-//                   },
-//                   rightButtons: {
-//                     id: 'loadCategory',
-//                     icon: require('./src/assets/crrowCycle.png'),
-//                   },
-//                 },
-//               },
-//             },
-//           },
-//         ],
-//       },
-//     },
-//   });
-// });
-
-// import Filter from './src/screens/filter';
-
-// Navigation.registerComponent('Filter', () => Filter);
-
-// Navigation.events().registerAppLaunchedListener(() => {
-//   Navigation.setRoot({
-//     root: {
-//       stack: {
-//         children: [
-//           {
-//             component: {
-//               name: 'Filter',
-//               options: {
-//                 topBar: {
-//                   leftButtons: {
-//                     id: 'slideBar',
-//                     icon: require('./src/assets/closeCategory.png'),
-//                   },
-//                   rightButtons: {
-//                     id: 'loadCategory',
-//                     icon: require('./src/assets/crrowCycle.png'),
-//                   },
-//                 },
-//               },
-//             },
-//           },
-//         ],
-//       },
-//     },
-//   });
-// });
-
 import {PersistGate} from 'redux-persist/integration/react';
 import React from 'react';
-
 import {Navigation} from 'react-native-navigation';
 import Detail from './src/screens/HomeScreen/Detail';
 import Library from './src/screens/LibraryScreen';
@@ -82,6 +11,7 @@ import Home from './src/screens/HomeScreen';
 import SideBar from './src/screens/SideBar';
 import {store, persistor} from './src/reduxs/store';
 import {Provider} from 'react-redux';
+import SeeAll from './src/screens/HomeScreen/SeeAll';
 
 console.disableYellowBox = true;
 Navigation.registerComponent(
@@ -118,6 +48,12 @@ Navigation.registerComponent(
   'Slide',
   () => ReducerComponent(Slide),
   () => Slide,
+);
+
+Navigation.registerComponent(
+  'SeeAll',
+  () => ReducerComponent(SeeAll),
+  () => SeeAll,
 );
 
 Navigation.registerComponent(
