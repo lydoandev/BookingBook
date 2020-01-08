@@ -11,7 +11,7 @@ import SwiperSlider from '../../components/Slide/SwiperSlider';
 import slider1 from '../../assets/images/slider1.png';
 import slider2 from '../../assets/images/slider2.png';
 import slider3 from '../../assets/images/slider3.png';
-import { Dimensions } from "react-native";
+import {Dimensions} from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -34,7 +34,7 @@ export default class Slide extends React.Component {
             prevPos: false,
             nextPos: false,
             dotsWrapperStyle: {
-              bottom: Dimensions.get('window').height / 4,
+              bottom: Dimensions.get('window').height / 3,
             },
           }}>
           <View style={styles.slideContainer}>
