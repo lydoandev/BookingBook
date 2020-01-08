@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import { Navigation } from 'react-native-navigation';
 
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, Image, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Star } from './Star';
 
@@ -9,45 +8,20 @@ export default class ItemBook extends Component {
 
   navigateToDetail = () => {
     const { item } = this.props;
-    Navigation.showModal({
-      stack: {
-        children: [{
-          component: {
-            name: 'Detail',
-            passProps: {
-              item
-            },
-            options: {
-              topBar: {
-                // visible: false,
-                // drawBehind: true,
-                title: {
-                  text: item.Title,
-                  alignment: 'center'
-                },
-                backButton: {
-                  id: 'close',
-                  size: 5,
-                  icon: require("../assets/images/nav.png"),
-                  visible: true
-                }
-              }
-            }
-          }
-        }]
-      }
-    });
+
+    this.props.navigateToDetail(item)
+
   }
   render() {
+
     var star = 4;
     var { flex } = this.props;
-    var { Authors, Title, OverallStarRating, Price, Quantity, TotalReview } = this.props.item;
-    console.log("title: ", Authors);
+    var { Authors, Title, OverallStarRating, Price, Quantity, TotalReview, Medias } = this.props.item;
     return (
       <TouchableOpacity style={[styles.book_item, { flexDirection: flex }]} onPress={this.navigateToDetail}>
-        <Image source={{ uri: 'https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1472875711i/10419181._UY630_SR1200,630_.jpg' }} style={styles.book_img}></Image>
+        <Image source={{ uri: Medias[0].ImageAppUrl }} style={styles.book_img}></Image>
         <View style={{ flexDirection: 'column', marginTop: flex == 'row' ? 20 : 5 }}>
-          <Text style={styles.title}>{Title}</Text>
+          <Text style={styles.title} numberOfLines={1}>{Title}</Text>
           <Text style={styles.author}>{Authors[0].Name}</Text>
           <Star star={OverallStarRating} TotalReview={TotalReview}></Star>
           <View style={{ flexDirection: 'row', display: flex == 'row' ? 'flex' : 'none', marginTop: 20 }}>
@@ -58,7 +32,6 @@ export default class ItemBook extends Component {
           </View>
         </View>
       </TouchableOpacity >
-
     )
   }
 }
@@ -66,7 +39,8 @@ export default class ItemBook extends Component {
 const styles = StyleSheet.create({
   book_item: {
     marginVertical: 20,
-    width: 175,
+    width: 155,
+    marginHorizontal: 8
   },
   book_img: {
     width: 155,

@@ -7,9 +7,10 @@ import reducers from './reducers'
 import { AsyncStorage } from "react-native"
 
 const persistConfig = {
-  key: 'root',
+  key: 'rootTheBookApp',
   storage: AsyncStorage,
-  whitelist: ['authReducer', 'bookReducer']
+  whitelist: ['bookReducer'],
+  timeout: null
 }
 
 const middleware = []
