@@ -13,7 +13,10 @@ export default class TitleSection extends Component {
     const { type, data } = this.props
     return (
       <View style={styles.titleContent}>
-        <Text style={styles.title}>{type}</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text style={styles.title}>{type}</Text>
+          <Text style={[styles.title, { marginLeft: 10, }]}>({data.length})</Text>
+        </View>
         <TouchableOpacity onPress={this.navigateToSeeAll}><Text style={{ color: '#ff6666' }} > Xem hết</Text></TouchableOpacity>
       </View>
     )

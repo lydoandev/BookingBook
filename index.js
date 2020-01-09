@@ -1,6 +1,6 @@
-import {PersistGate} from 'redux-persist/integration/react';
+import { PersistGate } from 'redux-persist/integration/react';
 import React from 'react';
-import {Navigation} from 'react-native-navigation';
+import { Navigation } from 'react-native-navigation';
 import Detail from './src/screens/HomeScreen/Detail';
 import Library from './src/screens/LibraryScreen';
 import Notification from './src/screens/NotificationScreen';
@@ -9,8 +9,8 @@ import Profile from './src/screens/ProfileScreen';
 import Slide from './src/screens/SlideScreen';
 import Home from './src/screens/HomeScreen';
 import SideBar from './src/screens/SideBar';
-import {store, persistor} from './src/reduxs/store';
-import {Provider} from 'react-redux';
+import { store, persistor } from './src/reduxs/store';
+import { Provider } from 'react-redux';
 import SeeAll from './src/screens/HomeScreen/SeeAll';
 
 console.disableYellowBox = true;

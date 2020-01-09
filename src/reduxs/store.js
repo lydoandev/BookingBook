@@ -1,10 +1,10 @@
-import {createStore, applyMiddleware, compose} from 'redux';
-import {createLogger} from 'redux-logger';
-import {persistStore, persistReducer} from 'redux-persist';
+import { createStore, applyMiddleware, compose } from 'redux';
+import { createLogger } from 'redux-logger';
+import { persistStore, persistReducer } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from './sagas';
 import reducers from './reducers';
-import {AsyncStorage} from 'react-native';
+import { AsyncStorage } from 'react-native';
 
 const persistConfig = {
   key: 'rootTheBookApp',

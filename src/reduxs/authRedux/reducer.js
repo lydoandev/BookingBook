@@ -1,25 +1,61 @@
-import {
-  PROFILE,
-  PROFILE_SUCCESS,
-  PROFILE_FAILURE
-} from "./action"
+import * as Type from "./actions"
 
 const initState = {
   data: {},
-  isLoading: false
+  loading: false,
+  isAuthenticated: false,
 }
 
 
-const authReducer = (state = initState, action) => {
+export const authReducer = (state = initState, action) => {
   switch (action.type) {
-    case PROFILE:
-      return Object.assign({}, state, { data: action.payload })
-    case PROFILE_SUCCESS:
-      return Object.assign({}, state, { data: action.payload })
-    case PROFILE_FAILURE:
-      return Object.assign({}, state, { data: action.payload })
+    case Type.LOGIN_SUCCESSED:
+      return Object.assign({}, state, {
+        logingIn: false,
+        isAuthenticated: true,
+        user: action.payload.data,
+        loading: false,
+        error: ''
+      });
+    case Type.LOGIN_FAILED:
+      return Object.assign({}, state, {
+        logingIn: false,
+        loading: false,
+        isAuthenticated: false,
+        error: action.payload
+      });
+    case Type.REGISTER:
+      return Object.assign({}, state, {
+        loading: true,
+        signingUp: false,
+        error: ''
+      });
+    case Type.REGISTER_SUCCESSED:
+      return Object.assign({}, state, {
+        loading: false,
+        isAuthenticated: true,
+        user: action.payload.data,
+        signingUp: false,
+        error: ''
+      });
+    case Type.REGISTER_FAILED:
+      return Object.assign({}, state, {
+        loading: false,
+        isAuthenticated: false,
+        signingUp: false,
+        error: action.payload
+      });
+    case Type.LOGOUT:
+      return Object.assign({}, state, {
+        loading: true
+      })
+    case Type.LOGOUT_SUCCESSED:
+      return Object.assign({}, state, {
+        isAuthenticated: false,
+        loading: false,
+        user: {},
+        error: ''
+      })
     default: return state
   }
 }
-
-export default authReducer;

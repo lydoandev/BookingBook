@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   View,
   ScrollView,
@@ -8,13 +8,13 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
-import ListBook from '../../components/ListBook';
-import {offlineData} from '../../data/offlineData';
-import {connect} from 'react-redux';
-import {Navigation} from 'react-native-navigation';
+import ListBook from '../../components/Home/ListBook';
+import { offlineData } from '../../data/offlineData';
+import { connect } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
 
 import * as bookActions from '../../reduxs/bookRedux/actions';
-import TitleSection from '../../components/TitleSection';
+import TitleSection from '../../components/Home/TitleSection';
 import navigateTo from '../../utils/navigateTo';
 class Home extends Component {
   constructor(props) {
@@ -25,7 +25,7 @@ class Home extends Component {
   filterData = booksHome => {
     var books = [];
     var title = '';
-    Object.keys(booksHome).forEach(function(key) {
+    Object.keys(booksHome).forEach(function (key) {
       if (Array.isArray(offlineData[key])) {
         if (key == 'NewBooks') {
           title = 'Sách mới nhất';
@@ -39,7 +39,7 @@ class Home extends Component {
         if (offlineData[key].length > 0) {
           books.push({
             type: title,
-            data: [{bookList: offlineData[key]}],
+            data: [{ bookList: offlineData[key] }],
           });
         }
       }
@@ -48,25 +48,25 @@ class Home extends Component {
   };
 
   navigateToDetailCall = item => {
-    navigateTo({item}, this.props.componentId, 'Detail', item.Title);
+    navigateTo({ item }, this.props.componentId, 'Detail', item.Title);
   };
 
   navigateToSeeAll = (data, type) => {
-    navigateTo({data}, this.props.componentId, 'SeeAll', type);
+    navigateTo({ data }, this.props.componentId, 'SeeAll', type);
   };
 
   render() {
-    const {loading, booksHome} = this.props.data;
+    const { loading, booksHome } = this.props.data;
     if (loading) {
       return (
-        <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
-          <ActivityIndicator size="large" color="#ff6666" style={{flex: 1}} />
+        <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+          <ActivityIndicator size="large" color="#ff6666" style={{ flex: 1 }} />
         </View>
       );
     } else {
       const books = this.filterData(booksHome) || [];
       return (
-        <View style={{flex: 1, margin: 15}}>
+        <View style={{ flex: 1, margin: 15 }}>
           <SectionList
             showsVerticalScrollIndicator={false}
             sections={books}
@@ -78,7 +78,7 @@ class Home extends Component {
               />
             )}
             // renderItem={({ item }) => console.log(item)}
-            renderSectionHeader={({section: {type, data}}) => (
+            renderSectionHeader={({ section: { type, data } }) => (
               <TitleSection
                 type={type}
                 data={data[0].bookList}

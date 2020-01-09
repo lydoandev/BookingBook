@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as Config from '../config/URL';
-import {Alert} from 'react-native';
+import { Alert } from 'react-native';
 
 export default function callAPI(
   endpoint,
@@ -15,7 +15,7 @@ export default function callAPI(
       data: body,
       headers: {
         'Content-Type': 'application/json',
-        Authorization: token,
+        Authorization: 'Bearer ' + token,
       },
     });
   } catch (e) {

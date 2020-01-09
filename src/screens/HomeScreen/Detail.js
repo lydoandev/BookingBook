@@ -7,14 +7,18 @@ import {
   Text,
   TouchableOpacity,
   ActivityIndicator,
+  FlatList,
 } from 'react-native';
-import { Star } from '../../components/Star';
-import ListBook from '../../components/ListBook';
+import { Star } from '../../components/Home/Star';
+import ListBook from '../../components/Home/ListBook';
 import { books } from '../../data/dataDemo';
 import callAPI from '../../utils/callAPI';
-import TitleSection from '../../components/TitleSection';
+import TitleSection from '../../components/Home/TitleSection';
 import navigateTo from '../../utils/navigateTo';
 import { Navigation } from 'react-native-navigation';
+import Icon from 'react-native-vector-icons/FontAwesome'
+import CategoryForDetail from '../../components/Home/CategoryForDetail';
+import Comment from '../../components/Home/Comment';
 
 export default class Detail extends Component {
   constructor(props) {
@@ -23,8 +27,11 @@ export default class Detail extends Component {
     this.state = {
       loading: true,
       relatedBooks: [],
+      reviews: [],
+      seeAll: false
     };
     this.getRelatedBook();
+    this.getReviews();
   }
 
   navigationButtonPressed = ({ buttonId }) => {
@@ -49,6 +56,31 @@ export default class Detail extends Component {
     });
   };
 
+  getReviews = async () => {
+    var data = await callAPI(
+      `api/reviews?BookId=${this.props.item.Id}`,
+      'GET',
+    );
+    console.log("data: ", data)
+    this.setState((prevState) => ({
+      ...prevState,
+      loading: false,
+      reviews: data.data.Reviews,
+    }));
+  };
+
+  navigateToSeeAll = () => {
+    const { relatedBooks } = this.state;
+    navigateTo({ data: relatedBooks }, this.props.componentId, 'SeeAll', 'Sách tương tự');
+  };
+
+  seeAllContent = () => {
+    this.setState((prevState) => ({
+      ...prevState,
+      seeAll: !prevState.seeAll
+    }))
+  }
+
   render() {
     var {
       Authors,
@@ -60,9 +92,37 @@ export default class Detail extends Component {
       Content,
       Medias,
       Id,
+      Categories,
     } = this.props.item;
-    const { relatedBooks, loading } = this.state;
-    console.log('Id: ', Id);
+    const { relatedBooks, loading, seeAll, reviews } = this.state;
+    var categories = Categories.map((item, key) => (
+      <CategoryForDetail key={key} cate={item}></CategoryForDetail>)
+    )
+    let text = '';
+    if (seeAll) {
+      text = 'thu gọn'
+    } else {
+      text = 'xem hết'
+    }
+
+    let reviewList;
+
+    if (reviews.length > 0) {
+      reviewList = <FlatList
+        data={reviews}
+        renderItem={({ item }) => (
+          <Comment
+            item={item}
+          />
+        )}
+        keyExtractor={item => item.id}
+        showsHorizontalScrollIndicator={false}
+      />
+    } else {
+      reviewList = <View style={styles.info}>
+        <Text style={{ color: '#7f7f7f' }}>Không có nhận xét nào</Text>
+      </View>
+    }
 
     if (loading) {
       return (
@@ -71,49 +131,62 @@ export default class Detail extends Component {
         </View>
       );
     }
+    console.log("Id: ", Id);
+
     return (
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        <View style={styles.info}>
-          <Image
-            source={{ uri: Medias[0].ImageAppUrl }}
-            style={styles.book_img}
+      <View>
+        <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+          <View style={styles.info}>
+            <Image
+              source={{ uri: Medias[0].ImageAppUrl }}
+              style={styles.book_img}
+            />
+            <Text style={styles.title} numberOfLines={1}>
+              {Title}
+            </Text>
+            <Text style={styles.author}>{Authors[0].Name}</Text>
+            <Star star={OverallStarRating} TotalReview={TotalReview} />
+            <View style={{ flexDirection: 'row' }}>{categories}</View>
+          </View>
+          <View style={{ marginVertical: 20 }}>
+            <Text style={styles.textContent} numberOfLines={seeAll && 100 || 5}>
+              {Content}
+            </Text>
+            <Text onPress={this.seeAllContent} style={{ color: '#ff6666' }}>{text}</Text>
+          </View>
+          <TitleSection type="Sách tương tự" navigateToSeeAll={this.navigateToSeeAll} data={relatedBooks} />
+          <ListBook
+            data={relatedBooks}
+            navigateToDetail={this.navigateToDetail}
           />
-          <Text style={styles.title} numberOfLines={1}>
-            {Title}
-          </Text>
-          <Text style={styles.author}>{Authors[0].Name}</Text>
-          <Star star={OverallStarRating} TotalReview={TotalReview} />
-        </View>
-        <View style={{ marginVertical: 30 }}>
-          <Text style={styles.textContent} numberOfLines={6}>
-            {Content}
-          </Text>
-        </View>
-        <TitleSection type="Sách tương tự" />
-        <ListBook
-          data={relatedBooks}
-          navigateToDetail={this.navigateToDetail}
-        />
-        <Text style={{ fontSize: 20 }}>Nhận xét</Text>
-        <View
-          style={{
-            marginVertical: 30,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <TouchableOpacity
+          <Text style={{ fontSize: 20 }}>Nhận xét</Text>
+          <View
             style={{
-              borderWidth: 1,
-              borderRadius: 5,
-              height: 50,
+              marginVertical: 30,
               justifyContent: 'center',
               alignItems: 'center',
-              padding: 10,
             }}>
-            <Text>Viết nhận xét cho cuốn sách này</Text>
+            <TouchableOpacity
+              style={{
+                borderWidth: 1,
+                borderRadius: 5,
+                borderColor: '#ff6666',
+                height: 40,
+                justifyContent: 'center',
+                alignItems: 'center',
+                paddingHorizontal: 40,
+              }}>
+              <Text style={{ color: '#ff6666' }}>Viết nhận xét cho cuốn sách này</Text>
+            </TouchableOpacity>
+          </View>
+          {reviewList}
+        </ScrollView>
+        <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0 }}>
+          <TouchableOpacity style={styles.btnAddToCart} onPress={this.addToCart}>
+            <Text style={styles.btnText}>Thêm vào giỏ</Text>
           </TouchableOpacity>
         </View>
-      </ScrollView>
+      </View>
     );
   }
 }
@@ -143,4 +216,14 @@ const styles = StyleSheet.create({
   textContent: {
     color: '#7f7f7f',
   },
+  btnAddToCart: {
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#ff6666"
+  },
+  btnText: {
+    color: "#ffffff",
+    fontSize: 20
+  }
 });

@@ -1,15 +1,16 @@
-import React, {Component} from 'react';
-import {View, FlatList, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import React, { Component } from 'react';
+import { View, FlatList, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import ItemBook from './ItemBook';
 
 export default class ListBook extends Component {
   render() {
-    const {data, navigateToDetail} = this.props;
+    const { data, navigateToDetail } = this.props;
+    const books = data.slice(0, 5);
     return (
       <FlatList
-        data={data}
+        data={books}
         horizontal={true}
-        renderItem={({item}) => (
+        renderItem={({ item }) => (
           <ItemBook
             item={item}
             flex="column"
