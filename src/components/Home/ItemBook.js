@@ -29,6 +29,8 @@ export default class ItemBook extends Component {
       TotalReview,
       Medias,
     } = this.props.item;
+    console.log("TEXT", this.props.item);
+
     return (
       <TouchableOpacity
         style={[styles.book_item, { flexDirection: flex }]}
