@@ -1,7 +1,7 @@
 import {
-  PROFILE,
-  PROFILE_SUCCESS,
-  PROFILE_FAILURE
+  FETCH_PROFILE,
+  FETCH_PROFILE_SUCCESS,
+  FETCH_PROFILE_FAILURE
 } from "./action"
 
 const initState = {
@@ -12,11 +12,11 @@ const initState = {
 
 const authReducer = (state = initState, action) => {
   switch (action.type) {
-    case PROFILE:
+    case FETCH_PROFILE:
       return Object.assign({}, state, { data: action.payload })
-    case PROFILE_SUCCESS:
+    case FETCH_PROFILE_SUCCESS:
       return Object.assign({}, state, { data: action.payload })
-    case PROFILE_FAILURE:
+    case FETCH_PROFILE_FAILURE:
       return Object.assign({}, state, { data: action.payload })
     default: return state
   }
