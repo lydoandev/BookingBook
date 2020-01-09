@@ -14,7 +14,7 @@ import Slide from './src/screens/SlideScreen'
 import Home from './src/screens/HomeScreen'
 import SeeAll from './src/screens/HomeScreen/SeeAll'
 import { store, persistor } from './src/reduxs/store'
-import Filter from './src/screens/filter';
+import Filter from './src/screens/FilterScreen';
 import { Provider } from "react-redux";
 
 console.disableYellowBox = true
@@ -45,7 +45,7 @@ Navigation.events().registerAppLaunchedListener(() => {
                 topBar: {
                   leftButtons: {
                     id: 'slideBar',
-                    icon: require('./src/assets/closeCategory.png'),
+                    icon: require('./src/assets/images/closeCategory.png'),
                   },
                   rightButtons: {
                     id: 'loadCategory',
