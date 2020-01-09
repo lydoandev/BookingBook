@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import { Dimensions } from "react-native";
+import TabMenuBook from '../../components/Profile/TabMenuBook';
 
 export default class InforUser extends Component {
   render() {
@@ -19,6 +20,20 @@ export default class InforUser extends Component {
             <Text style={styles.textRank}>Platinum</Text>
           </TouchableOpacity>
         </View>
+        <View style={styles.info}>
+          <View style={styles.styleTabMenu}>
+            <TouchableOpacity style={styles.tabBarMenu}>
+              <Text style={[styles.textRank, styles.textTabMenu]} >Sách của bạn</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.tabBarMenu}>
+              <Text style={[styles.textRank, styles.textTabMenu]}>Yêu cầu sách</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.tabBarMenu}>
+              <Text style={[styles.textRank, styles.textTabMenu]}>Gói thành viên</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <TabMenuBook></TabMenuBook>
       </View>
     )
   }
@@ -91,4 +106,18 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'SVN-ProximaNova'
   },
+  styleTabMenu: {
+    flexDirection: 'row'
+  },
+  tabBarMenu: {
+    justifyContent: 'center',
+    alignContent: 'center',
+    height: 50,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    top: 330
+  },
+  textTabMenu: {
+    fontSize: 18
+  }
 })
