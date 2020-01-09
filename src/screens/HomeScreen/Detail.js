@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   Image,
   ScrollView,
@@ -8,13 +8,13 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import { Star } from '../../components/Star';
+import {Star} from '../../components/Star';
 import ListBook from '../../components/ListBook';
-import { books } from '../../data/dataDemo';
+import {books} from '../../data/dataDemo';
 import callAPI from '../../utils/callAPI';
 import TitleSection from '../../components/TitleSection';
 import navigateTo from '../../utils/navigateTo';
-import { Navigation } from 'react-native-navigation';
+import {Navigation} from 'react-native-navigation';
 
 export default class Detail extends Component {
   constructor(props) {
@@ -27,15 +27,15 @@ export default class Detail extends Component {
     this.getRelatedBook();
   }
 
-  navigationButtonPressed = ({ buttonId }) => {
-    const { componentId } = this.props;
+  navigationButtonPressed = ({buttonId}) => {
+    const {componentId} = this.props;
     if (buttonId === 'close') {
       Navigation.dismissModal(componentId);
     }
   };
 
   navigateToDetail = item => {
-    navigateTo({ item }, this.props.componentId, 'Detail', item.Title);
+    navigateTo({item}, this.props.componentId, 'Detail', item.Title);
   };
 
   getRelatedBook = async () => {
@@ -61,13 +61,13 @@ export default class Detail extends Component {
       Medias,
       Id,
     } = this.props.item;
-    const { relatedBooks, loading } = this.state;
+    const {relatedBooks, loading} = this.state;
     console.log('Id: ', Id);
 
     if (loading) {
       return (
-        <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
-          <ActivityIndicator size="large" color="#ff6666" style={{ flex: 1 }} />
+        <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
+          <ActivityIndicator size="large" color="#ff6666" style={{flex: 1}} />
         </View>
       );
     }
@@ -75,7 +75,7 @@ export default class Detail extends Component {
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.info}>
           <Image
-            source={{ uri: Medias[0].ImageAppUrl }}
+            source={{uri: Medias[0].ImageAppUrl}}
             style={styles.book_img}
           />
           <Text style={styles.title} numberOfLines={1}>
@@ -84,7 +84,7 @@ export default class Detail extends Component {
           <Text style={styles.author}>{Authors[0].Name}</Text>
           <Star star={OverallStarRating} TotalReview={TotalReview} />
         </View>
-        <View style={{ marginVertical: 30 }}>
+        <View style={{marginVertical: 30}}>
           <Text style={styles.textContent} numberOfLines={6}>
             {Content}
           </Text>
@@ -94,7 +94,7 @@ export default class Detail extends Component {
           data={relatedBooks}
           navigateToDetail={this.navigateToDetail}
         />
-        <Text style={{ fontSize: 20 }}>Nhận xét</Text>
+        <Text style={{fontSize: 20}}>Nhận xét</Text>
         <View
           style={{
             marginVertical: 30,

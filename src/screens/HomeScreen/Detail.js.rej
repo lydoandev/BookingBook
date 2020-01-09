@@ -1,0 +1,18 @@
+diff a/src/screens/HomeScreen/Detail.js b/src/screens/HomeScreen/Detail.js	(rejected hunks)
+@@ -8,13 +8,13 @@
+   TouchableOpacity,
+   ActivityIndicator,
+ } from 'react-native';
+-import {Star} from '../../components/Star';
++import { Star } from '../../components/Star';
+ import ListBook from '../../components/ListBook';
+-import {books} from '../../data/dataDemo';
++import { books } from '../../data/dataDemo';
+ import callAPI from '../../utils/callAPI';
+ import TitleSection from '../../components/TitleSection';
+ import navigateTo from '../../utils/navigateTo';
+-import {Navigation} from 'react-native-navigation';
++import { Navigation } from 'react-native-navigation';
+ 
+ export default class Detail extends Component {
+   constructor(props) {
