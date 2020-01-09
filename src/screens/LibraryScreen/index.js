@@ -1,10 +1,8 @@
-import React, { Component } from 'react'
-import { View } from 'react-native'
+import React, {Component} from 'react';
+import {View} from 'react-native';
 
 export default class Library extends Component {
   render() {
-    return (
-      <View></View>
-    )
+    return <View />;
   }
 }

@@ -10,7 +10,7 @@ export default class ItemBook extends Component {
           <Text style={styles.title}>Để con được ốm</Text>
           <Text style={styles.time}>Hạn trả: 20-5-2019</Text>
         </View>
-      </TouchableOpacity >
+      </TouchableOpacity>
     )
   }
 }

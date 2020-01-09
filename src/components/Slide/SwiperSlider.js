@@ -1,20 +1,27 @@
-import React, { Component } from 'react'
-import { View, Image, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native'
-import { Navigation } from 'react-native-navigation'
-import { bottomTabs } from '../../config/bottomTabs'
+import React, {Component} from 'react';
+import {
+  View,
+  Image,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+} from 'react-native';
+import {Navigation} from 'react-native-navigation';
+import {sideMenu} from '../../config/bottomTabs';
 
 export default class SwiperSlider extends Component {
   constructor(props) {
-    super(props)
+    super(props);
   }
 
   moveToHome = () => {
     Navigation.setRoot({
       root: {
-        bottomTabs
-      }
+        sideMenu,
+      },
     });
-  }
+  };
 
   render() {
     return (
@@ -25,12 +32,14 @@ export default class SwiperSlider extends Component {
           <Text style={styles.styleDescription}>{this.props.description}</Text>
         </View>
         <View style={styles.styleButton}>
-          <TouchableOpacity style={styles.styleButtonStart} onPress={this.moveToHome}>
+          <TouchableOpacity
+            style={styles.styleButtonStart}
+            onPress={this.moveToHome}>
             <Text>Bắt Đầu</Text>
           </TouchableOpacity>
         </View>
       </View>
-    )
+    );
   }
 }
 
@@ -38,14 +47,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: "center",
+    alignItems: 'center',
   },
   styleContent: {
     paddingRight: 20,
     paddingLeft: 20,
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   styleTitle: {
     margin: 15,
@@ -53,7 +62,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: 'SVN-ProximaNova',
     color: '#262626',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   styleDescription: {
     margin: 15,
@@ -76,9 +85,9 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#41b8c1',
     width: 150,
-    borderRadius: 10
+    borderRadius: 10,
   },
   styleImage: {
-    height: 250
-  }
-})
+    height: 250,
+  },
+});
