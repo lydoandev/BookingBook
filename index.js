@@ -49,7 +49,7 @@ Navigation.events().registerAppLaunchedListener(() => {
                   },
                   rightButtons: {
                     id: 'loadCategory',
-                    icon: require('./src/assets/crrowCycle.png'),
+                    icon: require('./src/assets/images/crrowCycle.png'),
                   },
                 },
               },
