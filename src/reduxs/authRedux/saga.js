@@ -5,9 +5,9 @@ import * as ProfileActions from './actions'
 export function* getProfile(action) {
   try {
     var data = yield call(() => callAPI(`/api/users/${'xbF9u1Sq'}`, 'GET'));
-    yield put({ type: types.PROFILE_SUCCESSED, payload: data.data })
+    yield put({ type: ProfileActions.PROFILE_SUCCESSED, payload: data.data })
   } catch (error) {
-    yield put({})
+    yield put({ type: ProfileActions.PROFILE_FAILURE, payload: data.data })
     console.log("Error: ", error);
   }
 }

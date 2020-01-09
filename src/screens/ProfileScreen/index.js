@@ -28,17 +28,14 @@ export default class Profile extends Component {
         <View style={styles.styleRowContent}>
           <ItemBook></ItemBook>
         </View>
-        {/* <View style={{ flex: 1, flexDirection: 'row', paddingHorizontal: 10, paddingTop: 20, paddingHorizontal: 10 }}>
-          <Icon name="envelope" size={30} color="#bc2051"></Icon>
-          <Text style={{ paddingHorizontal: 10, }}>thahthanh968@gmail.com</Text>
-        </View>
-        <View style={{ flex: 1, flexDirection: 'row', paddingHorizontal: 10, paddingTop: 20, paddingHorizontal: 10 }}>
-          <Icon name="phone-square" size={30} color="#21e051"></Icon>
-          <Text style={{ paddingHorizontal: 10, }}>0968754908</Text>
-        </View> */}
-        {/* <TouchableOpacity style={styles.visitSite} onPress={this.onPressLogOut}>
-          <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 20, textAlign: 'center' }}>LOG OUT</Text>
-        </TouchableOpacity> */}
+        {/* <ScrollableTabView>
+          <Text tabLabel='Tab #1'>My</Text>
+          <Text tabLabel='Tab #2'>favorite</Text>
+          <Text tabLabel='Tab #3'>project</Text>
+          <TouchableOpacity tabLabel='Back'>
+            <Text>Lets go back!</Text>
+          </TouchableOpacity>
+        </ScrollableTabView> */}
       </ScrollView>
     )
   }
