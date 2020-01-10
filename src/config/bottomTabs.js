@@ -24,10 +24,6 @@ export const sideMenu = {
                   name: 'Home',
                   options: {
                     topBar: {
-                      title: {
-                        text: 'HOME',
-                        alignment: 'center',
-                      },
                       leftButtons: {
                         id: 'sidebar',
                         component: {
@@ -137,12 +133,6 @@ export const sideMenu = {
         },
       ],
       options: {
-        topBar: {
-          title: {
-            text: 'HOME',
-            alignment: 'center',
-          },
-        },
         bottomTab: {
           titleDisplayMode: 'showWhenActive',
           text: 'Home',

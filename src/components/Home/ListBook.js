@@ -4,7 +4,7 @@ import ItemBook from './ItemBook';
 
 export default class ListBook extends Component {
   render() {
-    const { data, navigateToDetail } = this.props;
+    const { data, navigateToDetail, flex } = this.props;
     const books = data.slice(0, 5);
     return (
       <FlatList
@@ -13,7 +13,7 @@ export default class ListBook extends Component {
         renderItem={({ item }) => (
           <ItemBook
             item={item}
-            flex="column"
+            flex={flex}
             navigateToDetail={navigateToDetail}
           />
         )}

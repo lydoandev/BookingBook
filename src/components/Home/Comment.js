@@ -5,7 +5,6 @@ import StarIcon from './StarIcon'
 export default class Comment extends Component {
   render() {
     const { UserName, StarRating, UrlImageUser, Content } = this.props.item;
-    console.log("Star: ", this.props);
 
     return (
       <View style={{ flexDirection: 'row', marginBottom: 10, }}>

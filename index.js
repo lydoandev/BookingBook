@@ -12,6 +12,8 @@ import SideBar from './src/screens/SideBar';
 import { store, persistor } from './src/reduxs/store';
 import { Provider } from 'react-redux';
 import SeeAll from './src/screens/HomeScreen/SeeAll';
+import Auth from './src/screens/AuthScreen'
+import Cart from './src/screens/HomeScreen/Cart'
 
 console.disableYellowBox = true;
 Navigation.registerComponent(
@@ -60,6 +62,18 @@ Navigation.registerComponent(
   'SideBar',
   () => ReducerComponent(SideBar),
   () => SideBar,
+);
+
+Navigation.registerComponent(
+  'Auth',
+  () => ReducerComponent(Auth),
+  () => Auth,
+);
+
+Navigation.registerComponent(
+  'Cart',
+  () => ReducerComponent(Cart),
+  () => Cart,
 );
 
 Navigation.events().registerAppLaunchedListener(() => {

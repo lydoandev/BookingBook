@@ -29,19 +29,18 @@ export default class ItemBook extends Component {
       TotalReview,
       Medias,
     } = this.props.item;
-    console.log("TEXT", this.props.item);
 
     return (
       <TouchableOpacity
-        style={[styles.book_item, { flexDirection: flex }]}
+        style={[styles.book_item, { flexDirection: flex }, { width: flex == 'column' ? 155 : "100%" }]}
         onPress={this.navigateToDetail}>
-        <Image source={{ uri: Medias[0].ImageAppUrl }} style={styles.book_img} />
+        <Image source={{ uri: Medias[0].ImageAppUrl || '' }} style={styles.book_img} />
         <View
           style={{ flexDirection: 'column', marginTop: flex == 'row' ? 20 : 5 }}>
           <Text style={styles.title} numberOfLines={1}>
             {Title}
           </Text>
-          <Text style={styles.author} numberOfLines={1}>{Authors[0].Name}</Text>
+          <Text style={styles.author} numberOfLines={1}>{Authors[0].Name || ''}</Text>
           <Star star={OverallStarRating} TotalReview={TotalReview} />
           <View
             style={{
@@ -55,7 +54,7 @@ export default class ItemBook extends Component {
               color="#ff6666"
               style={{ marginRight: 5 }}
             />
-            <Text>{Quantity} books</Text>
+            <Text>{Quantity != 0 ? Quantity + ' books' : 'Hết sách'}</Text>
             <Icon
               name="tag"
               size={17}
@@ -73,13 +72,13 @@ export default class ItemBook extends Component {
 const styles = StyleSheet.create({
   book_item: {
     marginVertical: 20,
-    width: 155,
     marginHorizontal: 8,
   },
   book_img: {
     width: 155,
     height: 210,
     borderRadius: 10,
+    marginRight: 5
   },
   title: {
     fontFamily: 'SVN-ProximaNova',

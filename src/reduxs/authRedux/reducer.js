@@ -4,6 +4,8 @@ const initState = {
   data: {},
   loading: false,
   isAuthenticated: false,
+  user: {},
+  cart: []
 }
 
 
@@ -13,9 +15,11 @@ export const authReducer = (state = initState, action) => {
       return Object.assign({}, state, {
         logingIn: false,
         isAuthenticated: true,
-        user: action.payload.data,
+        user: action.payload.Data,
+        token: action.payload.Token.access_token,
         loading: false,
-        error: ''
+        error: '',
+        cart: action.payload.Data.Basket.Items
       });
     case Type.LOGIN_FAILED:
       return Object.assign({}, state, {
@@ -23,6 +27,10 @@ export const authReducer = (state = initState, action) => {
         loading: false,
         isAuthenticated: false,
         error: action.payload
+      });
+    case Type.GET_CART_SUCCESSED:
+      return Object.assign({}, state, {
+        cart: action.payload
       });
     case Type.REGISTER:
       return Object.assign({}, state, {
@@ -34,9 +42,10 @@ export const authReducer = (state = initState, action) => {
       return Object.assign({}, state, {
         loading: false,
         isAuthenticated: true,
-        user: action.payload.data,
-        signingUp: false,
-        error: ''
+        user: action.payload.Data,
+        token: action.payload.Token.access_token,
+        error: '',
+        cart: action.payload.Data.Basket.Items
       });
     case Type.REGISTER_FAILED:
       return Object.assign({}, state, {
@@ -52,6 +61,7 @@ export const authReducer = (state = initState, action) => {
     case Type.LOGOUT_SUCCESSED:
       return Object.assign({}, state, {
         isAuthenticated: false,
+        token: '',
         loading: false,
         user: {},
         error: ''

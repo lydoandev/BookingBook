@@ -3,6 +3,7 @@ import LogIn from './LogIn';
 import Register from './Register'
 import { connect } from 'react-redux'
 import * as userActions from '../../reduxs/authRedux/actions'
+import { Navigation } from 'react-native-navigation'
 
 class Auth extends Component {
   constructor(props) {
@@ -12,8 +13,21 @@ class Auth extends Component {
     }
   }
 
+  componentDidUpdate() {
+    if (this.props.data.isAuthenticated) {
+      Navigation.dismissModal(this.props.componentId);
+    }
+  }
+
+
+  navigationButtonPressed = ({ buttonId }) => {
+    const { componentId } = this.props;
+    if (buttonId === 'close') {
+      Navigation.dismissModal(componentId);
+    }
+  };
+
   login = (user) => {
-    console.log("User 1:", user);
 
     this.props.login(user)
   }
@@ -29,7 +43,7 @@ class Auth extends Component {
   }
   render() {
     const { isLogin } = this.state;
-    const { loading, error } = this.props.data;
+    const { loading, error, data } = this.props.data;
 
     if (isLogin) {
       return <LogIn changeState={this.changeState} login={this.login} loading={loading} error={error}></LogIn>
@@ -41,7 +55,6 @@ class Auth extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log("Satte: ", state)
   return {
     data: state.authReducer,
   };

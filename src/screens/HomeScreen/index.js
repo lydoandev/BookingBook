@@ -48,11 +48,27 @@ class Home extends Component {
   };
 
   navigateToDetailCall = item => {
-    navigateTo({ item }, this.props.componentId, 'Detail', item.Title);
+    navigateTo({
+      item
+    }, this.props.componentId, 'Detail', {
+      rightButtons: {
+        id: 'favorite',
+        icon: require('../../assets/images/heart.png'),
+      },
+    });
   };
 
+  setCart = (cart) => {
+    this.props.setCart(cart);
+  }
+
   navigateToSeeAll = (data, type) => {
-    navigateTo({ data }, this.props.componentId, 'SeeAll', type);
+    navigateTo({ data }, this.props.componentId, 'SeeAll', {
+      title: {
+        text: type,
+        alignment: 'center'
+      }
+    });
   };
 
   render() {
@@ -75,6 +91,7 @@ class Home extends Component {
               <ListBook
                 data={item.section.data[0].bookList}
                 navigateToDetail={this.navigateToDetailCall}
+                flex='column'
               />
             )}
             // renderItem={({ item }) => console.log(item)}

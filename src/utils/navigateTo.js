@@ -1,6 +1,6 @@
 import { Navigation } from 'react-native-navigation'
 
-export default function navigateTo(props, compId, page, title) {
+export default function navigateTo(props, compId, page, topBar) {
   Navigation.push(compId, {
     component: {
       name: page,
@@ -8,12 +8,7 @@ export default function navigateTo(props, compId, page, title) {
         ...props
       },
       options: {
-        topBar: {
-          title: {
-            text: title,
-            alignment: 'center'
-          }
-        }
+        topBar
       }
     }
   });

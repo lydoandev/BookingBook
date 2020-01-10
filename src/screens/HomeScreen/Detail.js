@@ -16,34 +16,38 @@ import callAPI from '../../utils/callAPI';
 import TitleSection from '../../components/Home/TitleSection';
 import navigateTo from '../../utils/navigateTo';
 import { Navigation } from 'react-native-navigation';
-import Icon from 'react-native-vector-icons/FontAwesome'
 import CategoryForDetail from '../../components/Home/CategoryForDetail';
 import Comment from '../../components/Home/Comment';
+import ModalAddCart from '../../components/Home/ModalAddCart';
+import { connect } from 'react-redux';
 
-export default class Detail extends Component {
+import * as bookActions from '../../reduxs/bookRedux/actions';
+import * as userActions from '../../reduxs/authRedux/actions'
+
+class Detail extends Component {
   constructor(props) {
     super(props);
-    Navigation.events().bindComponent(this);
     this.state = {
       loading: true,
       relatedBooks: [],
       reviews: [],
-      seeAll: false
+      seeAll: false,
+      modalVisible: false,
+      addedToCart: false,
+      errorAddToCart: ''
     };
     this.getRelatedBook();
     this.getReviews();
   }
 
-  navigationButtonPressed = ({ buttonId }) => {
-    const { componentId } = this.props;
-    if (buttonId === 'close') {
-      Navigation.dismissModal(componentId);
-    }
-  };
-
   navigateToDetail = item => {
     navigateTo({ item }, this.props.componentId, 'Detail', item.Title);
   };
+
+  componentDidUpdate() {
+    console.log("Ddax cang");
+
+  }
 
   getRelatedBook = async () => {
     var data = await callAPI(
@@ -61,13 +65,45 @@ export default class Detail extends Component {
       `api/reviews?BookId=${this.props.item.Id}`,
       'GET',
     );
-    console.log("data: ", data)
     this.setState((prevState) => ({
       ...prevState,
       loading: false,
       reviews: data.data.Reviews,
     }));
   };
+
+  showLogin = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      addedToCart: false,
+      modalVisible: false
+    }))
+    Navigation.showModal({
+      stack: {
+        children: [{
+          component: {
+            name: 'Auth',
+            options: {
+              topBar: {
+                title: {
+                  text: 'Modal'
+                }
+              }
+            }
+          }
+        }]
+      }
+    });
+  }
+
+  navigateToCart = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      addedToCart: false,
+      modalVisible: false
+    }))
+    navigateTo({}, this.props.componentId, "Cart");
+  }
 
   navigateToSeeAll = () => {
     const { relatedBooks } = this.state;
@@ -78,6 +114,48 @@ export default class Detail extends Component {
     this.setState((prevState) => ({
       ...prevState,
       seeAll: !prevState.seeAll
+    }))
+  }
+
+  addToCart = async () => {
+    const { isAuthenticated, idUser, token } = this.props;
+    const info = { BookId: this.props.item.Id, Quantity: 1, UserId: idUser };
+    if (isAuthenticated) {
+      try {
+        var data = await callAPI('api/basket', 'POST', info, token);
+        console.log("Dtata: ", data.data);
+        this.props.getCart({ basketId: data.data.Data.Id, userId: idUser, token });
+        this.setState(prevState => ({
+          ...prevState,
+          addedToCart: true
+        }))
+
+      } catch (error) {
+        this.setState(prevState => ({
+          ...prevState,
+          errorAddToCart: error.response.data.Message
+        }))
+      }
+    } else {
+      this.setModalVisible();
+    }
+  }
+
+  setModalVisible = () => {
+    this.setState({ modalVisible: !this.state.modalVisible });
+  }
+
+  closeError = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      errorAddToCart: ''
+    }))
+  }
+
+  completedAddToCart = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      addedToCart: false
     }))
   }
 
@@ -94,11 +172,12 @@ export default class Detail extends Component {
       Id,
       Categories,
     } = this.props.item;
-    const { relatedBooks, loading, seeAll, reviews } = this.state;
+    const { relatedBooks, loading, seeAll, reviews, modalVisible, addedToCart, errorAddToCart } = this.state;
     var categories = Categories.map((item, key) => (
       <CategoryForDetail key={key} cate={item}></CategoryForDetail>)
     )
     let text = '';
+
     if (seeAll) {
       text = 'thu gọn'
     } else {
@@ -158,6 +237,7 @@ export default class Detail extends Component {
           <ListBook
             data={relatedBooks}
             navigateToDetail={this.navigateToDetail}
+            flex='column'
           />
           <Text style={{ fontSize: 20 }}>Nhận xét</Text>
           <View
@@ -180,6 +260,30 @@ export default class Detail extends Component {
             </TouchableOpacity>
           </View>
           {reviewList}
+          <ModalAddCart
+            modalVisible={modalVisible}
+            setModalVisible={this.setModalVisible}
+            text='Bạn cần đăng nhập để thực hiện chức năng này'
+            textButton='Đăng nhập'
+            navigateToCall={this.showLogin}
+          >
+
+          </ModalAddCart>
+          <ModalAddCart
+            modalVisible={addedToCart}
+            setModalVisible={this.completedAddToCart}
+            text='Thêm vào giỏ hàng thành công'
+            textButton='Đến giỏ hàng'
+            navigateToCall={this.navigateToCart}
+          >
+          </ModalAddCart>
+          <ModalAddCart
+            modalVisible={errorAddToCart != '' ? true : false}
+            setModalVisible={this.closeError}
+            text={errorAddToCart}
+            textButton2='Đã hiểu'
+          >
+          </ModalAddCart>
         </ScrollView>
         <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0 }}>
           <TouchableOpacity style={styles.btnAddToCart} onPress={this.addToCart}>
@@ -193,7 +297,9 @@ export default class Detail extends Component {
 
 const styles = StyleSheet.create({
   content: {
-    margin: 15,
+    marginBottom: 60,
+    marginHorizontal: 10,
+    marginTop: 20,
   },
   book_img: {
     width: 165,
@@ -217,7 +323,7 @@ const styles = StyleSheet.create({
     color: '#7f7f7f',
   },
   btnAddToCart: {
-    height: 50,
+    height: 45,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#ff6666"
@@ -227,3 +333,19 @@ const styles = StyleSheet.create({
     fontSize: 20
   }
 });
+
+function mapStateToProps(state) {
+  return {
+    isAuthenticated: state.authReducer.isAuthenticated,
+    idUser: state.authReducer.user.Id,
+    token: state.authReducer.token
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    getCart: ({ basketId, userId, token }) => dispatch(userActions.getCart({ basketId, userId, token })),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Detail);

@@ -5,14 +5,17 @@ var initialState = {
   booksHome: [],
   relatedBooks: [],
   loading: false,
+  cart: [],
+  error: '',
+  addedToCart: false
 };
 
 export const bookReducer = (state = initialState, action) => {
   switch (action.type) {
     case type.FETCH_BOOKS:
-      return Object.assign({}, state, {loading: true});
+      return Object.assign({}, state, { loading: true });
     case type.FETCH_CMS_HOME:
-      return Object.assign({}, state, {loading: true});
+      return Object.assign({}, state, { loading: true });
     case type.FETCH_CMS_HOME_SUCCESSED:
       return Object.assign({}, state, {
         loading: false,

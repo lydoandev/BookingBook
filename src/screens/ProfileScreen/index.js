@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import InfoUser from './InfoUser';
+import InforUser from './InforUser';
 import * as userActions from '../../reduxs/authRedux/actions'
 import Auth from '../../screens/AuthScreen'
 import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view';
-import Icon from 'react-native-vector-icons/FontAwesome'
-import { View } from 'native-base';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, FlatList, } from 'react-native'
 
 import BookWaiting from './BookWaiting';
@@ -33,11 +31,6 @@ class Profile extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    isAuthenticated: state.authReducer.isAuthenticated,
-  }
-}
 
 const styles = StyleSheet.create({
   container: {
@@ -53,19 +46,14 @@ const styles = StyleSheet.create({
 
 })
 
+function mapDispatchToProps(dispatch) {
+  return {
+  };
+}
 
 function mapStateToProps(state) {
   return {
-    data: state.authReducer,
-  };
+    isAuthenticated: state.authReducer.isAuthenticated,
+  }
 }
-
-function mapDispatchToProps(dispatch) {
-  return {
-    login: () => dispatch(userActions.login()),
-    register: () => dispatch(userActions.register()),
-    logout: () => dispatch(userActions.logout()),
-  };
-}
-
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

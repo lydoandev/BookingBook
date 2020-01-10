@@ -11,6 +11,9 @@ export const LOGIN_SUCCESSED = "LOGIN_SUCCESSED"
 export const LOGIN_FAILED = "LOGIN_FAILED"
 export const LOGOUT_SUCCESSED = "LOGOUT_SUCCESSED"
 
+export const GET_CART = "GET_CART"
+export const GET_CART_SUCCESSED = "GET_CART_SUCCESSED"
+
 export const LOGOUT = "LOGOUT"
 
 export const login = (user) => {
@@ -25,14 +28,7 @@ export const logout = () => {
   return { type: LOGOUT }
 }
 
-export const getProfile = data => {
-  return ({ type: PROFILE, payload: data });
+export const getCart = data => {
+  return ({ type: GET_CART, payload: data });
 };
 
-export const fetchProfileSuccess = response => {
-  return { type: FETCH_PROFILE_SUCCESS, payload: response };
-};
-
-export const fetchProfileFailure = error => {
-  return { type: FETCH_PROFILE_FAILURE, payload: error };
-};

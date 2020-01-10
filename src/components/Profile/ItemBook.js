@@ -5,7 +5,6 @@ import { Dimensions } from "react-native";
 
 export default class ItemBook extends Component {
   render() {
-    console.log('ITEM BOOKS', this.props);
 
     return (
       <TouchableOpacity style={[styles.book_item]}>
