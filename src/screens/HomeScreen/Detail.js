@@ -61,7 +61,6 @@ export default class Detail extends Component {
       `api/reviews?BookId=${this.props.item.Id}`,
       'GET',
     );
-    console.log("data: ", data)
     this.setState((prevState) => ({
       ...prevState,
       loading: false,
@@ -131,7 +130,6 @@ export default class Detail extends Component {
         </View>
       );
     }
-    console.log("Id: ", Id);
 
     return (
       <View>

@@ -15,7 +15,6 @@ export function* fetchBooks() {
 export function* fetchCmsHome() {
   try {
     var data = yield call(() => callAPI('api/cms/home'));
-    console.log('Data nè: ', data);
 
     yield put({ type: types.FETCH_CMS_HOME_SUCCESSED, payload: data.data.Data });
   } catch (error) {

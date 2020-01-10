@@ -25,8 +25,6 @@ export default class LogIn extends Component {
 
   checkValidation = () => {
     var { email, password, emailErr, passwordErr } = this.state;
-    console.log("Email: ", email);
-    console.log("Password: ", password);
     var countErr = 0;
     emailErr = "";
     passwordErr = "";
@@ -59,7 +57,6 @@ export default class LogIn extends Component {
     const { email, password } = this.state;
 
     if (this.checkValidation() == 0) {
-      console.log("Không lỗi")
       this.props.login({ grant_type: "password", username: email, password });
     } else { console.log("Lỗi") }
   }

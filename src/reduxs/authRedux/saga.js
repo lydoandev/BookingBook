@@ -19,13 +19,11 @@ export function* getProfile(action) {
     yield put({ type: ProfileActions.FETCH_PROFILE_SUCCESSED, payload: data.data })
   } catch (error) {
     yield put({ type: ProfileActions.FETCH_PROFILE_FAILURE, payload: error })
-    console.log("Error: ", error);
   }
 }
 
 
 export function* Register(action) {
-  console.log("user: ", action.payload);
   try {
     const data = yield call(() => callAPI(`api/users`, 'POST', action.payload))
     yield put({ type: REGISTER_SUCCESSED, payload: data.data.Data });
@@ -40,7 +38,6 @@ export function* Login(action) {
     const data = yield call(() => callAPI(`api/token`, 'POST', action.payload))
     yield put({ type: LOGIN_SUCCESSED, payload: data.data.Data });
   } catch (error) {
-    console.log("Error: ", error);
 
     yield put({ type: LOGIN_FAILED, payload: error?.response?.data?.message || error?.response });
   }

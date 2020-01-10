@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {Image} from 'react-native';
-import {View, Text, ListItem, Body, Right} from 'native-base';
+import React, { Component } from 'react';
+import { Image } from 'react-native';
+import { View, Text, ListItem, Body, Right } from 'native-base';
 
 export default class SubCategory extends Component {
   constructor() {
@@ -11,10 +11,9 @@ export default class SubCategory extends Component {
   }
 
   render() {
-    console.log(this.props.tick);
     return (
       <View>
-        <ListItem onPress={() => this.setState({isTick: !this.state.isTick})}>
+        <ListItem onPress={() => this.setState({ isTick: !this.state.isTick })}>
           <Body>
             <Text>{this.props.subList}</Text>
           </Body>

@@ -4,7 +4,6 @@ import { TouchableOpacity, StyleSheet, Text } from 'react-native'
 export default class CategoryForDetail extends Component {
   render() {
     const { cate } = this.props;
-    console.log("cate: ", cate)
     return (
       <TouchableOpacity style={styles.button}>
         <Text style={styles.text}>{cate.Name}</Text>

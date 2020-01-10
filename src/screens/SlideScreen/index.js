@@ -1,17 +1,16 @@
 import React from 'react';
 import {
   View,
-  Text,
   StyleSheet,
-  ScrollView,
-  TouchableOpacity,
+  Text
 } from 'react-native';
 import Swiper from 'react-native-web-swiper';
 import SwiperSlider from '../../components/Slide/SwiperSlider';
 import slider1 from '../../assets/images/slider1.png';
 import slider2 from '../../assets/images/slider2.png';
 import slider3 from '../../assets/images/slider3.png';
-import {Dimensions} from 'react-native';
+import { Dimensions } from 'react-native';
+import ScrollableTabView, { ScrollableTabBar, DefaultTabBar } from 'react-native-scrollable-tab-view';
 
 const styles = StyleSheet.create({
   container: {

@@ -13,8 +13,6 @@ class Auth extends Component {
   }
 
   login = (user) => {
-    console.log("User 1:", user);
-
     this.props.login(user)
   }
   register = (user) => {
@@ -41,7 +39,6 @@ class Auth extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log("Satte: ", state)
   return {
     data: state.authReducer,
   };
