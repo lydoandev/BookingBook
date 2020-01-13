@@ -21,20 +21,7 @@ export function* fetchCmsHome() {
   }
 }
 
-// export function* addToCart(action) {
-//   const { info, token } = action.payload;
-//   try {
-//     var data = yield call(() => callAPI('api/basket', 'POST', info, token));
-
-//     yield put(types.addToCartSuccessed(data.data.Data));
-//   } catch (error) {
-
-//     yield put(types.addToCartFailed(error.response.data.Message));
-//   }
-// }
-
 export const watchBooksSaga = [
   takeLatest('FETCH_BOOKS', fetchBooks),
   takeLatest('FETCH_CMS_HOME', fetchCmsHome),
-
 ];

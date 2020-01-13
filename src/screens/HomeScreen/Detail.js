@@ -23,6 +23,7 @@ import { connect } from 'react-redux';
 
 import * as bookActions from '../../reduxs/bookRedux/actions';
 import * as userActions from '../../reduxs/authRedux/actions'
+import CommentForm from '../../components/Home/CommentForm';
 
 class Detail extends Component {
   constructor(props) {
@@ -34,29 +35,85 @@ class Detail extends Component {
       seeAll: false,
       modalVisible: false,
       addedToCart: false,
-      errorAddToCart: ''
+      errorAddToCart: '',
+      commentVisible: false,
+      errorComment: '',
+      commented: false,
+      showAllReview: false,
+      showUpdateComment: false,
+      alreadyComment: false,
+      commentExist: {},
+      idUser: props.idUser
     };
     this.getRelatedBook();
     this.getReviews();
+    this.checkExistComment();
+  }
+
+  componentWillReceiveProps(nextProps, prevProps) {
+    console.log("Nextx props", nextProps);
+    const { idUser } = prevProps;
+    console.log("Id user: ", idUser);
+
+    if (this.props.idUser != nextProps.idUser) {
+      this.checkExistComment();
+    }
+  }
+
+  static getDerivedStateFromProps(props, state) {
+
+    console.log('getDerivedStateFromProps: ', props.idUser);
+    console.log(Detail.check(props, state));
+
+    if (props.idUser !== state.idUser && Detail.check(props, state)) {
+
+      console.log("Exist");
+
+      return {
+        ...state,
+        alreadyComment: true,
+        commentExist: {}
+      };
+    }
+
+    return state;
+  }
+
+  static check = (props, state) => {
+    const { reviews } = state;
+    const { idUser } = props;
+    console.log("Checked");
+
+    reviews.forEach(comment => {
+      console.log("Now: " + idUser + 'nex, ' + comment.UserId);
+
+      if (idUser == comment.UserId) {
+        console.log("Exisst");
+
+        return true
+      }
+    })
+    return false
   }
 
   navigateToDetail = item => {
     navigateTo({ item }, this.props.componentId, 'Detail', item.Title);
   };
 
-  componentDidUpdate() {
-    console.log("Ddax cang");
-
-  }
-
   getRelatedBook = async () => {
     var data = await callAPI(
       `api/books/${this.props.item.Id}/relatedBooks`,
       'GET',
     );
+    var relatedBooks = [];
+    data.data.Data.RelatedBooks.forEach(item => {
+      if (!item.IsDeleted) {
+        relatedBooks.push(item)
+      }
+    })
     this.setState({
       loading: false,
-      relatedBooks: data.data.Data.RelatedBooks,
+      relatedBooks,
     });
   };
 
@@ -123,7 +180,6 @@ class Detail extends Component {
     if (isAuthenticated) {
       try {
         var data = await callAPI('api/basket', 'POST', info, token);
-        console.log("Dtata: ", data.data);
         this.props.getCart({ basketId: data.data.Data.Id, userId: idUser, token });
         this.setState(prevState => ({
           ...prevState,
@@ -159,7 +215,75 @@ class Detail extends Component {
     }))
   }
 
+  displayCommentForm = () => {
+    const { isAuthenticated } = this.props;
+
+    if (isAuthenticated) {
+      this.setState(prevState => ({
+        ...prevState,
+        commentVisible: !prevState.commentVisible
+      }))
+    } else {
+      this.setModalVisible();
+    }
+
+  }
+
+  showAllReview = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      showAllReview: !prevState.showAllReview
+    }))
+  }
+
+  addComment = async (Content, StarRating) => {
+
+    const { idUser, token } = this.props;
+    const info = {
+      BookId: this.props.item.Id, UserId: idUser, Content, StarRating, IsDeleted: false,
+      IsOutstanding: false
+    }
+    try {
+      var data = await callAPI('api/reviews', 'POST', info, token);
+      this.getReviews();
+      this.displayCommentForm();
+    } catch (error) {
+      this.setState(prevState => ({
+        ...prevState,
+        errorComment: error.response.data.Message
+      }))
+
+    }
+  }
+
+  showUpdateComment = () => {
+    this.setState((prevState) => ({
+      ...prevState,
+      commentVisible: true
+    }));
+  }
+
+  checkExistComment = () => {
+    const { reviews } = this.state;
+    const { idUser } = this.props;
+    console.log("Checked");
+
+    reviews.forEach(comment => {
+      if (idUser === comment.UserId) {
+        console.log("Exist");
+
+        this.setState((prevState) => ({
+          ...prevState,
+          alreadyComment: true,
+          commentExist: comment
+        }));
+      }
+    })
+  }
+
   render() {
+    console.log("Satet: ", this.state);
+
     var {
       Authors,
       Title,
@@ -172,7 +296,7 @@ class Detail extends Component {
       Id,
       Categories,
     } = this.props.item;
-    const { relatedBooks, loading, seeAll, reviews, modalVisible, addedToCart, errorAddToCart } = this.state;
+    const { relatedBooks, loading, seeAll, reviews, modalVisible, addedToCart, errorAddToCart, commentVisible, showAllReview, commentExist, alreadyComment } = this.state;
     var categories = Categories.map((item, key) => (
       <CategoryForDetail key={key} cate={item}></CategoryForDetail>)
     )
@@ -185,13 +309,18 @@ class Detail extends Component {
     }
 
     let reviewList;
+    console.log("Review: ", reviews);
+
+    const { idUser } = this.props;
 
     if (reviews.length > 0) {
       reviewList = <FlatList
-        data={reviews}
+        data={showAllReview ? reviews : reviews.slice(0, 2)}
         renderItem={({ item }) => (
           <Comment
             item={item}
+            idUser={idUser}
+            showUpdateComment={this.showUpdateComment}
           />
         )}
         keyExtractor={item => item.id}
@@ -246,19 +375,27 @@ class Detail extends Component {
               alignItems: 'center',
             }}>
             <TouchableOpacity
-              style={{
-                borderWidth: 1,
-                borderRadius: 5,
-                borderColor: '#ff6666',
-                height: 40,
-                justifyContent: 'center',
-                alignItems: 'center',
-                paddingHorizontal: 40,
-              }}>
-              <Text style={{ color: '#ff6666' }}>Viết nhận xét cho cuốn sách này</Text>
+              style={styles.btnComment}
+              onPress={this.displayCommentForm}
+            >
+              <Text style={{ color: '#ff6666', fontSize: 15 }}>Viết nhận xét cho cuốn sách này</Text>
             </TouchableOpacity>
           </View>
           {reviewList}
+          {reviews.length > 2 &&
+            <View
+              style={{
+                marginVertical: 30,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <TouchableOpacity
+                style={styles.btnComment}
+                onPress={this.showAllReview}
+              >
+                <Text style={{ color: '#ff6666', fontSize: 15 }}>{!showAllReview ? 'Hiển thị tất cả bình luận' : 'Hiển thị ít bình luận hơn'}</Text>
+              </TouchableOpacity>
+            </View>}
           <ModalAddCart
             modalVisible={modalVisible}
             setModalVisible={this.setModalVisible}
@@ -283,6 +420,14 @@ class Detail extends Component {
             textButton2='Đã hiểu'
           >
           </ModalAddCart>
+          <CommentForm
+            modalVisible={commentVisible}
+            setModalVisible={this.displayCommentForm}
+            addComment={this.addComment}
+            isUpdate={alreadyComment}
+            updateComment={this.updateComment}
+            commentExist={commentExist}
+          ></CommentForm>
         </ScrollView>
         <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0 }}>
           <TouchableOpacity style={styles.btnAddToCart} onPress={this.addToCart}>
@@ -297,7 +442,7 @@ class Detail extends Component {
 const styles = StyleSheet.create({
   content: {
     marginBottom: 60,
-    marginHorizontal: 10,
+    marginHorizontal: 15,
     marginTop: 20,
   },
   book_img: {
@@ -326,6 +471,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#ff6666"
+  },
+  btnComment: {
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: '#ff6666',
+    height: 45,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 40,
+    width: '90%'
   },
   btnText: {
     color: "#ffffff",

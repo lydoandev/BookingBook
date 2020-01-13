@@ -37,9 +37,15 @@ class Home extends Component {
           title = 'Sách mượn nhiều nhất';
         }
         if (offlineData[key].length > 0) {
+          var bookList = [];
+          offlineData[key].forEach(item => {
+            if (!item.IsDeleted) {
+              bookList.push(item)
+            }
+          })
           books.push({
             type: title,
-            data: [{ bookList: offlineData[key] }],
+            data: [{ bookList }],
           });
         }
       }

@@ -18,7 +18,6 @@ export default class ItemBook extends Component {
     this.props.navigateToDetail(item);
   };
   render() {
-    var star = 4;
     var { flex } = this.props;
     var {
       Authors,

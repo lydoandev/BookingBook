@@ -1,8 +1,42 @@
 import React, { Component } from 'react'
-import { Modal, View, Text, TouchableOpacity, StyleSheet, Dimensions, Alert } from 'react-native'
+import { Modal, View, Text, TouchableOpacity, StyleSheet, Dimensions, TextInput, TouchableWithoutFeedback } from 'react-native'
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class CommentForm extends Component {
+  constructor(props) {
+    super(props);
+    const { Content, StarRating } = props;
+    this.state = {
+      star: Content || 0,
+      content: StarRating || ''
+    }
+  }
+  rating = (star) => {
+    this.setState({
+      star
+    })
+  }
+
+  onChangeText = (content) => {
+    this.setState(prevState => ({
+      ...prevState,
+      content
+    }))
+  }
+
+  addComment = () => {
+    const { content, star } = this.state;
+    this.props.addComment(
+      content, star
+    )
+  }
+  updateComment = () => {
+    const { content, star } = this.state;
+    this.props.updateComment(content, star);
+  }
   render() {
+    var { star, content } = this.state;
+    var { isUpdate } = this.props;
     return (
       <Modal
         animationType="slide"
@@ -11,25 +45,78 @@ export default class CommentForm extends Component {
         onRequestClose={() => {
           this.props.setModalVisible();
         }}>
-        <View style={styles.modalContainer}>
-          <View style={styles.contentContainer}>
-            <Text style={{ textAlign: 'center' }}>Đánh giá</Text>
-            <View style={styles.buttonContent}>
-              <TouchableOpacity
-                style={styles.btnAnother}
-                onPress={() => {
-                  this.props.setModalVisible();
-                }}>
-                <Text style={styles.anotherText}>{textButton2 || 'Lúc khác'}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.btnRegister, { display: textButton ? 'flex' : 'none' }]}
-                onPress={this.navigateTo}>
-                <Text style={styles.registerText}>{textButton}</Text>
-              </TouchableOpacity>
+        <TouchableOpacity
+          activeOpacity={1}
+          onPressOut={this.props.setModalVisible} style={styles.modalContainer}>
+          <TouchableWithoutFeedback>
+            <View style={styles.contentContainer}>
+              <Text style={{ textAlign: 'center', fontSize: 18 }}>Đánh giá</Text>
+              <View style={styles.star}>
+                <Icon
+                  name="star"
+                  size={25}
+                  style={{ paddingRight: 2 }}
+                  color={star < 1 ? '#ababab' : '#ffd11a'}
+                  onPress={() => this.rating(1)}
+                />
+                <Icon
+                  name="star"
+                  size={25}
+                  style={{ paddingRight: 2 }}
+                  color={star < 2 ? '#ababab' : '#ffd11a'}
+                  onPress={() => this.rating(2)}
+                />
+                <Icon
+                  name="star"
+                  size={25}
+                  style={{ paddingRight: 2 }}
+                  color={star < 3 ? '#ababab' : '#ffd11a'}
+                  onPress={() => this.rating(3)}
+                />
+                <Icon
+                  name="star"
+                  size={25}
+                  style={{ paddingRight: 2 }}
+                  color={star < 4 ? '#ababab' : '#ffd11a'}
+                  onPress={() => this.rating(4)}
+                />
+                <Icon
+                  name="star"
+                  size={25}
+                  style={{ paddingRight: 2 }}
+                  color={star < 5 ? '#ababab' : '#ffd11a'}
+                  onPress={() => this.rating(5)}
+                />
+              </View>
+              <Text style={{ textAlign: 'center', fontSize: 18, marginBottom: 10 }}>Nhận xét</Text>
+
+              <TextInput
+                style={{ borderColor: '#bfbfbf', borderWidth: 1, borderRadius: 5 }}
+                multiline={true}
+                numberOfLines={5}
+                placeholder='Nhập nội dung nhận xét ở đây, tối thiểu 30 kí tự, tối đa 2000 kí tự'
+                onChangeText={(text) => this.onChangeText(text)}
+                value={content}
+              >
+
+              </TextInput>
+              <View style={styles.buttonContent}>
+                <TouchableOpacity
+                  style={styles.btnClose}
+                  onPress={() => {
+                    this.props.setModalVisible();
+                  }}>
+                  <Text style={styles.closeText}>Đóng</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.btnComment}
+                  onPress={isUpdate ? this.addComment : this.updateComment}>
+                  <Text style={styles.commentText}>{isUpdate ? 'Sửa nhận xét' : 'Nhận xét'}</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-        </View>
+          </TouchableWithoutFeedback>
+        </TouchableOpacity>
       </Modal>
     )
   }
@@ -57,7 +144,7 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
 
-  btnAnother: {
+  btnClose: {
     width: 100,
     justifyContent: 'center',
     alignItems: 'center',
@@ -65,11 +152,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ff6666'
   },
-  anotherText: {
+  closeText: {
     color: '#ff6666',
     textAlign: 'center',
   },
-  btnRegister: {
+  btnComment: {
     width: 100,
     justifyContent: 'center',
     backgroundColor: '#ff6666',
@@ -78,8 +165,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#fff'
   },
-  registerText: {
+  commentText: {
     color: '#fff',
     textAlign: 'center',
+  },
+  star: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 10
   }
 })

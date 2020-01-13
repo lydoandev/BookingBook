@@ -48,15 +48,15 @@ export function* Login(action) {
 export function* getCart(action) {
   const { basketId, userId, token } = action.payload;
   var string = `api/basket/${basketId}?userId=${userId}`;
-  console.log("String: ", token);
+  console.log("String: ", string);
 
   try {
     const data = yield call(() => callAPI(`api/basket/${basketId}?userId=${userId}`, 'GET', null, token));
-    console.log("Data: ", data);
+    console.log("Data get cart: ", data);
 
-    yield put({ type: GET_CART_SUCCESSED, payload: data.data.Basket.Items });
+    yield put({ type: GET_CART_SUCCESSED, payload: data.data.Data.Items });
   } catch (error) {
-    console.log("error", error.response);
+    console.log("Error get cart", error);
 
   }
 }
