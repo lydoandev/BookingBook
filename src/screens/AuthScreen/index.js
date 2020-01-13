@@ -28,7 +28,6 @@ class Auth extends Component {
   };
 
   login = (user) => {
-
     this.props.login(user)
   }
   register = (user) => {

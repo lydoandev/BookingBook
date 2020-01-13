@@ -210,7 +210,6 @@ class Detail extends Component {
         </View>
       );
     }
-    console.log("Id: ", Id);
 
     return (
       <View>

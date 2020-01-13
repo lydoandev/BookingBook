@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
   },
   book_img: {
     width: 110,
-    height: 190,
+    height: 150,
     borderRadius: 10
   },
   title: {
@@ -40,7 +40,9 @@ const styles = StyleSheet.create({
   },
   styleContent: {
     flexDirection: 'column',
-    width: 110
+    width: 110,
+    justifyContent: 'center',
+    alignContent: 'center',
   },
   dateBorrow: {
     fontFamily: 'SVN-ProximaNova',
@@ -53,9 +55,8 @@ const styles = StyleSheet.create({
     color: '#ff6161'
   },
   styleStatus: {
-    justifyContent: 'center',
-    alignContent: 'center',
-    height: 50,
+    height: 35,
+    width: '80%',
     paddingVertical: 10,
     borderWidth: 0.5,
     borderColor: '#5bc2ef',

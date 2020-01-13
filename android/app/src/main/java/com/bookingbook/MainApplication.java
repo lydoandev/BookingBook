@@ -3,7 +3,8 @@ package com.bookingbook;
 import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
-import com.facebook.react.ReactApplication;
+import com.facebook.react.ReactApplication;
+
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
@@ -17,6 +18,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import java.util.Arrays;
 import java.util.List;
+import com.reactnativecommunity.viewpager.RNCViewPagerPackage;
 
 public class MainApplication extends NavigationApplication {
   
@@ -37,9 +39,9 @@ public class MainApplication extends NavigationApplication {
   protected List<ReactPackage> getPackages() {
       // Add additional packages you require here
       // No need to add RnnPackage and MainReactPackage
-      return Arrays.<ReactPackage>asList(
-          // eg. new VectorIconsPackage()
-      );
+      List<ReactPackage> packages = new PackageList(this).getPackages();
+      packages.add( new RNCViewPagerPackage());
+      return packages;
   }
   @Override
   public List<ReactPackage> createAdditionalReactPackages() {
