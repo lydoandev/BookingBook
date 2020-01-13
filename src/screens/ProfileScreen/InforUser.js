@@ -32,11 +32,11 @@ export default class InfoUser extends Component {
 
         </ImageBackground>
         <ScrollView>
-          <View style={{ height: 300 }}>
+          <View style={{ height: 400 }}>
             <ScrollableTabView
               style={{ paddingBottom: 10 }}
               initialPage={0}
-              tabBarActiveTextColor={'#fff'}
+              tabBarActiveTextColor={'#000000'}
               tabBarInactiveTextColor={'#A9A9A9'}
               tabBarTextStyle={{ fontWeight: 'bold' }}
               renderTabBar={() => <ScrollableTabBar style={{ borderWidth: 0 }} />}>
@@ -61,7 +61,7 @@ export default class InfoUser extends Component {
 const styles = StyleSheet.create({
   image: {
     position: "relative",
-    height: 400,
+    height: 300,
   },
   styleFirstRow: {
     width: '100%',
