@@ -11,6 +11,7 @@ import CategoryItem from '../../components/SideBar/CategoryItem';
 import {connect} from 'react-redux';
 import {FETCH_CATEGORY} from './../../reduxs/categoryRedux/actions';
 import {Navigation} from 'react-native-navigation';
+import {sideMenu} from './../../config/bottomTabs';
 
 class SideBar extends Component {
   componentDidMount() {
@@ -21,26 +22,24 @@ class SideBar extends Component {
     return <CategoryItem name={item.Name} subList={item.SubCategories} />;
   };
 
-  onPressItem = () => {
-    console.log('side: ', this.props.componentId);
+  onMoveSortScreen = async () => {
+    let category = await AsyncStorage.getItem('FindCategory');
     Navigation.showModal({
-      component: {
-        name: 'FilterScreen',
-        options: {
-          topBar: {
-            visible: false,
+      stack: {
+        children: [
+          {
+            component: {
+              name: 'FilterScreen',
+              options: {
+                topBar: {
+                  visible: false,
+                },
+              },
+            },
           },
-        },
+        ],
       },
     });
-  };
-
-  navigationButtonPressed = ({buttonId}) => {
-    const {componentId} = this.props;
-    console.log(componentId);
-    if (buttonId === 'backId') {
-      Navigation.dismissModal(componentId);
-    }
   };
 
   render() {
@@ -53,7 +52,7 @@ class SideBar extends Component {
           keyExtractor={(item, index) => index}
         />
         <View>
-          <TouchableOpacity onPress={() => this.onPressItem()}>
+          <TouchableOpacity onPress={() => this.onMoveSortScreen()}>
             <View
               style={{
                 height: 50,

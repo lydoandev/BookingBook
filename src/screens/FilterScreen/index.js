@@ -22,6 +22,7 @@ class FilterScreen extends Component {
     this.state = {
       category: null,
       isShow: false,
+      listIcon: false,
     };
   }
 
@@ -44,7 +45,7 @@ class FilterScreen extends Component {
     });
   };
 
-  onPressItem = () => {
+  onPressMoveTypeScreen = () => {
     Navigation.showModal({
       stack: {
         children: [
@@ -77,8 +78,42 @@ class FilterScreen extends Component {
     });
   };
 
+  onMoveSortScreen = () => {
+    Navigation.showModal({
+      stack: {
+        children: [
+          {
+            component: {
+              id: 'SideBar',
+              name: 'SortBook',
+              options: {
+                topBar: {
+                  title: {
+                    text: 'Sắp xếp',
+                    alignment: 'center',
+                  },
+                  rightButtons: {
+                    icon: require('./../../assets/images/crrowCycle.png'),
+                  },
+                  leftButtons: {
+                    id: 'SideBar',
+                    component: {
+                      name: 'FilterScreen',
+                    },
+                    icon: require('./../../assets/images/arrowBig.png'),
+                  },
+                },
+              },
+            },
+          },
+        ],
+      },
+    });
+  };
+
   render() {
     const {dataBook} = this.props;
+    let {sort} = this.props;
     return (
       <View>
         <View>
@@ -90,7 +125,9 @@ class FilterScreen extends Component {
             <Image source={require('./../../assets/images/searchIcon.png')} />
           </View>
           <View style={styles.menu}>
-            <TouchableOpacity style={styles.button} onPress={this.onPressItem}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={this.onPressMoveTypeScreen}>
               <View style={styles.button}>
                 <Text>Thể Loại</Text>
                 <Image
@@ -99,7 +136,9 @@ class FilterScreen extends Component {
                 />
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.sortIcon}>
+            <TouchableOpacity
+              style={styles.sortIcon}
+              onPress={this.onMoveSortScreen}>
               <View style={styles.button}>
                 <Text style={{marginLeft: 10}}>Sắp xếp</Text>
                 <Image
@@ -112,11 +151,22 @@ class FilterScreen extends Component {
               onPress={() =>
                 this.setState({
                   isShow: !this.state.isShow,
+                  listIcon: !this.state.listIcon,
                 })
               }>
-              <View style={styles.button}>
-                <Image source={require('./../../assets/images/listIcon.png')} />
-              </View>
+              {this.state.listIcon === false ? (
+                <View style={styles.button}>
+                  <Image
+                    source={require('./../../assets/images/listIcon.png')}
+                  />
+                </View>
+              ) : (
+                <View style={styles.button}>
+                  <Image
+                    source={require('./../../assets/images/listIconSq.png')}
+                  />
+                </View>
+              )}
             </TouchableOpacity>
           </View>
           {this.state.isShow === false ? (

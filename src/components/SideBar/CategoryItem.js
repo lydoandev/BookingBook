@@ -16,7 +16,6 @@ export default class CategoryItem extends Component {
   hanldGetSubCategory = item => {
     if (this.state.isTick) {
       AsyncStorage.setItem('FindCategory', item);
-      console.log('save item ', item);
     }
   };
 

@@ -13,6 +13,7 @@ import {store, persistor} from './src/reduxs/store';
 import {Provider} from 'react-redux';
 import SeeAll from './src/screens/HomeScreen/SeeAll';
 import FilterScreen from './src/screens/FilterScreen';
+import SortBook from './src/screens/FilterScreen/SortBook';
 
 console.disableYellowBox = true;
 
@@ -68,6 +69,12 @@ Navigation.registerComponent(
   'FilterScreen',
   () => ReducerComponent(FilterScreen),
   () => FilterScreen,
+);
+
+Navigation.registerComponent(
+  'SortBook',
+  () => ReducerComponent(SortBook),
+  () => SortBook,
 );
 
 Navigation.events().registerAppLaunchedListener(() => {
