@@ -6,7 +6,7 @@ import { Navigation } from 'react-native-navigation';
 
 export default class SeeAll extends Component {
   navigateToDetail = item => {
-    navigateTo({ item }, this.props.componentId, 'Detail', item.Title);
+    navigateTo({ item }, this.props.componentId, 'Detail');
   };
   render() {
     const { data } = this.props;

@@ -20,11 +20,11 @@ export default class ModalAddCart extends Component {
             <Text style={{ textAlign: 'center' }}>{text}</Text>
             <View style={styles.buttonContent}>
               <TouchableOpacity
-                style={styles.btnAnother}
+                style={[styles.btnAnother, { display: textButton2 ? 'flex' : 'none' }]}
                 onPress={() => {
                   this.props.setModalVisible();
                 }}>
-                <Text style={styles.anotherText}>{textButton2 || 'Lúc khác'}</Text>
+                <Text style={styles.anotherText}>{textButton2}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.btnRegister, { display: textButton ? 'flex' : 'none' }]}

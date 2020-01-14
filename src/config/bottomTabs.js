@@ -52,13 +52,15 @@ export const sideMenu = {
                   },
                   options: {
                     topBar: {
+                      visible: true,
                       title: {
-                        text: 'Order',
+                        text: 'Danh sách đơn hàng',
+                        alignment: 'center'
                       },
                     },
                     bottomTab: {
                       titleDisplayMode: 'showWhenActive',
-                      text: 'ToDoList',
+                      text: 'Order',
                       icon: require('../assets/images/order.png'),
                       testID: 'SECOND_TAB_BAR_BUTTON',
                     },
@@ -77,12 +79,7 @@ export const sideMenu = {
                       text: 'Profile',
                       icon: require('../assets/images/profile.png'),
                       testID: 'SECOND_TAB_BAR_BUTTON',
-                    },
-                    topBar: {
-                      title: {
-                        text: 'Profile',
-                      },
-                    },
+                    }
                   },
                 },
               },
@@ -95,15 +92,10 @@ export const sideMenu = {
                   options: {
                     bottomTab: {
                       titleDisplayMode: 'showWhenActive',
-                      text: 'Profile',
+                      text: 'Thông báo',
                       icon: require('../assets/images/notification.png'),
                       testID: 'SECOND_TAB_BAR_BUTTON',
-                    },
-                    topBar: {
-                      title: {
-                        text: 'Profile',
-                      },
-                    },
+                    }
                   },
                 },
               },
@@ -116,14 +108,9 @@ export const sideMenu = {
                   options: {
                     bottomTab: {
                       titleDisplayMode: 'showWhenActive',
-                      text: 'Profile',
+                      text: 'Thư viện',
                       icon: require('../assets/images/library.png'),
                       testID: 'SECOND_TAB_BAR_BUTTON',
-                    },
-                    topBar: {
-                      title: {
-                        text: 'Profile',
-                      },
                     },
                   },
                 },

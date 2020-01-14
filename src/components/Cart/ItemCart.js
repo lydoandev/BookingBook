@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import callAPI from '../../utils/callAPI';
 
 import {
   View,
@@ -9,17 +10,38 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Star } from './Star';
+import { Star } from '../Home/Star';
 
 export default class ItemCart extends Component {
-  navigateToDetail = () => {
+  navigateToDetail = async () => {
     const { item } = this.props;
+    try {
+      var data = await callAPI(`api/books/${item.Id}`, 'GET');
+      console.log("Data item: ", data);
 
-    this.props.navigateToDetail(item);
+      this.props.navigateToDetail(data.data);
+    } catch (error) {
+      console.log("Erro get: ", error);
+
+    }
+
   };
+
+  handleDeleteItemCart = () => {
+    console.log("delte 1");
+
+    this.props.deleteItemCart(this.props.item.Id);
+  }
+
+  changeQuantity = (quantity) => {
+    if (quantity >= 1) {
+      this.props.changeQuantity(this.props.item.Id, quantity);
+    } else {
+      this.props.deleteItemCart(this.props.item.Id);
+    }
+  }
+
   render() {
-    var star = 4;
-    var { flex } = this.props;
     var {
       Authors,
       Title,
@@ -30,55 +52,88 @@ export default class ItemCart extends Component {
       Medias,
     } = this.props.item;
 
+    const { quantity } = this.props;
+
     return (
-      <TouchableOpacity
-        style={[styles.book_item, { flexDirection: flex }, { width: flex == 'column' ? 155 : "100%" }]}
-        onPress={this.navigateToDetail}>
-        <Image source={{ uri: Medias[0].ImageAppUrl || '' }} style={styles.book_img} />
-        <View
-          style={{ flexDirection: 'column', marginTop: flex == 'row' ? 20 : 5 }}>
-          <Text style={styles.title} numberOfLines={1}>
-            {Title}
-          </Text>
-          <Text style={styles.author} numberOfLines={1}>{Authors[0].Name || ''}</Text>
-          <Star star={OverallStarRating} TotalReview={TotalReview} />
+      <View
+        style={[styles.book_item, { flexDirection: 'row' }]}
+      >
+        <TouchableOpacity onPress={this.navigateToDetail} >
+          <Image source={{ uri: Medias[0].ImageAppUrl || '' }} style={styles.book_img} />
+        </TouchableOpacity>
+        <View style={{ marginTop: 5 }}>
+          <View style={{ alignItems: 'flex-end' }}>
+            <Icon
+              onPress={this.handleDeleteItemCart}
+              name="close"
+              size={19}
+              color="#ff6666"
+            />
+          </View>
           <View
-            style={{
-              flexDirection: 'row',
-              display: flex == 'row' ? 'flex' : 'none',
-              marginTop: 20,
-            }}>
-            <Icon
-              name="book"
-              size={17}
-              color="#ff6666"
-              style={{ marginRight: 5 }}
-            />
-            <Text>{Quantity != 0 ? Quantity + ' books' : 'Hết sách'}</Text>
-            <Icon
-              name="tag"
-              size={17}
-              color="#ff6666"
-              style={{ marginHorizontal: 5 }}
-            />
-            <Text>{Price}</Text>
+            style={{ flexDirection: 'column', marginTop: 20 }}>
+            <Text style={styles.title} numberOfLines={1}>
+              {Title}
+            </Text>
+            <Text style={styles.author} numberOfLines={1}>{Authors[0].Name || ''}</Text>
+            <Star star={OverallStarRating} TotalReview={TotalReview} />
+            <View
+              style={{
+                flexDirection: 'row',
+                marginTop: 20,
+              }}>
+              <Icon
+                name="book"
+                size={17}
+                color="#ff6666"
+                style={{ marginRight: 5 }}
+              />
+              <Text>{Quantity != 0 ? Quantity + ' books' : 'Hết sách'}</Text>
+              <Icon
+                name="money"
+                size={17}
+                color="#ff6666"
+                style={{ marginHorizontal: 5 }}
+              />
+              <Text>{Price}</Text>
+            </View>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 15 }}>
+              <Text style={{ fontSize: 16, }}>Quantity</Text>
+              <View style={{ alignSelf: 'flex-end', flexDirection: 'row', }}>
+                <Icon
+                  onPress={() => this.changeQuantity(quantity - 1)}
+                  name="minus"
+                  size={17}
+                  style={styles.icon}
+                  color="#ff6666" />
+                <Text style={[styles.icon, { fontSize: 16 }]}>{quantity}</Text>
+                <Icon
+                  name="plus"
+                  size={17}
+                  color="#ff6666"
+                  style={styles.icon}
+                  onPress={() => this.changeQuantity(quantity + 1)}
+                />
+              </View>
+            </View>
           </View>
         </View>
-      </TouchableOpacity>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
   book_item: {
+    width: 155,
     marginVertical: 20,
     marginHorizontal: 8,
   },
   book_img: {
-    width: 155,
-    height: 210,
+    width: 145,
+    height: 200,
     borderRadius: 10,
-    marginRight: 5
+    marginRight: 10,
   },
   title: {
     fontFamily: 'SVN-ProximaNova',
@@ -92,4 +147,7 @@ const styles = StyleSheet.create({
   star_icon: {
     paddingHorizontal: 2,
   },
+  icon: {
+    paddingHorizontal: 5
+  }
 });

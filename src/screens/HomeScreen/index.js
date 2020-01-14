@@ -16,6 +16,7 @@ import { Navigation } from 'react-native-navigation';
 import * as bookActions from '../../reduxs/bookRedux/actions';
 import TitleSection from '../../components/Home/TitleSection';
 import navigateTo from '../../utils/navigateTo';
+import IconCart from '../../components/Cart/IconCart';
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -56,12 +57,7 @@ class Home extends Component {
   navigateToDetailCall = item => {
     navigateTo({
       item
-    }, this.props.componentId, 'Detail', {
-      rightButtons: {
-        id: 'favorite',
-        icon: require('../../assets/images/heart.png'),
-      },
-    });
+    }, this.props.componentId, 'Detail');
   };
 
   setCart = (cart) => {
@@ -77,8 +73,23 @@ class Home extends Component {
     });
   };
 
+  navigateToCart = () => {
+    navigateTo({}, this.props.componentId, "Cart", {
+      visible: true,
+      title: {
+        text: 'Danh sách giỏ hàng',
+        alignment: 'center'
+      },
+      rightButtons: {
+        id: 'deleteAll',
+        icon: require('../../assets/images/delete.png'),
+      },
+    });
+  }
+
   render() {
     const { loading, booksHome } = this.props.data;
+    const { isAuthenticated, cart } = this.props;
     if (loading) {
       return (
         <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
@@ -109,6 +120,7 @@ class Home extends Component {
               />
             )}
           />
+          {isAuthenticated && <IconCart navigateToCart={this.navigateToCart} cart={cart}></IconCart>}
         </View>
       );
     }
@@ -118,6 +130,8 @@ class Home extends Component {
 function mapStateToProps(state) {
   return {
     data: state.bookReducer,
+    isAuthenticated: state.authReducer.isAuthenticated,
+    cart: state.authReducer.cart,
   };
 }
 

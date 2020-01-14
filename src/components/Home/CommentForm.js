@@ -5,10 +5,20 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 export default class CommentForm extends Component {
   constructor(props) {
     super(props);
-    const { Content, StarRating } = props;
+    const { Content, StarRating } = props.commentExist;
     this.state = {
-      star: Content || 0,
-      content: StarRating || ''
+      star: StarRating || 0,
+      content: Content || ''
+    }
+  }
+  componentDidUpdate(prevProps) {
+    // Typical usage (don't forget to compare props):
+    if (this.props.commentExist !== prevProps.commentExist) {
+      const { Content, StarRating } = this.props.commentExist;
+      this.setState({
+        star: StarRating,
+        content: Content
+      })
     }
   }
   rating = (star) => {
@@ -37,6 +47,7 @@ export default class CommentForm extends Component {
   render() {
     var { star, content } = this.state;
     var { isUpdate } = this.props;
+
     return (
       <Modal
         animationType="slide"
@@ -110,7 +121,7 @@ export default class CommentForm extends Component {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.btnComment}
-                  onPress={isUpdate ? this.addComment : this.updateComment}>
+                  onPress={!isUpdate ? this.addComment : this.updateComment}>
                   <Text style={styles.commentText}>{isUpdate ? 'Sửa nhận xét' : 'Nhận xét'}</Text>
                 </TouchableOpacity>
               </View>

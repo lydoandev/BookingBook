@@ -5,6 +5,7 @@ import Title from '../../components/Form/Title'
 import Error from '../../components/Form/Error'
 
 import * as userAction from '../../reduxs/authRedux/actions'
+import Loading from '../../components/Home/Loading'
 
 export default class LogIn extends Component {
   constructor(props) {
@@ -13,7 +14,7 @@ export default class LogIn extends Component {
       email: "lydoan.dev123@gmail.com",
       password: "123456",
       emailErr: "",
-      passwordErr: ""
+      passwordErr: "",
     }
   }
 
@@ -61,6 +62,7 @@ export default class LogIn extends Component {
     }
   }
 
+
   signUp = () => {
     this.props.changeState();
   }
@@ -68,20 +70,20 @@ export default class LogIn extends Component {
   render() {
     var { password, email, emailErr, passwordErr } = this.state;
     var { loading, error } = this.props;
+    console.log("Loading: ", loading);
+
     if (loading) {
       return (
-        <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
-          <ActivityIndicator size="large" color="#ff6666" style={{ flex: 1 }} />
-        </View>
+        <Loading></Loading>
       )
     }
     return (
       <ScrollView style={{ flex: 1, margin: 15, flexDirection: 'column' }}>
 
-        <View style={styles.titleContent}><Text style={{ fontSize: 25 }}>Chưa Có Tài Khoản</Text></View>
+        <View style={styles.titleContent}><Text style={{ fontSize: 20 }}>Đăng nhập</Text></View>
         <Error errorText={error}></Error>
         <View style={{ flex: 1, marginTop: 20, marginBottom: 5 }}>
-          <Title title="Email *"></Title>
+          <Title title="Tài khoản *"></Title>
           <InputText name="email" value={email} getData={this.getData}></InputText>
           <Error errorText={emailErr} />
         </View>
@@ -91,8 +93,8 @@ export default class LogIn extends Component {
           <Error errorText={passwordErr}></Error>
         </View>
         <View style={styles.buttonContent}>
-          <TouchableOpacity style={styles.btnLogin} onPress={this.login}><Text style={styles.loginText}>LOGIN</Text></TouchableOpacity>
-          <TouchableOpacity style={styles.btnSignUp} onPress={this.signUp}><Text style={styles.signUpText}>SIGN UP</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.btnLogin} onPress={this.login}><Text style={styles.loginText}>Đăng nhập</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.btnSignUp} onPress={this.signUp}><Text style={styles.signUpText}>Đăng kí</Text></TouchableOpacity>
         </View>
       </ScrollView>
     )

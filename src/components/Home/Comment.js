@@ -5,8 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class Comment extends Component {
   showUpdateComment = () => {
-    const { Id } = this.props.item
-    this.props.showUpdateComment(Id);
+    this.props.showUpdateComment();
   }
   render() {
     const { idUser } = this.props;
@@ -15,7 +14,7 @@ export default class Comment extends Component {
     let date = yourDate.getDate() + "-" + parseInt(yourDate.getMonth() + 1) + "-" + yourDate.getFullYear();
 
     return (
-      <View style={{ flexDirection: 'row', marginBottom: 10, }}>
+      <View style={{ flexDirection: 'row', marginBottom: 20, }}>
         <View style={{ flex: 1 }}>
           <Image source={{ uri: UrlImageUser || 'https://cdn150.picsart.com/upscale-245339439045212.png?r1024x1024' }}
             style={styles.book_img} />
@@ -26,7 +25,7 @@ export default class Comment extends Component {
             {UserId == idUser ?
               (<View style={{ flexDirection: 'row' }}>
                 <Icon name='edit' size={18} style={[{ marginHorizontal: 10 }, styles.icon]} onPress={this.showUpdateComment}></Icon>
-                <Icon name='trash' size={17} style={styles.icon}></Icon>
+                <Icon name='trash' size={17} style={styles.icon} onPress={this.props.deleteComment}></Icon>
               </View>)
               :
               <Text>{date}</Text>}

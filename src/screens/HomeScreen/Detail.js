@@ -24,6 +24,7 @@ import { connect } from 'react-redux';
 import * as bookActions from '../../reduxs/bookRedux/actions';
 import * as userActions from '../../reduxs/authRedux/actions'
 import CommentForm from '../../components/Home/CommentForm';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 class Detail extends Component {
   constructor(props) {
@@ -43,61 +44,56 @@ class Detail extends Component {
       showUpdateComment: false,
       alreadyComment: false,
       commentExist: {},
-      idUser: props.idUser
+      idUser: props.idUser,
+      askDelete: false,
+      lovingList: []
     };
     this.getRelatedBook();
     this.getReviews();
-    this.checkExistComment();
-  }
-
-  componentWillReceiveProps(nextProps, prevProps) {
-    console.log("Nextx props", nextProps);
-    const { idUser } = prevProps;
-    console.log("Id user: ", idUser);
-
-    if (this.props.idUser != nextProps.idUser) {
-      this.checkExistComment();
-    }
+    this.getLovingBook();
+    this.checkCommentExist();
   }
 
   static getDerivedStateFromProps(props, state) {
+    console.log("Vô dây là đổi r");
 
-    console.log('getDerivedStateFromProps: ', props.idUser);
-    console.log(Detail.check(props, state));
+    if (props.idUser !== state.idUser) {
+      const { reviews } = state;
+      const { idUser } = props;
 
-    if (props.idUser !== state.idUser && Detail.check(props, state)) {
+      var existComment = reviews.find(comment => comment.UserId === idUser);
 
-      console.log("Exist");
-
-      return {
-        ...state,
-        alreadyComment: true,
-        commentExist: {}
-      };
+      if (existComment)
+        return {
+          ...state,
+          alreadyComment: true,
+          commentExist: existComment
+        };
     }
 
     return state;
   }
 
-  static check = (props, state) => {
-    const { reviews } = state;
-    const { idUser } = props;
-    console.log("Checked");
+  checkCommentExist = () => {
+    const { reviews } = this.state;
+    const { idUser } = this.props;
 
-    reviews.forEach(comment => {
-      console.log("Now: " + idUser + 'nex, ' + comment.UserId);
+    var existComment = reviews.find(comment => comment.UserId === idUser);
+    console.log("exist: ", reviews);
 
-      if (idUser == comment.UserId) {
-        console.log("Exisst");
+    if (existComment)
+      console.log("Exist");
 
-        return true
-      }
-    })
-    return false
+    this.setState(prevState => ({
+      ...prevState,
+      alreadyComment: true,
+      commentExist: existComment
+    }))
   }
 
+
   navigateToDetail = item => {
-    navigateTo({ item }, this.props.componentId, 'Detail', item.Title);
+    navigateTo({ item }, this.props.componentId, 'Detail');
   };
 
   getRelatedBook = async () => {
@@ -126,7 +122,7 @@ class Detail extends Component {
       ...prevState,
       loading: false,
       reviews: data.data.Reviews,
-    }));
+    }), () => { this.checkCommentExist() });
   };
 
   showLogin = () => {
@@ -140,13 +136,6 @@ class Detail extends Component {
         children: [{
           component: {
             name: 'Auth',
-            options: {
-              topBar: {
-                title: {
-                  text: 'Modal'
-                }
-              }
-            }
           }
         }]
       }
@@ -159,7 +148,13 @@ class Detail extends Component {
       addedToCart: false,
       modalVisible: false
     }))
-    navigateTo({}, this.props.componentId, "Cart");
+    navigateTo({}, this.props.componentId, "Cart", {
+      visible: true,
+      title: {
+        text: 'Danh sách giỏ hàng',
+        alignment: 'center'
+      },
+    });
   }
 
   navigateToSeeAll = () => {
@@ -204,7 +199,8 @@ class Detail extends Component {
   closeError = () => {
     this.setState(prevState => ({
       ...prevState,
-      errorAddToCart: ''
+      errorAddToCart: '',
+      errorComment: ''
     }))
   }
 
@@ -263,23 +259,105 @@ class Detail extends Component {
     }));
   }
 
-  checkExistComment = () => {
-    const { reviews } = this.state;
-    const { idUser } = this.props;
-    console.log("Checked");
+  updateComment = async (Content, StarRating) => {
+    const { idUser, token } = this.props;
+    const { Id } = this.state.commentExist;
+    const info = {
+      BookId: this.props.item.Id, UserId: idUser, Content, StarRating, IsDeleted: false,
+      IsOutstanding: false
+    }
 
-    reviews.forEach(comment => {
-      if (idUser === comment.UserId) {
-        console.log("Exist");
+    try {
+      var data = await callAPI(`api/reviews/${Id}`, 'PUT', info, token);
 
-        this.setState((prevState) => ({
-          ...prevState,
-          alreadyComment: true,
-          commentExist: comment
-        }));
-      }
-    })
+      this.getReviews();
+      this.displayCommentForm();
+    } catch (error) {
+      console.log("Eroe: ", error.response.data.Message);
+
+      this.setState(prevState => ({
+        ...prevState,
+        errorComment: error.response.data.Message
+      }))
+
+    }
   }
+
+  deleteComment = async () => {
+    const { token } = this.props;
+    const { Id } = this.state.commentExist;
+
+    try {
+      var data = await callAPI(`api/reviews/${Id}`, 'DELETE', null, token);
+      this.getReviews();
+      this.changeAskDelete();
+    } catch (error) {
+      console.log("Eroe: ", error.response.data.Message);
+
+      this.setState(prevState => ({
+        ...prevState,
+        errorComment: error.response.data.Message
+      }))
+
+    }
+  }
+
+  changeAskDelete = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      askDelete: !prevState.askDelete
+    }))
+  }
+
+  getLovingBook = async () => {
+    const { idUser, token } = this.props;
+    console.log("Get loving");
+
+    const { Id } = this.props.item;
+    try {
+      var data = await callAPI(`api/users/${idUser}/followingbooks`, 'GET', null, token);
+      this.setState(prevState => ({
+        ...prevState,
+        lovingList: data.data.Data
+      }), () => {
+        var isLoved = false;
+        if (this.state.lovingList.find(book => book.Id === Id)) {
+          isLoved = true
+        }
+        this.setState(prevState => ({
+          ...prevState,
+          isLoved
+        }))
+      })
+    } catch (error) {
+      console.log("Eroe: ", error.response.data.Message);
+    }
+
+  }
+
+  addLovingList = async () => {
+    const { idUser, token } = this.props;
+    const { Id } = this.props.item;
+    const { isLoved } = this.state;
+    try {
+      let mess = '';
+      if (!isLoved) {
+        var data = await callAPI(`api/users/${idUser}/favorite`, 'POST', { BookId: Id }, token);
+        mess = 'Thêm vào danh sách yêu thích thành công'
+      } else {
+        var data = await callAPI(`api/users/${idUser}/removefavorite`, 'POST', { BookId: Id }, token);
+        mess = 'Xóa khỏi danh sách yêu thích thành công'
+      }
+      this.setState(prevState => ({
+        ...prevState,
+        errorComment: mess
+      }))
+      this.getLovingBook();
+    } catch (error) {
+      console.log("Eroe: ", error.response.data.Message);
+    }
+  }
+
 
   render() {
     console.log("Satet: ", this.state);
@@ -296,7 +374,7 @@ class Detail extends Component {
       Id,
       Categories,
     } = this.props.item;
-    const { relatedBooks, loading, seeAll, reviews, modalVisible, addedToCart, errorAddToCart, commentVisible, showAllReview, commentExist, alreadyComment } = this.state;
+    const { isLoved, lovingList, errorComment, askDelete, relatedBooks, loading, seeAll, reviews, modalVisible, addedToCart, errorAddToCart, commentVisible, showAllReview, commentExist, alreadyComment } = this.state;
     var categories = Categories.map((item, key) => (
       <CategoryForDetail key={key} cate={item}></CategoryForDetail>)
     )
@@ -321,6 +399,7 @@ class Detail extends Component {
             item={item}
             idUser={idUser}
             showUpdateComment={this.showUpdateComment}
+            deleteComment={this.changeAskDelete}
           />
         )}
         keyExtractor={item => item.id}
@@ -343,6 +422,9 @@ class Detail extends Component {
     return (
       <View>
         <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+          <View style={{ alignSelf: 'flex-end' }}>
+            <Icon name='heart' size={26} color={isLoved ? '#ff6666' : '#b3b3b3'} onPress={this.addLovingList}></Icon>
+          </View>
           <View style={styles.info}>
             <Image
               source={{ uri: Medias[0].ImageAppUrl }}
@@ -401,23 +483,32 @@ class Detail extends Component {
             setModalVisible={this.setModalVisible}
             text='Bạn cần đăng nhập để thực hiện chức năng này'
             textButton='Đăng nhập'
+            textButton2='Lúc khác'
             navigateToCall={this.showLogin}
           >
-
           </ModalAddCart>
+          <ModalAddCart
+            modalVisible={askDelete}
+            setModalVisible={this.changeAskDelete}
+            text='Bạn có chắc chắn muốn xóa bình luận này không'
+            textButton='Có'
+            textButton2='Không'
+            navigateToCall={this.deleteComment}
+          />
           <ModalAddCart
             modalVisible={addedToCart}
             setModalVisible={this.completedAddToCart}
             text='Thêm vào giỏ hàng thành công'
             textButton='Đến giỏ hàng'
+            textButton2='Lúc khác'
             navigateToCall={this.navigateToCart}
           >
           </ModalAddCart>
           <ModalAddCart
-            modalVisible={errorAddToCart != '' ? true : false}
-            setModalVisible={this.closeError}
-            text={errorAddToCart}
-            textButton2='Đã hiểu'
+            modalVisible={(errorAddToCart != '' || errorComment != '') ? true : false}
+            navigateToCall={this.closeError}
+            text={errorAddToCart || errorComment}
+            textButton='Đã hiểu'
           >
           </ModalAddCart>
           <CommentForm

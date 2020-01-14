@@ -4,19 +4,29 @@ import Register from './Register'
 import { connect } from 'react-redux'
 import * as userActions from '../../reduxs/authRedux/actions'
 import { Navigation } from 'react-native-navigation'
+import ModalAddCart from '../../components/Home/ModalAddCart';
+import { View } from 'react-native'
 
 class Auth extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLogin: true
+      isLogin: true,
+      modalVisible: false
     }
   }
 
-  componentDidUpdate() {
-    if (this.props.data.isAuthenticated) {
-      Navigation.dismissModal(this.props.componentId);
+  componentDidUpdate(prevProps) {
+    if (this.props.data.isAuthenticated != prevProps.data.isAuthenticated) {
+      this.setState(prevState => ({
+        ...prevState,
+        modalVisible: !prevState.modalVisible
+      }))
     }
+  }
+
+  dismissAuth = () => {
+    Navigation.dismissModal(this.props.componentId);
   }
 
 
@@ -28,7 +38,7 @@ class Auth extends Component {
   };
 
   login = (user) => {
-    this.props.login(user)
+    this.props.login(user);
   }
   register = (user) => {
     this.props.register(user)
@@ -40,12 +50,30 @@ class Auth extends Component {
       isLogin: !prevState.isLogin
     }))
   }
+
+  setModalVisible = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      modalVisible: !prevState.modalVisible
+    }))
+  }
+
   render() {
-    const { isLogin } = this.state;
+    const { isLogin, modalVisible } = this.state;
     const { loading, error, data } = this.props.data;
 
     if (isLogin) {
-      return <LogIn changeState={this.changeState} login={this.login} loading={loading} error={error}></LogIn>
+      return (
+        <>
+          <LogIn changeState={this.changeState} login={this.login} loading={loading} error={error}></LogIn>
+          <ModalAddCart
+            modalVisible={modalVisible}
+            navigateToCall={this.dismissAuth}
+            text='Đăng nhập thành công'
+            textButton='Đã hiểu'
+          ></ModalAddCart>
+        </>
+      )
     } else
       return (
         <Register changeState={this.changeState} register={this.register} loading={loading} error={error}></Register>

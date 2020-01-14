@@ -12,7 +12,9 @@ import {
   LOGIN_FAILED,
   LOGOUT_SUCCESSED,
   GET_CART,
-  GET_CART_SUCCESSED
+  GET_CART_SUCCESSED,
+  DETELE_ITEM_CART,
+  DETELE_ITEM_CART_SUCCESSED
 } from './actions';
 
 export function* getProfile(action) {
@@ -70,5 +72,5 @@ export const watchUserSaga = [
   takeLatest(REGISTER, Register),
   takeLatest(LOGIN, Login),
   takeLatest(LOGOUT, Logout),
-  takeLatest(GET_CART, getCart)
+  takeLatest(GET_CART, getCart),
 ]
