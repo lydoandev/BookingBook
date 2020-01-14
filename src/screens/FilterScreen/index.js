@@ -96,7 +96,7 @@ class FilterScreen extends Component {
                     icon: require('./../../assets/images/crrowCycle.png'),
                   },
                   leftButtons: {
-                    id: 'SideBar',
+                    id: 'close',
                     component: {
                       name: 'FilterScreen',
                     },
