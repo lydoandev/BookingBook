@@ -12,7 +12,6 @@ export const sideMenu = {
         },
       },
     },
-    visible: true,
   },
   center: {
     stack: {
@@ -30,8 +29,8 @@ export const sideMenu = {
                         alignment: 'center',
                       },
                       leftButtons: {
+                        id: 'SideBar',
                         component: {
-                          id: 'SideBar',
                           name: 'SideBar',
                         },
                         icon: require('./../assets/images/homeIcon.png'),

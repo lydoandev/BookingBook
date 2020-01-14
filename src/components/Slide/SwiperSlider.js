@@ -18,7 +18,13 @@ export default class SwiperSlider extends Component {
   moveToHome = () => {
     Navigation.setRoot({
       root: {
-        sideMenu,
+        stack: {
+          children: [
+            {
+              sideMenu,
+            },
+          ],
+        },
       },
     });
   };

@@ -22,14 +22,25 @@ class SideBar extends Component {
   };
 
   onPressItem = () => {
+    console.log('side: ', this.props.componentId);
     Navigation.showModal({
       component: {
         name: 'FilterScreen',
-        passProps: {
-          data: 'hung',
+        options: {
+          topBar: {
+            visible: false,
+          },
         },
       },
     });
+  };
+
+  navigationButtonPressed = ({buttonId}) => {
+    const {componentId} = this.props;
+    console.log(componentId);
+    if (buttonId === 'backId') {
+      Navigation.dismissModal(componentId);
+    }
   };
 
   render() {

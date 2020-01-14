@@ -39,9 +39,40 @@ class FilterScreen extends Component {
   };
 
   onPressBack = () => {
-    Navigation.setRoot({
-      root: {
-        sideMenu,
+    Navigation.showModal({
+      sideMenu,
+    });
+  };
+
+  onPressItem = () => {
+    Navigation.showModal({
+      stack: {
+        children: [
+          {
+            component: {
+              id: 'SideBar',
+              name: 'SideBar',
+              options: {
+                topBar: {
+                  title: {
+                    text: 'Thể loại',
+                    alignment: 'center',
+                  },
+                  rightButtons: {
+                    icon: require('./../../assets/images/crrowCycle.png'),
+                  },
+                  leftButtons: {
+                    id: 'SideBar',
+                    component: {
+                      name: 'FilterScreen',
+                    },
+                    icon: require('./../../assets/images/arrowBig.png'),
+                  },
+                },
+              },
+            },
+          },
+        ],
       },
     });
   };
@@ -59,7 +90,7 @@ class FilterScreen extends Component {
             <Image source={require('./../../assets/images/searchIcon.png')} />
           </View>
           <View style={styles.menu}>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={this.onPressItem}>
               <View style={styles.button}>
                 <Text>Thể Loại</Text>
                 <Image
@@ -92,7 +123,6 @@ class FilterScreen extends Component {
             <View style={styles.itemView}>
               <View>
                 <FlatList
-                  style={{display: 'flex'}}
                   showsVerticalScrollIndicator={false}
                   data={dataBook}
                   numColumns={2}
@@ -188,7 +218,7 @@ const styles = StyleSheet.create({
   itemView: {
     flexDirection: 'column',
     alignItems: 'center',
-    marginVertical: 200,
+    marginVertical: 250,
     marginTop: -10,
   },
 });
