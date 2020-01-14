@@ -23,7 +23,6 @@ class SideBar extends Component {
   };
 
   onMoveSortScreen = async () => {
-    let category = await AsyncStorage.getItem('FindCategory');
     Navigation.showModal({
       stack: {
         children: [
@@ -40,6 +39,20 @@ class SideBar extends Component {
         ],
       },
     });
+  };
+
+  // navigationButtonPressed = ({buttonId}) => {
+  //   const {componentId} = this.props;
+  //   if (buttonId === 'backFilter') {
+  //     Navigation.dismissModal(componentId);
+  //   }
+  // };
+
+  navigationButtonPressed = ({buttonId}) => {
+    const {componentId} = this.props;
+    if (buttonId === 'backFilter') {
+      Navigation.dismissModal(componentId);
+    }
   };
 
   render() {

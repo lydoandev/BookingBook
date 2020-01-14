@@ -63,11 +63,11 @@ class FilterScreen extends Component {
                     icon: require('./../../assets/images/crrowCycle.png'),
                   },
                   leftButtons: {
-                    id: 'SideBar',
+                    id: 'backFilter',
                     component: {
                       name: 'FilterScreen',
                     },
-                    icon: require('./../../assets/images/arrowBig.png'),
+                    icon: require('./../../assets/images/closeCategory.png'),
                   },
                 },
               },
@@ -100,7 +100,7 @@ class FilterScreen extends Component {
                     component: {
                       name: 'FilterScreen',
                     },
-                    icon: require('./../../assets/images/arrowBig.png'),
+                    icon: require('./../../assets/images/closeCategory.png'),
                   },
                 },
               },

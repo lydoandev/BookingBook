@@ -8,26 +8,45 @@ export default class SortBook extends Component {
     super();
     this.state = {
       sort: [
-        'Xem nhiều',
-        'Đánh giá',
-        'Giảm giá',
         'Từ thấp đến cao',
         'Từ cao đến thấp',
+        'Từ A đến Z',
+        'Từ Z đến A',
         ,
       ],
+      dataSource: '',
     };
   }
 
-  onMoveFilterScreen = item => {
-    Navigation.showModal({
-      component: {
-        name: 'FilterScreen',
-        passProps: {
-          sort: item,
+  componentDidMount() {
+    return fetch(
+      'https://the-books-api-staging.enouvo.com/api/books?releaseCompanyIDs=0LCmtXFx&sortby=price&sortdesc=false',
+    )
+      .then(response => response.json())
+      .then(responseJson => {
+        this.setState(
+          {
+            isLoading: false,
+            dataSource: responseJson.Books,
+          },
+          function() {},
+        );
+      })
+      .catch(error => {
+        console.error(error);
+      });
+
+    onMoveFilterScreen = item => {
+      Navigation.showModal({
+        component: {
+          name: 'FilterScreen',
+          passProps: {
+            sort: item,
+          },
         },
-      },
-    });
-  };
+      });
+    };
+  }
 
   renderItem = ({item}) => {
     return (
@@ -43,6 +62,7 @@ export default class SortBook extends Component {
 
   render() {
     let {sort} = this.state;
+    console.log('ághjgsa', this.state.dataSource);
     return (
       <Container style={{backgroundColor: '#fff', paddingTop: 20}}>
         <FlatList
