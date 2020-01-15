@@ -103,9 +103,84 @@ class FilterScreen extends Component {
     });
   };
 
+  hanldSortBook = (sort, dataBook) => {
+    if (sort === 'atz') {
+      return dataBook.sort((a, b) => a.Title.localeCompare(b.Title));
+    } else if (sort === 'zta') {
+      return dataBook.sort((a, b) => b.Title.localeCompare(a.Title));
+    } else if (sort === 'htl') {
+      return dataBook.sort((a, b) => a.Price - b.Price);
+    } else if (sort === 'lth') {
+      return dataBook.sort((a, b) => b.Price - a.Price);
+    } else {
+      return dataBook;
+    }
+  };
+
+  hanldFilterBook = (itemView, key, flex, numColumns, sort, dataBook) => {
+    return (
+      <View style={itemView}>
+        <View>
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={this.hanldSortBook(sort, dataBook)}
+            numColumns={numColumns}
+            key={key}
+            renderItem={({item}) => (
+              <ItemBook
+                item={item}
+                flex={flex}
+                navigateToDetail={this.navigateToDetail}
+              />
+            )}
+            keyExtractor={item => item.id}
+            showsHorizontalScrollIndicator={false}
+          />
+        </View>
+      </View>
+    );
+  };
+
+  hanldFilterBookChosseCategory = (
+    itemView,
+    key,
+    flex,
+    numColumns,
+    sort,
+    dataBook,
+  ) => {
+    return (
+      <View style={itemView}>
+        <View>
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={this.hanldSortBook(sort, dataBook)}
+            numColumns={numColumns}
+            key={key}
+            renderItem={({item}) =>
+              item.Categories[0].Name === this.state.category ||
+              item.Categories[1].Name === this.state.category ? (
+                <ItemBook
+                  item={item}
+                  flex={flex}
+                  navigateToDetail={this.navigateToDetail}
+                />
+              ) : (
+                console.log('null')
+              )
+            }
+            keyExtractor={item => item.id}
+            showsHorizontalScrollIndicator={false}
+          />
+        </View>
+      </View>
+    );
+  };
+
   render() {
     const {dataBook} = this.props;
     let {sort} = this.props;
+    console.log(this.state.category);
     return (
       <View>
         <View>
@@ -165,95 +240,43 @@ class FilterScreen extends Component {
               )}
             </TouchableOpacity>
           </View>
-          {this.state.category === null && this.state.isShow === false ? (
-            <View style={styles.itemView}>
-              <View>
-                <FlatList
-                  showsVerticalScrollIndicator={false}
-                  data={dataBook}
-                  numColumns={2}
-                  renderItem={({item}) => (
-                    <ItemBook
-                      item={item}
-                      flex={'column'}
-                      navigateToDetail={this.navigateToDetail}
-                    />
-                  )}
-                  keyExtractor={item => item.id}
-                  showsHorizontalScrollIndicator={false}
-                />
-              </View>
-            </View>
-          ) : this.state.category === null && this.state.isShow === true ? (
-            <View>
-              <View>
-                <FlatList
-                  showsVerticalScrollIndicator={false}
-                  data={dataBook}
-                  numColumns={1}
-                  key={this.state.numColumns}
-                  renderItem={({item}) => (
-                    <ItemBook
-                      item={item}
-                      flex={'row'}
-                      navigateToDetail={this.navigateToDetail}
-                    />
-                  )}
-                  keyExtractor={item => item.id}
-                  showsHorizontalScrollIndicator={false}
-                />
-              </View>
-            </View>
-          ) : this.state.isShow === false ? (
-            <View style={styles.itemView}>
-              <View>
-                <FlatList
-                  showsVerticalScrollIndicator={false}
-                  data={dataBook}
-                  numColumns={2}
-                  renderItem={({item}) =>
-                    item.Categories[0].Name === this.state.category ||
-                    item.Categories[1].Name === this.state.category ? (
-                      <ItemBook
-                        item={item}
-                        flex={'column'}
-                        navigateToDetail={this.navigateToDetail}
-                      />
-                    ) : (
-                      console.log('null')
-                    )
-                  }
-                  keyExtractor={item => item.id}
-                  showsHorizontalScrollIndicator={false}
-                />
-              </View>
-            </View>
-          ) : (
-            <View>
-              <View>
-                <FlatList
-                  showsVerticalScrollIndicator={false}
-                  data={dataBook}
-                  numColumns={1}
-                  key={this.state.numColumns}
-                  renderItem={({item}) =>
-                    item.Categories[0].Name === this.state.category ||
-                    item.Categories[1].Name === this.state.category ? (
-                      <ItemBook
-                        item={item}
-                        flex={'row'}
-                        navigateToDetail={this.navigateToDetail}
-                      />
-                    ) : (
-                      console.log('null')
-                    )
-                  }
-                  keyExtractor={item => item.id}
-                  showsHorizontalScrollIndicator={false}
-                />
-              </View>
-            </View>
-          )}
+          {this.state.category === null && this.state.isShow === false
+            ? this.hanldFilterBook(
+                styles.itemView,
+                null,
+                'column',
+                2,
+                sort,
+                dataBook,
+              )
+            : this.state.category === null && this.state.isShow === true
+            ? this.hanldFilterBook(
+                null,
+                this.state.numColumns,
+                'row',
+                1,
+                sort,
+                dataBook,
+              )
+            : this.state.isShow === false
+            ? this.hanldFilterBookChosseCategory(
+                styles.itemView,
+                null,
+                'column',
+                2,
+                sort,
+                dataBook,
+              )
+            : this.state.isShow === true
+            ? this.hanldFilterBookChosseCategory(
+                null,
+                this.state.numColumns,
+                'row',
+                1,
+                sort,
+                dataBook,
+              )
+            : console.log('error')}
         </View>
       </View>
     );

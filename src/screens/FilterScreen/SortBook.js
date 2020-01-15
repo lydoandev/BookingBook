@@ -8,11 +8,22 @@ export default class SortBook extends Component {
     super();
     this.state = {
       sort: [
-        'Từ thấp đến cao',
-        'Từ cao đến thấp',
-        'Từ A đến Z',
-        'Từ Z đến A',
-        ,
+        {
+          key: 'htl',
+          title: 'Từ thấp đến cao',
+        },
+        {
+          key: 'lth',
+          title: 'Từ cao đến thấp',
+        },
+        {
+          key: 'atz',
+          title: 'Từ A đến Z',
+        },
+        {
+          key: 'zta',
+          title: 'Từ Z đến A',
+        },
       ],
       dataSource: '',
     };
@@ -36,9 +47,9 @@ export default class SortBook extends Component {
   renderItem = ({item}) => {
     return (
       <View>
-        <ListItem icon onPress={() => this.onMoveFilterScreen(item)}>
+        <ListItem icon onPress={() => this.onMoveFilterScreen(item.key)}>
           <Body>
-            <Text>{item}</Text>
+            <Text>{item.title}</Text>
           </Body>
         </ListItem>
       </View>
