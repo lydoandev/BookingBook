@@ -4,56 +4,100 @@ import { Dimensions } from "react-native";
 import ScrollableTabView, { ScrollableTabBar, DefaultTabBar } from 'react-native-scrollable-tab-view';
 import TabMenuBook from '../../components/Profile/TabMenuBook';
 import BookRequest from './BookRequest';
+import navigateTo from '../../utils/navigateTo';
+import { connect } from 'react-redux';
+import callAPI from '../../utils/callAPI';
+import { Navigation } from 'react-native-navigation';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default class InfoUser extends Component {
+
+class InfoUser extends Component {
+  constructor(props) {
+    super(props);
+    this.getRequestBook();
+    this.state = {
+      requestBook: []
+    }
+  }
+  navigationModal = (page) => {
+    Navigation.showModal({
+      stack: {
+        children: [{
+          component: {
+            name: page,
+            options: {
+              topBar: {
+                title: {
+                  text: 'Setting',
+                  alignment: 'center'
+                },
+                leftButtons: [
+                  {
+                    id: 'close',
+                    icon: require('../../assets/images/arrow.png'),
+                  },
+                ],
+              }
+            }
+          }
+        }]
+      }
+    });
+  }
+  getRequestBook = async () => {
+    const { token } = this.props;
+    try {
+      var data = await callAPI(`api/bookrequests`, 'GET', null, token);
+      this.setState(
+        { requestBook: data.data }
+      )
+    } catch (error) {
+      console.log('ERROR GET USER:', error);
+    }
+  }
   render() {
-    const tabSubMenu = <TabMenuBook booksProfile={this.props.booksProfile}></TabMenuBook>
-    const bookRequest = <BookRequest booksProfile={this.props.booksProfile}></BookRequest>
+    const tabSubMenu = <TabMenuBook booksProfile={this.props.booksProfile} componentId={this.props.componentId}></TabMenuBook>
+    const bookRequest = <BookRequest requestBook={this.state.requestBook}></BookRequest>
     return (
-      <ScrollView style={{ flex: 1 }}>
-        <ImageBackground style={styles.image} source={{ uri: 'https://cdn.pixabay.com/photo/2017/11/10/22/44/christmas-2937873__340.jpg' }}>
-          <View style={styles.styleFirstRow}>
-            <View>
-              <Image style={styles.styleQRCode} source={require('../../assets/images/QRcode.png')}></Image>
+      <View>
+        <Image style={styles.image} source={{ uri: 'https://images.pexels.com/photos/531880/pexels-photo-531880.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500' }}>
+        </Image>
+        <View style={styles.styleFirstRow}>
+          <View>
+            <Image style={styles.styleQRCode} source={{ uri: this.props.user.QrCodeUrl }}></Image>
+          </View>
+          <TouchableOpacity onPress={() => this.navigationModal('SettingInfo')} logout={this.props.logout}>
+            <Image style={styles.styleSetting} source={this.props.user.Image == null ? require('../../assets/images/settingProfile.png') : this.props.user.Image}></Image>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.info}>
+          <Image style={styles.avatar} source={{ uri: this.props.user.Image == null ? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdpBEf6Zmjl40AHZpsNq32fnSw5MaZbwLz_-clppwuTjBLqWQE&s' : this.props.user.Image }}></Image>
+          <Image style={styles.styleImageLevel} source={require('../../assets/images/titanlevel.png')}></Image>
+          <Text style={styles.textTitle}>{this.props.user.FullName}</Text>
+          <TouchableOpacity style={styles.styleRank}>
+            <Text style={styles.textRank}>Platinum</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.tabView}>
+          <ScrollableTabView
+            initialPage={0}
+            tabBarActiveTextColor={'#fff'}
+            tabBarUnderlineStyle={{ backgroundColor: '#ffffff' }}
+            tabBarInactiveTextColor={'#bdc0c2'}
+            tabBarTextStyle={{ fontWeight: 'bold' }}
+            renderTabBar={() => <ScrollableTabBar style={{ borderWidth: 0 }} />}>
+            <View style={styles.tabBarMenu} tabLabel='Sách của bạn'>
+              {tabSubMenu}
             </View>
-            <View>
-              <Image style={styles.styleSetting} source={require('../../assets/images/settingProfile.png')}></Image>
+            <View style={styles.tabBarMenu} tabLabel='Yêu cầu sách'>
+              {bookRequest}
             </View>
-          </View>
-          <View style={styles.info}>
-
-            <Image style={styles.avatar} source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdpBEf6Zmjl40AHZpsNq32fnSw5MaZbwLz_-clppwuTjBLqWQE&s' }}></Image>
-            <Image style={styles.styleImageLevel} source={require('../../assets/images/titanlevel.png')}></Image>
-            <Text style={styles.textTitle}>{this.props.booksProfile.FullName}</Text>
-            <TouchableOpacity style={styles.styleRank}>
-              <Text style={styles.textRank}>Platinum</Text>
-            </TouchableOpacity>
-          </View>
-
-        </ImageBackground>
-        <ScrollView>
-          <View style={{ height: 400 }}>
-            <ScrollableTabView
-              style={{ paddingBottom: 10 }}
-              initialPage={0}
-              tabBarActiveTextColor={'#000000'}
-              tabBarInactiveTextColor={'#A9A9A9'}
-              tabBarTextStyle={{ fontWeight: 'bold' }}
-              renderTabBar={() => <ScrollableTabBar style={{ borderWidth: 0 }} />}>
-              <View style={styles.tabBarMenu} tabLabel='Sách của bạn'>
-                {tabSubMenu}
-              </View>
-              <View style={styles.tabBarMenu} tabLabel='Yêu cầu sách'>
-                {bookRequest}
-              </View>
-              <View style={styles.tabBarMenu} tabLabel='Gói thành viên'>
-                <Text>Gói thành viên </Text>
-              </View>
-            </ScrollableTabView>
-          </View>
-        </ScrollView>
-
-      </ScrollView >
+            <View style={styles.tabBarMenu} tabLabel='Gói thành viên'>
+              <Text>Gói thành viên </Text>
+            </View>
+          </ScrollableTabView>
+        </View>
+      </View >
     )
   }
 }
@@ -61,7 +105,15 @@ export default class InfoUser extends Component {
 const styles = StyleSheet.create({
   image: {
     position: "relative",
-    height: 300,
+    height: Dimensions.get('window').height / 2,
+  },
+  info: {
+    padding: 10,
+    position: 'absolute',
+    top: 20,
+    justifyContent: 'center',
+    flexDirection: "column",
+    alignItems: 'center',
   },
   styleFirstRow: {
     width: '100%',
@@ -71,6 +123,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 10,
+    top: 20,
   },
   styleQRCode: {
     borderRadius: 80,
@@ -118,14 +171,29 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'SVN-ProximaNova'
   },
-  info: {
+  tabView: {
     padding: 10,
     position: 'absolute',
-    justifyContent: 'center',
-    alignItems: "center",
-    flexDirection: "column",
+    top: 350,
+    zIndex: 1,
+    height: Dimensions.get('window').height / 2
   },
-  content: {
-    flex: 1
-  }
 })
+
+
+function mapStateToProps(state) {
+  return {
+    isAuthenticated: state.authReducer.isAuthenticated,
+    idUser: state.authReducer.user.Id,
+    token: state.authReducer.token
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(InfoUser);
+
+

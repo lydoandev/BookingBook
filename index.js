@@ -14,6 +14,9 @@ import { Provider } from 'react-redux';
 import SeeAll from './src/screens/HomeScreen/SeeAll';
 import Auth from './src/screens/AuthScreen'
 import Cart from './src/screens/HomeScreen/Cart'
+import SettingInfo from './src/screens/ProfileScreen/SettingInfo'
+import PersonalInfo from './src/screens/ProfileScreen/PersonalInfo.js'
+import ChangePass from './src/screens/ProfileScreen/ChangePass'
 
 console.disableYellowBox = true;
 Navigation.registerComponent(
@@ -74,6 +77,24 @@ Navigation.registerComponent(
   'Cart',
   () => ReducerComponent(Cart),
   () => Cart,
+);
+
+Navigation.registerComponent(
+  'SettingInfo',
+  () => ReducerComponent(SettingInfo),
+  () => SettingInfo,
+);
+
+Navigation.registerComponent(
+  'PersonalInfo',
+  () => ReducerComponent(PersonalInfo),
+  () => PersonalInfo,
+);
+
+Navigation.registerComponent(
+  'ChangePass',
+  () => ReducerComponent(ChangePass),
+  () => ChangePass,
 );
 
 Navigation.events().registerAppLaunchedListener(() => {

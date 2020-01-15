@@ -7,7 +7,7 @@ export default class ItemRequestBook extends Component {
       <TouchableOpacity style={styles.book_item}>
         <View style={styles.styleContent}>
           <Text style={styles.title}>Bạn vừa yêu cầu sách <Text style={styles.titleBook}>{this.props.item.Title}</Text></Text>
-          <Text style={styles.dateRequest}>{this.props.item.PaymentDate}</Text>
+          <Text style={styles.dateRequest}>{this.props.item.CreatedAt}</Text>
         </View>
       </TouchableOpacity >
     )

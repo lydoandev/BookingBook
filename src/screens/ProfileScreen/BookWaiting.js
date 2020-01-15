@@ -6,15 +6,15 @@ export default class BookWaiting extends Component {
   render() {
     return (
       <FlatList
-        data={this.props.booksProfile.Basket.Items}
+        data={this.props.bookWaiting}
         numColumns={3}
         renderItem={({ item }) => (
           <ItemBook
-            item={item.Book}
+            item={item}
             type="waiting"
           />
         )}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.Id}
         showsHorizontalScrollIndicator={false}
       />
     )
