@@ -55,20 +55,7 @@ class FilterScreen extends Component {
               name: 'SideBar',
               options: {
                 topBar: {
-                  title: {
-                    text: 'Thể loại',
-                    alignment: 'center',
-                  },
-                  rightButtons: {
-                    icon: require('./../../assets/images/crrowCycle.png'),
-                  },
-                  leftButtons: {
-                    id: 'backFilter',
-                    component: {
-                      name: 'FilterScreen',
-                    },
-                    icon: require('./../../assets/images/closeCategory.png'),
-                  },
+                  visible: false,
                 },
               },
             },
@@ -84,24 +71,29 @@ class FilterScreen extends Component {
         children: [
           {
             component: {
-              id: 'SideBar',
               name: 'SortBook',
               options: {
                 topBar: {
-                  title: {
-                    text: 'Sắp xếp',
-                    alignment: 'center',
-                  },
-                  rightButtons: {
-                    icon: require('./../../assets/images/crrowCycle.png'),
-                  },
-                  leftButtons: {
-                    id: 'close',
-                    component: {
-                      name: 'FilterScreen',
-                    },
-                    icon: require('./../../assets/images/closeCategory.png'),
-                  },
+                  visible: false,
+                },
+              },
+            },
+          },
+        ],
+      },
+    });
+  };
+
+  onPressMoveSearchScreen = () => {
+    Navigation.showModal({
+      stack: {
+        children: [
+          {
+            component: {
+              name: 'SearchBook',
+              options: {
+                topBar: {
+                  visible: false,
                 },
               },
             },
@@ -121,8 +113,12 @@ class FilterScreen extends Component {
             <TouchableOpacity onPress={this.onPressBack}>
               <Image source={require('./../../assets/images/backIcon.png')} />
             </TouchableOpacity>
-            <Text>{this.state.category}</Text>
-            <Image source={require('./../../assets/images/searchIcon.png')} />
+            <Text>
+              {this.state.category !== null ? this.state.category : 'List Sách'}
+            </Text>
+            <TouchableOpacity onPress={this.onPressMoveSearchScreen}>
+              <Image source={require('./../../assets/images/searchIcon.png')} />
+            </TouchableOpacity>
           </View>
           <View style={styles.menu}>
             <TouchableOpacity
@@ -169,7 +165,46 @@ class FilterScreen extends Component {
               )}
             </TouchableOpacity>
           </View>
-          {this.state.isShow === false ? (
+          {this.state.category === null && this.state.isShow === false ? (
+            <View style={styles.itemView}>
+              <View>
+                <FlatList
+                  showsVerticalScrollIndicator={false}
+                  data={dataBook}
+                  numColumns={2}
+                  renderItem={({item}) => (
+                    <ItemBook
+                      item={item}
+                      flex={'column'}
+                      navigateToDetail={this.navigateToDetail}
+                    />
+                  )}
+                  keyExtractor={item => item.id}
+                  showsHorizontalScrollIndicator={false}
+                />
+              </View>
+            </View>
+          ) : this.state.category === null && this.state.isShow === true ? (
+            <View>
+              <View>
+                <FlatList
+                  showsVerticalScrollIndicator={false}
+                  data={dataBook}
+                  numColumns={1}
+                  key={this.state.numColumns}
+                  renderItem={({item}) => (
+                    <ItemBook
+                      item={item}
+                      flex={'row'}
+                      navigateToDetail={this.navigateToDetail}
+                    />
+                  )}
+                  keyExtractor={item => item.id}
+                  showsHorizontalScrollIndicator={false}
+                />
+              </View>
+            </View>
+          ) : this.state.isShow === false ? (
             <View style={styles.itemView}>
               <View>
                 <FlatList
@@ -224,6 +259,7 @@ class FilterScreen extends Component {
     );
   }
 }
+
 function mapStateToProps(state) {
   return {
     dataBook: state.bookReducer.books,
@@ -269,6 +305,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     marginVertical: 250,
-    marginTop: -10,
+    marginTop: 0,
   },
 });
