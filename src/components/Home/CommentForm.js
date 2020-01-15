@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 export default class CommentForm extends Component {
   constructor(props) {
     super(props);
+
     const { Content, StarRating } = props.commentExist;
     this.state = {
       star: StarRating || 0,

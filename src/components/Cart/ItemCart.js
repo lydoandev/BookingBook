@@ -17,7 +17,6 @@ export default class ItemCart extends Component {
     const { item } = this.props;
     try {
       var data = await callAPI(`api/books/${item.Id}`, 'GET');
-      console.log("Data item: ", data);
 
       this.props.navigateToDetail(data.data);
     } catch (error) {
@@ -28,7 +27,6 @@ export default class ItemCart extends Component {
   };
 
   handleDeleteItemCart = () => {
-    console.log("delte 1");
 
     this.props.deleteItemCart(this.props.item.Id);
   }
@@ -88,14 +86,14 @@ export default class ItemCart extends Component {
                 color="#ff6666"
                 style={{ marginRight: 5 }}
               />
-              <Text>{Quantity != 0 ? Quantity + ' books' : 'Hết sách'}</Text>
+              <Text>{Quantity != 0 ? Quantity + ' quyển' : 'Hết sách'}</Text>
               <Icon
                 name="money"
                 size={17}
                 color="#ff6666"
                 style={{ marginHorizontal: 5 }}
               />
-              <Text>{Price}</Text>
+              <Text>{String(Price).replace(/(.)(?=(\d{3})+$)/g, '$1,')}đ</Text>
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 15 }}>
               <Text style={{ fontSize: 16, }}>Quantity</Text>

@@ -16,7 +16,7 @@ export default class Comment extends Component {
     return (
       <View style={{ flexDirection: 'row', marginBottom: 20, }}>
         <View style={{ flex: 1 }}>
-          <Image source={{ uri: UrlImageUser || 'https://cdn150.picsart.com/upscale-245339439045212.png?r1024x1024' }}
+          <Image source={{ uri: UrlImageUser || 'https://cdn4.iconfinder.com/data/icons/iconza-ios-tab-icons/60/11-user-active-512.png' }}
             style={styles.book_img} />
         </View>
         <View style={{ flex: 4 }}>

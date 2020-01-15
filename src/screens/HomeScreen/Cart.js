@@ -48,8 +48,6 @@ class Cart extends Component {
   }
 
   navigateToDetail = item => {
-    console.log("Item: ", item);
-
     navigateTo({
       item
     }, this.props.componentId, 'Detail');
@@ -65,8 +63,6 @@ class Cart extends Component {
   }
 
   navigationButtonPressed = ({ buttonId }) => {
-    console.log("delete all");
-
     if (buttonId === 'deleteAll') {
       this.setState(prevState => ({
         ...prevState,

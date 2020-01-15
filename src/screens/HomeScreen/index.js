@@ -17,6 +17,8 @@ import * as bookActions from '../../reduxs/bookRedux/actions';
 import TitleSection from '../../components/Home/TitleSection';
 import navigateTo from '../../utils/navigateTo';
 import IconCart from '../../components/Cart/IconCart';
+import BestUser from '../../components/Home/BestUser'
+
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -88,7 +90,7 @@ class Home extends Component {
   }
 
   render() {
-    const { loading, booksHome } = this.props.data;
+    const { loading, booksHome, bestUsers, bestReviewers } = this.props.data;
     const { isAuthenticated, cart } = this.props;
     if (loading) {
       return (
@@ -119,8 +121,37 @@ class Home extends Component {
                 navigateToSeeAll={this.navigateToSeeAll}
               />
             )}
+            ListFooterComponent={() => (
+              <>
+                <Text style={{ fontSize: 20, marginBottom: 20 }}>Top 10 Bạn Đọc Mượn Sách</Text>
+                <FlatList
+                  data={bestUsers}
+                  horizontal={true}
+                  renderItem={({ item }) => (
+                    <BestUser
+                      item={item}
+                    />
+                  )}
+                  keyExtractor={item => item.id}
+                  showsHorizontalScrollIndicator={false}
+                />
+                <Text style={{ fontSize: 20, marginVertical: 20 }}>Top 5 Bạn Đọc Nhận Xét Nổi Bật</Text>
+                <FlatList
+                  data={bestReviewers}
+                  horizontal={true}
+                  renderItem={({ item }) => (
+                    <BestUser
+                      item={item}
+                    />
+                  )}
+                  keyExtractor={item => item.id}
+                  showsHorizontalScrollIndicator={false}
+                />
+              </>
+            )}
           />
           {isAuthenticated && <IconCart navigateToCart={this.navigateToCart} cart={cart}></IconCart>}
+
         </View>
       );
     }

@@ -51,12 +51,9 @@ class Detail extends Component {
     this.getRelatedBook();
     this.getReviews();
     this.getLovingBook();
-    this.checkCommentExist();
   }
 
   static getDerivedStateFromProps(props, state) {
-    console.log("Vô dây là đổi r");
-
     if (props.idUser !== state.idUser) {
       const { reviews } = state;
       const { idUser } = props;
@@ -79,16 +76,13 @@ class Detail extends Component {
     const { idUser } = this.props;
 
     var existComment = reviews.find(comment => comment.UserId === idUser);
-    console.log("exist: ", reviews);
-
-    if (existComment)
-      console.log("Exist");
-
-    this.setState(prevState => ({
-      ...prevState,
-      alreadyComment: true,
-      commentExist: existComment
-    }))
+    if (existComment) {
+      this.setState(prevState => ({
+        ...prevState,
+        alreadyComment: true,
+        commentExist: existComment
+      }))
+    }
   }
 
 
@@ -153,6 +147,10 @@ class Detail extends Component {
       title: {
         text: 'Danh sách giỏ hàng',
         alignment: 'center'
+      },
+      rightButtons: {
+        id: 'deleteAll',
+        icon: require('../../assets/images/delete.png'),
       },
     });
   }
@@ -360,8 +358,6 @@ class Detail extends Component {
 
 
   render() {
-    console.log("Satet: ", this.state);
-
     var {
       Authors,
       Title,
@@ -387,8 +383,6 @@ class Detail extends Component {
     }
 
     let reviewList;
-    console.log("Review: ", reviews);
-
     const { idUser } = this.props;
 
     if (reviews.length > 0) {
@@ -435,6 +429,26 @@ class Detail extends Component {
             </Text>
             <Text style={styles.author}>{Authors[0].Name}</Text>
             <Star star={OverallStarRating} TotalReview={TotalReview} />
+            <View
+              style={{
+                flexDirection: 'row',
+                marginVertical: 10,
+              }}>
+              <Icon
+                name="book"
+                size={17}
+                color="#ff6666"
+                style={{ marginRight: 5 }}
+              />
+              <Text>{Quantity != 0 ? Quantity + ' quyển' : 'Hết sách'}</Text>
+              <Icon
+                name="money"
+                size={17}
+                color="#ff6666"
+                style={{ marginLeft: 25, marginRight: 5 }}
+              />
+              <Text>{String(Price).replace(/(.)(?=(\d{3})+$)/g, '$1,')}đ</Text>
+            </View>
             <View style={{ flexDirection: 'row' }}>{categories}</View>
           </View>
           <View style={{ marginVertical: 20 }}>

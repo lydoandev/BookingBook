@@ -70,8 +70,6 @@ export default class LogIn extends Component {
   render() {
     var { password, email, emailErr, passwordErr } = this.state;
     var { loading, error } = this.props;
-    console.log("Loading: ", loading);
-
     if (loading) {
       return (
         <Loading></Loading>

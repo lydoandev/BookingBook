@@ -13,9 +13,11 @@ export function* fetchBooks() {
 
 export function* fetchCmsHome() {
   try {
-    var data = yield call(() => callAPI('api/cms/home'));
+    var data1 = yield call(() => callAPI('api/cms/home'));
+    var data2 = yield call(() => callAPI('api/cms/bestusers'));
+    var data3 = yield call(() => callAPI('api/cms/reviews'));
 
-    yield put({ type: types.FETCH_CMS_HOME_SUCCESSED, payload: data.data.Data });
+    yield put({ type: types.FETCH_CMS_HOME_SUCCESSED, payload: { booksHome: data1.data.Data, bestUsers: data2.data.Data, bestReviewers: data3.data.Data } });
   } catch (error) {
     console.log('Error: ', error);
   }

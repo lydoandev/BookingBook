@@ -29,6 +29,8 @@ export default class ItemBook extends Component {
       Medias,
     } = this.props.item;
 
+
+
     return (
       <TouchableOpacity
         style={[styles.book_item, { flexDirection: flex }, { width: flex == 'column' ? 155 : "100%" }]}
@@ -60,7 +62,7 @@ export default class ItemBook extends Component {
               color="#ff6666"
               style={{ marginHorizontal: 5 }}
             />
-            <Text>{Price}</Text>
+            <Text>{String(Price).replace(/(.)(?=(\d{3})+$)/g, '$1,')}đ</Text>
           </View>
         </View>
       </TouchableOpacity>

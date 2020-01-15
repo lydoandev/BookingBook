@@ -17,9 +17,12 @@ export const bookReducer = (state = initialState, action) => {
     case type.FETCH_CMS_HOME:
       return Object.assign({}, state, { loading: true });
     case type.FETCH_CMS_HOME_SUCCESSED:
+      const { booksHome, bestUsers, bestReviewers } = action.payload;
       return Object.assign({}, state, {
         loading: false,
-        booksHome: action.payload,
+        booksHome,
+        bestUsers,
+        bestReviewers: bestReviewers.Reviewers
       });
     default:
       return state;
