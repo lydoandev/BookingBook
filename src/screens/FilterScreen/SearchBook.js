@@ -7,8 +7,12 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
+import {Navigation} from 'react-native-navigation';
 
 export default class SearchBook extends Component {
+  onPressBack = () => {
+    Navigation.dismissModal(this.props.componentId);
+  };
   render() {
     return (
       <View>
