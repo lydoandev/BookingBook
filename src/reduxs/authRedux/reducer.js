@@ -6,7 +6,8 @@ const initState = {
   isAuthenticated: false,
   user: {},
   cart: [],
-  idCart: ''
+  idCart: '',
+  notifications: []
 }
 
 
@@ -72,6 +73,15 @@ export const authReducer = (state = initState, action) => {
         loading: false,
         user: {},
         error: ''
+      })
+    case Type.GET_NOTIFICATIONS:
+      return Object.assign({}, state, {
+        loading: true,
+      })
+    case Type.GET_NOTIFICATIONS_SUCCESSED:
+      return Object.assign({}, state, {
+        loading: false,
+        notifications: action.payload
       })
     default: return state
   }

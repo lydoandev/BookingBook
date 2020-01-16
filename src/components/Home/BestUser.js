@@ -4,7 +4,6 @@ import { View, Image, Text, StyleSheet } from 'react-native'
 export default class BestUser extends Component {
   render() {
     const { ImageUrl, Name, BooksCount, ReviewCount } = this.props.item;
-    console.log("User: ", this.props);
 
     return (
       <View style={styles.user}>

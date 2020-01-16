@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { View, Image, StyleSheet, Text } from 'react-native'
 import StarIcon from './StarIcon'
 import Icon from 'react-native-vector-icons/FontAwesome';
+import format from '../../utils/DateFormatter'
 
 export default class Comment extends Component {
   showUpdateComment = () => {
@@ -10,8 +11,8 @@ export default class Comment extends Component {
   render() {
     const { idUser } = this.props;
     const { UserName, StarRating, UrlImageUser, Content, UserId, CreatedAt } = this.props.item;
-    const yourDate = new Date(CreatedAt);
-    let date = yourDate.getDate() + "-" + parseInt(yourDate.getMonth() + 1) + "-" + yourDate.getFullYear();
+    // const yourDate = new Date(CreatedAt);
+    // let date = yourDate.getDate() + "-" + parseInt(yourDate.getMonth() + 1) + "-" + yourDate.getFullYear();
 
     return (
       <View style={{ flexDirection: 'row', marginBottom: 20, }}>
@@ -28,7 +29,7 @@ export default class Comment extends Component {
                 <Icon name='trash' size={17} style={styles.icon} onPress={this.props.deleteComment}></Icon>
               </View>)
               :
-              <Text>{date}</Text>}
+              <Text>{format(CreatedAt)}</Text>}
           </View>
           <View style={{ marginTop: 5 }}>
             <StarIcon star={StarRating}></StarIcon>

@@ -74,6 +74,13 @@ export const sideMenu = {
                     text: 'This is tab 2',
                   },
                   options: {
+                    topBar: {
+                      visible: true,
+                      title: {
+                        text: 'Trang cá nhân',
+                        alignment: 'center'
+                      },
+                    },
                     bottomTab: {
                       titleDisplayMode: 'showWhenActive',
                       text: 'Profile',
@@ -90,6 +97,13 @@ export const sideMenu = {
                     text: 'This is tab 2',
                   },
                   options: {
+                    topBar: {
+                      visible: true,
+                      title: {
+                        text: 'Thông báo',
+                        alignment: 'center'
+                      },
+                    },
                     bottomTab: {
                       titleDisplayMode: 'showWhenActive',
                       text: 'Thông báo',
@@ -106,6 +120,10 @@ export const sideMenu = {
                     text: 'This is tab 2',
                   },
                   options: {
+                    topBar: {
+                      visible: false,
+                      drawBehind: true,
+                    },
                     bottomTab: {
                       titleDisplayMode: 'showWhenActive',
                       text: 'Thư viện',

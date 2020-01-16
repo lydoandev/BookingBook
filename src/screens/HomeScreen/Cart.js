@@ -35,7 +35,7 @@ class Cart extends Component {
       this.setState(prevState => ({
         ...prevState,
         deleteSuccess: !prevState.deleteSuccess,
-        successMess: "Xóa sách thành công"
+        error: "Xóa sách thành công"
       }))
     } catch (error) {
 
@@ -88,10 +88,6 @@ class Cart extends Component {
     try {
       var data = await callAPI(`api/basket/${idCart}`, 'PUT', info, token);
       this.props.getCart({ basketId: idCart, userId: idUser, token });
-      this.setState(prevState => ({
-        ...prevState,
-        successMess: 'Đặt sách thành công',
-      }))
     } catch (error) {
 
       this.setState(prevState => ({
@@ -109,7 +105,13 @@ class Cart extends Component {
 
     try {
       var data = await callAPI('api/orders', 'POST', info, token);
+      console.log("Order nè: ", data.data);
+
       this.props.getCart({ basketId: idCart, userId: idUser, token });
+      this.setState(prevState => ({
+        ...prevState,
+        successMess: 'Đặt sách thành công',
+      }))
     } catch (error) {
 
       this.setState(prevState => ({
@@ -120,9 +122,19 @@ class Cart extends Component {
     }
   }
 
+  navigateToOrder = () => {
+    this.changeDeleteSuccess();
+    navigateTo({}, this.props.componentId, 'Order', {
+      text: 'Danh sách đơn hàng',
+      alignment: 'center'
+    })
+  }
+
   render() {
     console.log("Cart: ", this.props.cart);
     const { askDelete, deleteSuccess, successMess, error } = this.state;
+    console.log("State: ", this.state);
+
     return (
       <>
         <View style={{ marginBottom: 45 }}>
@@ -150,10 +162,18 @@ class Cart extends Component {
             navigateToCall={this.deleteItemCart}
           />
           <ModalAddCart
-            modalVisible={(successMess != '' || error != '') ? true : false}
+            modalVisible={error != '' ? true : false}
             navigateToCall={this.changeDeleteSuccess}
-            text={successMess || error}
+            text={error}
             textButton='Đã hiểu'
+          />
+          <ModalAddCart
+            modalVisible={successMess != '' ? true : false}
+            navigateToCall={this.navigateToOrder}
+            setModalVisible={this.changeDeleteSuccess}
+            text={successMess}
+            textButton2='Lúc khác'
+            textButton='Xem đơn hàng'
           />
         </View>
         <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0 }}>

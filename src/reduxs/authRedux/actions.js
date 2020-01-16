@@ -14,6 +14,9 @@ export const LOGOUT_SUCCESSED = "LOGOUT_SUCCESSED"
 export const GET_CART = "GET_CART"
 export const GET_CART_SUCCESSED = "GET_CART_SUCCESSED"
 
+export const GET_NOTIFICATIONS = "GET_NOTIFICATIONS"
+export const GET_NOTIFICATIONS_SUCCESSED = "GET_NOTIFICATIONS_SUCCESSED"
+
 
 export const LOGOUT = "LOGOUT"
 
@@ -32,4 +35,8 @@ export const logout = () => {
 export const getCart = data => {
   return ({ type: GET_CART, payload: data });
 };
+
+export const getNotifications = data => {
+  return ({ type: GET_NOTIFICATIONS, payload: data });
+}
 

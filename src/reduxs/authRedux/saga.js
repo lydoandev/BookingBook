@@ -13,8 +13,8 @@ import {
   LOGOUT_SUCCESSED,
   GET_CART,
   GET_CART_SUCCESSED,
-  DETELE_ITEM_CART,
-  DETELE_ITEM_CART_SUCCESSED
+  GET_NOTIFICATIONS,
+  GET_NOTIFICATIONS_SUCCESSED
 } from './actions';
 
 export function* getProfile(action) {
@@ -60,6 +60,22 @@ export function* getCart(action) {
   }
 }
 
+export function* getNotifications(action) {
+  try {
+    var data = yield call(() => callAPI(
+      `api/usernotifications`,
+      'GET',
+      null,
+      action.payload
+    ));
+    console.log("Yy :", data.data.UserNotifications);
+    yield put({ type: GET_NOTIFICATIONS_SUCCESSED, payload: data.data.UserNotifications });
+  } catch (error) {
+    console.log("Error get noti: ", error);
+
+  }
+}
+
 export function* Logout() {
 
   yield put({ type: LOGOUT_SUCCESSED });
@@ -70,4 +86,5 @@ export const watchUserSaga = [
   takeLatest(LOGIN, Login),
   takeLatest(LOGOUT, Logout),
   takeLatest(GET_CART, getCart),
+  takeLatest(GET_NOTIFICATIONS, getNotifications)
 ]
