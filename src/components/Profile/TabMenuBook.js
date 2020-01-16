@@ -28,11 +28,14 @@ class TabMenuBook extends Component {
     const { token } = this.props;
     try {
       var data = await callAPI(`api/orders`, 'GET', null, token);
+      // console.log('DATA ORDER:', data.data.Orders);
+      var books = (data.data.Orders).find(item => item.Status === 'Borrowed')
+      console.log('DATA ORDER', books);
       if (data !== null) {
         this.setState((prevState) => ({
           ...prevState,
           index: 1,
-          bookBorrowing: data.data.Orders[0].Items,
+          bookBorrowing: books,
         }))
       }
     } catch (error) {
@@ -44,6 +47,7 @@ class TabMenuBook extends Component {
     const { idUser, token } = this.props;
     try {
       var data = await callAPI(`api/users/${idUser}`, 'GET', null, token);
+      console.log('DATA ORDER:', data.data.WaitingBooks);
       this.setState((prevState) => ({
         ...prevState,
         index: 2,
@@ -58,6 +62,8 @@ class TabMenuBook extends Component {
     const { idUser, token } = this.props;
     try {
       var data = await callAPI(`api/users/${idUser}/followingbooks`, 'GET', null, token);
+      console.log('DATA ORDER:', data.data.Data);
+
       this.setState((prevState) => ({
         ...prevState,
         index: 3,
@@ -83,9 +89,9 @@ class TabMenuBook extends Component {
           </TouchableOpacity>
         </View>
         <View style={styles.styleRowContent}>
-          {this.state.index == 1 && <BookBorrowing bookBorrowing={this.state.bookBorrowing}></BookBorrowing> || this.state.index == 2 &&
-            <BookWaiting bookWaiting={this.state.bookWaiting}></BookWaiting> ||
-            this.state.index == 3 && <BookLoving bookFollowing={this.state.bookFollowing} componentId={this.props.componentId}></BookLoving>}
+          {this.state.index == 1 && (this.state.bookBorrowing ? <BookBorrowing bookBorrowing={this.state.bookBorrowing || []}></BookBorrowing> : <Text>Không có sách nào đang mượn</Text>) || this.state.index == 2 &&
+            (this.state.bookWaiting ? <BookWaiting bookWaiting={this.state.bookWaiting}></BookWaiting> : <Text>Không có quyển sách nào đang đợi</Text>) ||
+            this.state.index == 3 && (this.state.bookFollowing ? <BookLoving bookFollowing={this.state.bookFollowing} componentId={this.props.componentId}></BookLoving> : <Text>Bạn không yêu thích sách nào</Text>)}
         </View>
       </ScrollView>
     )

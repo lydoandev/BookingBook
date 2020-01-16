@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Image, Text, ScrollView } from 'react-native'
+import { StyleSheet, View, Image, Text, ScrollView, Alert } from 'react-native'
 import ItemSetting from '../../components/Profile/ItemSetting'
 import infoProfile from '../../assets/images/infoProfile.png'
 import lockIcon from '../../assets/images/lock.png'
@@ -20,13 +20,34 @@ class SettingInfo extends Component {
     Navigation.events().bindComponent(this);
   }
 
-  navigationScreen = (page) => {
-    navigateTo(null, this.props.componentId, page, null);
+  navigationScreen = (page, title) => {
+    navigateTo(null, this.props.componentId, page, {
+      title: {
+        text: title,
+        alignment: 'center'
+      }
+    });
   }
 
   logoutScreen = () => {
-    this.props.logout();
-    Navigation.dismissModal(this.props.componentId);
+    Alert.alert(
+      'Thông báo',
+      'Bạn có muốn thoát tài khoản không?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {
+          text: 'OK', onPress: () => {
+            this.props.logout();
+            Navigation.dismissModal(this.props.componentId);
+          }
+        },
+      ],
+      { cancelable: false },
+    );
   }
 
   navigationButtonPressed = ({ buttonId }) => {
@@ -42,8 +63,8 @@ class SettingInfo extends Component {
 
     return (
       <View style={styles.container}>
-        <ItemSetting image={infoProfile} title='Thông tin cá nhân' navigationScreen={() => this.navigationScreen('PersonalInfo')}></ItemSetting>
-        <ItemSetting image={lockIcon} title='Đổi mật khẩu' navigationScreen={() => this.navigationScreen('ChangePass')}></ItemSetting>
+        <ItemSetting image={infoProfile} title='Thông tin cá nhân' navigationScreen={() => this.navigationScreen('PersonalInfo', 'Chỉnh sửa thông tin')}></ItemSetting>
+        <ItemSetting image={lockIcon} title='Đổi mật khẩu' navigationScreen={() => this.navigationScreen('ChangePass', 'Thay đổi mật khẩu')}></ItemSetting>
         <ItemSetting image={supportIcon} title='Hỗ trợ' ></ItemSetting>
         <ItemSetting image={feedbackIcon} title='Phản hồi' ></ItemSetting>
         <ItemSetting image={ruleIcon} title='Quy định' ></ItemSetting>

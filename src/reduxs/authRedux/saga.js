@@ -11,7 +11,10 @@ import {
   LOGIN_FAILED,
   LOGOUT_SUCCESSED,
   GET_CART,
-  GET_CART_SUCCESSED
+  GET_CART_SUCCESSED,
+  UPDATE_PROFILE_SUCCESSED,
+  UPDATE_PROFILE_FAILED,
+  UPDATE_PROFILE
 } from './actions';
 
 export function* Register(action) {
@@ -55,9 +58,23 @@ export function* Logout() {
   yield put({ type: LOGOUT_SUCCESSED });
 }
 
+export function* updateProfile(action) {
+  const { idUser, token } = action.payload;
+  console.log('SAGA UPDATE', action);
+
+  try {
+    const data = yield call(() => callAPI(`api/users/${idUser}/updateprofile`, 'PUT', action.payload, token));
+    yield put({ type: UPDATE_PROFILE_SUCCESSED, payload: data.data });
+  } catch (error) {
+
+    yield put({ type: UPDATE_PROFILE_FAILED, payload: error.response });
+  }
+}
+
 export const watchUserSaga = [
   takeLatest(REGISTER, Register),
   takeLatest(LOGIN, Login),
   takeLatest(LOGOUT, Logout),
-  takeLatest(GET_CART, getCart)
+  takeLatest(GET_CART, getCart),
+  takeLatest(UPDATE_PROFILE, updateProfile)
 ]

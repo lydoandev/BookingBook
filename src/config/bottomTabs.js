@@ -79,9 +79,8 @@ export const sideMenu = {
                       testID: 'SECOND_TAB_BAR_BUTTON',
                     },
                     topBar: {
-                      title: {
-                        text: 'Profile',
-                      },
+                      visible: false,
+                      drawBehind: true,
                     },
                   },
                 },
@@ -95,13 +94,13 @@ export const sideMenu = {
                   options: {
                     bottomTab: {
                       titleDisplayMode: 'showWhenActive',
-                      text: 'Profile',
+                      text: 'Notification',
                       icon: require('../assets/images/notification.png'),
                       testID: 'SECOND_TAB_BAR_BUTTON',
                     },
                     topBar: {
                       title: {
-                        text: 'Profile',
+                        text: 'Notification',
                       },
                     },
                   },
@@ -116,13 +115,13 @@ export const sideMenu = {
                   options: {
                     bottomTab: {
                       titleDisplayMode: 'showWhenActive',
-                      text: 'Profile',
+                      text: 'Library',
                       icon: require('../assets/images/library.png'),
                       testID: 'SECOND_TAB_BAR_BUTTON',
                     },
                     topBar: {
                       title: {
-                        text: 'Profile',
+                        text: 'Library',
                       },
                     },
                   },

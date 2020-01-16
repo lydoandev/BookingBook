@@ -18,22 +18,33 @@ class ItemBook extends Component {
   getImage = async () => {
     const { token } = this.props;
     try {
-      var data = await callAPI(`api/books/${this.props.item.Id}`, 'GET', null, token);
-      this.setState({
-        ImageAppUrl: data.data.Medias[0].ImageUrl
-      })
+      if (this.props.type !== 'borrow') {
+        var data = await callAPI(`api/books/${this.props.item.Id}`, 'GET', null, token);
+        this.setState({
+          ImageAppUrl: data.data.Medias[0].ImageUrl
+        })
+      } else {
+        var data = await callAPI(`api/books/${this.props.item.BookCopy.Book.Id}`, 'GET', null, token);
+        console.log('DATA IMAGE', data);
+
+        this.setState({
+          ImageAppUrl: data.data.Medias[0].ImageUrl
+        })
+      }
     } catch (error) {
       console.log('ERROR GET USER:', error);
     }
   }
 
   render() {
+    console.log('LOG', this.props.item);
+
     return (
       <TouchableOpacity style={[styles.book_item]}>
         <Image source={{ uri: this.state.ImageAppUrl }} style={styles.book_img}></Image>
         <View style={styles.styleContent}>
-          <Text numberOfLines={1} style={styles.title}>{this.props.item.Title}</Text>
-          <Text style={this.props.type == 'borrow' ? styles.dateBorrow : styles.statusWaiting}>{this.props.type == 'borrow' ? `Hạn trả ${this.props.item.PaymentDate}` : 'Sách đã hết'}</Text>
+          <Text numberOfLines={1} style={styles.title}>{this.props.type == 'borrow' ? this.props.item.BookCopy.Book.Title : this.props.item.Title}</Text>
+          <Text style={this.props.type == 'borrow' ? styles.dateBorrow : styles.statusWaiting}>{this.props.type == 'borrow' ? `Hạn trả ${this.props.item.ExpiryDate}` : 'Sách đã hết'}</Text>
         </View>
         <View style={styles.styleContent}>
           <TouchableOpacity style={this.props.type == 'borrow' ? "" : styles.styleStatus}>

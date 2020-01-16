@@ -1,17 +1,19 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, Text, TextInput, TouchableOpacity, ScrollView } from 'react-native'
+import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Alert } from 'react-native'
 import { RadioButton } from 'react-native-paper';
 import { connect } from 'react-redux'
 import * as userActions from '../../reduxs/authRedux/actions'
 import Input from '../../components/Profile/Input';
-import callAPI from '../../utils/callAPI';
 import { Navigation } from 'react-native-navigation';
+import DatePicker from 'react-native-datepicker';
+import moment from 'moment';
+
 
 class PersonalInfo extends Component {
   constructor(props) {
     super(props);
-    this.onPressUpdateProfile();
-    const { FirstName, LastName, PhoneNumber, Email, Address, Gender, DateOfBirth, Position, TotalPoint } = this.props.user;
+    var dateChangeFomat = moment(this.props.user.DateOfBirth, 'DD-MM_YYYY').format('MM-DD-YYYY');
+    const { FirstName, LastName, PhoneNumber, Email, Address, Gender, Position, TotalPoint } = this.props.user;
     this.state = {
       FirstName,
       LastName,
@@ -19,12 +21,11 @@ class PersonalInfo extends Component {
       Email,
       Address,
       Gender,
-      DateOfBirth,
+      DateOfBirth: dateChangeFomat,
       Position,
       TotalPoint,
     }
   }
-
   getData = (name, text) => {
     this.setState((prevState) => ({
       ...prevState,
@@ -32,56 +33,55 @@ class PersonalInfo extends Component {
     }))
   }
   onPressUpdateProfile = async () => {
-    const { idUser, token } = this.props;
-    const { FirstName, LastName, PhoneNumber, Email, Address, Gender, DateOfBirth, Position, TotalPoint } = this.state;
-    var user = {
-      FirstName,
-      LastName,
-      PhoneNumber,
-      Email,
-      Address,
-      Gender,
-      DateOfBirth,
-      Position,
-      TotalPoint,
-    }
-    try {
-      await callAPI(`api/users/${idUser}/updateprofile`, 'PUT', user, token);
-      Navigation.dismissModal(this.props.componentId);
-    } catch (error) {
-      console.log('ERROR PUT PROFILE:', error);
-    }
+    Alert.alert(
+      'Thông báo',
+      'Bạn có muốn thay đổi thông tin không?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {
+          text: 'OK', onPress: () => {
+            const { idUser, token } = this.props;
+            const { FirstName, LastName, PhoneNumber, Email, Address, Gender, DateOfBirth, Position, TotalPoint } = this.state;
+            var user = {
+              FirstName,
+              LastName,
+              PhoneNumber,
+              Email,
+              Address,
+              Gender,
+              DateOfBirth,
+              Position,
+              TotalPoint,
+              idUser,
+              token
+            }
+            this.props.updateProfile(user);
+            Navigation.dismissModal(this.props.componentId);
+          }
+        },
+      ],
+      { cancelable: false },
+    );
   }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.Gender !== prevProps.Gender) {
-      console.log('GENDER', this.props.Gender);
-
-      const { Gender } = this.props;
-      this.setState({
-        Gender
-      })
-    }
-  }
-
   render() {
-    console.log('USER AT PERSONAL INFOR', this.props);
     const { FirstName, LastName, PhoneNumber, Email, Address, Gender, DateOfBirth, Position, TotalPoint } = this.state;
-
-
     return (
       <ScrollView style={styles.container}>
         <Text style={styles.styleTitle}>First name</Text>
-        <Input name='FirstName' getData={this.getData} value={FirstName}></Input>
+        <Input name='FirstName' getData={this.getData} value={FirstName} editable={true}></Input>
         <Text style={styles.styleTitle}>Last name</Text>
-        <Input name='LastName' getData={this.getData} value={LastName}></Input>
+        <Input name='LastName' getData={this.getData} value={LastName} editable={true}></Input>
         <Text style={styles.styleTitle}>Phone number</Text>
-        <Input name='PhoneNumber' getData={this.getData} value={PhoneNumber}></Input>
+        <Input name='PhoneNumber' getData={this.getData} value={PhoneNumber} editable={true}></Input>
         <Text style={styles.styleTitle}>Email</Text>
-        <Input name='Email' getData={this.getData} value={Email}></Input>
+        <Input name='Email' getData={this.getData} value={Email} editable={false}></Input>
         <Text style={styles.styleTitle}>Address</Text>
-        <Input name='Address' getData={this.getData} value={Address}></Input>
-        <Text style={styles.styleTitle}>Giới tính</Text>
+        <Input name='Address' getData={this.getData} value={Address} editable={true}></Input>
+        <Text style={styles.styleTitle}>Gender</Text>
         <View style={styles.rowRadioButton}>
           <RadioButton.Group
             onValueChange={Gender => this.setState({ Gender })}
@@ -89,20 +89,41 @@ class PersonalInfo extends Component {
           >
             <View style={styles.rowRadioButton}>
               <RadioButton value="Male" />
-              <Text>Nam</Text>
+              <Text>Male</Text>
             </View>
             <View style={styles.rowRadioButton}>
               <RadioButton value="Female" />
-              <Text>Nữ</Text>
+              <Text>Female</Text>
             </View>
           </RadioButton.Group>
         </View>
         <Text style={styles.styleTitle}>Date of birth</Text>
-        <Input name='DateOfBirth' getData={this.getData} value={DateOfBirth}></Input>
-        <Text style={styles.styleTitle}>Position</Text>
-        <Input name='Position' getData={this.getData} value={Position}></Input>
-        <Text style={styles.styleTitle}>Total Point</Text>
-        <Input name='TotalPoint' getData={this.getData} value={TotalPoint}></Input>
+        <DatePicker
+          date={DateOfBirth}
+          mode="date"
+          style={styles.styleDatePicker}
+          placeholder="select date"
+          format="MM/DD/YYYY"
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+          customStyles={{
+            dateIcon: {
+              position: 'absolute',
+              left: 0,
+              top: 4,
+              marginLeft: 0
+            },
+            dateInput: {
+              marginLeft: 36
+            }
+          }}
+          onDateChange={(date) => {
+            this.setState((prevState) => ({
+              ...prevState,
+              DateOfBirth: date
+            }))
+          }}
+        />
         <TouchableOpacity style={styles.styleButton} onPress={this.onPressUpdateProfile}>
           <Text style={styles.styleTextButton}>Gửi yêu cầu</Text>
         </TouchableOpacity>
@@ -152,6 +173,9 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0
+  },
+  styleDatePicker: {
+    padding: 10
   }
 })
 
@@ -167,6 +191,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    updateProfile: (user) => dispatch(userActions.updateProfile(user))
   };
 }
 

@@ -29,6 +29,7 @@ export default class Input extends Component {
       <View>
         <TextInput
           {...this.props}
+          editable={this.props.editable}
           style={styles.styleInput}
           onChangeText={(text) => this.onChangeText(text)}
           value={this.state.value}

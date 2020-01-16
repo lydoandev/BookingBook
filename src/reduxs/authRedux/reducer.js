@@ -66,6 +66,19 @@ export const authReducer = (state = initState, action) => {
         user: {},
         error: ''
       })
+    case Type.UPDATE_PROFILE_SUCCESSED:
+      return Object.assign({}, state, {
+        isAuthenticated: true,
+        user: action.payload.Data,
+        loading: false,
+        error: '',
+      });
+    case Type.UPDATE_PROFILE_FAILED:
+      return Object.assign({}, state, {
+        loading: false,
+        isAuthenticated: false,
+        error: action.payload
+      });
     default: return state
   }
 }

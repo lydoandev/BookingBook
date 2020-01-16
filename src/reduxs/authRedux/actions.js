@@ -12,6 +12,10 @@ export const GET_CART_SUCCESSED = "GET_CART_SUCCESSED"
 
 export const LOGOUT = "LOGOUT"
 
+export const UPDATE_PROFILE = "UPDATE_PROFILE"
+export const UPDATE_PROFILE_SUCCESSED = "UPDATE_PROFILE_SUCCESSED"
+export const UPDATE_PROFILE_FAILED = "UPDATE_PROFILE_FAILED"
+
 export const login = (user) => {
   return { type: LOGIN, payload: user }
 }
@@ -28,3 +32,6 @@ export const getCart = data => {
   return ({ type: GET_CART, payload: data });
 };
 
+export const updateProfile = (user) => {
+  return { type: UPDATE_PROFILE, payload: user };
+}

@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 10,
-    top: 20,
+    top: 5,
   },
   styleQRCode: {
     borderRadius: 80,
