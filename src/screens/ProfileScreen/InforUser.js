@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { View, Image, StyleSheet, Text, TouchableOpacity, ImageBackground, ScrollView } from 'react-native'
-import { Dimensions } from "react-native";
+import { View, Image, StyleSheet, Text, TouchableOpacity, Dimensions, ScrollView } from 'react-native'
 import ScrollableTabView, { ScrollableTabBar, DefaultTabBar } from 'react-native-scrollable-tab-view';
 import TabMenuBook from '../../components/Profile/TabMenuBook';
 import BookRequest from './BookRequest';
@@ -9,9 +8,10 @@ import { connect } from 'react-redux';
 import callAPI from '../../utils/callAPI';
 import { Navigation } from 'react-native-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Membership from './Membership';
 
 
-class InfoUser extends Component {
+export default class InfoUser extends Component {
   constructor(props) {
     super(props);
     this.getRequestBook();
@@ -19,12 +19,19 @@ class InfoUser extends Component {
       requestBook: []
     }
   }
+
   navigationModal = (page) => {
     Navigation.showModal({
       stack: {
         children: [{
           component: {
             name: page,
+            passProps: {
+              token: this.props.token,
+              idUser: this.props.idUser,
+              isAuthenticated: this.props.isAuthenticated,
+              user: this.props.user,
+            },
             options: {
               topBar: {
                 title: {
@@ -56,8 +63,9 @@ class InfoUser extends Component {
     }
   }
   render() {
-    const tabSubMenu = <TabMenuBook booksProfile={this.props.booksProfile} componentId={this.props.componentId}></TabMenuBook>
+    const tabSubMenu = <TabMenuBook token={this.props.token} idUser={this.props.idUser} isAuthenticated={this.props.isAuthenticated} componentId={this.props.componentId}></TabMenuBook>
     const bookRequest = <BookRequest requestBook={this.state.requestBook}></BookRequest>
+    const membership = <Membership token={this.props.token} idUser={this.props.idUser} isAuthenticated={this.props.isAuthenticated} user={this.props.user}></Membership>
     return (
       <View>
         <Image style={styles.image} source={{ uri: 'https://images.pexels.com/photos/531880/pexels-photo-531880.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500' }}>
@@ -66,7 +74,7 @@ class InfoUser extends Component {
           <View>
             <Image style={styles.styleQRCode} source={{ uri: this.props.user.QrCodeUrl }}></Image>
           </View>
-          <TouchableOpacity onPress={() => this.navigationModal('SettingInfo')} logout={this.props.logout}>
+          <TouchableOpacity onPress={() => this.navigationModal('SettingInfo')} >
             <Image style={styles.styleSetting} source={this.props.user.Image == null ? require('../../assets/images/settingProfile.png') : this.props.user.Image}></Image>
           </TouchableOpacity>
         </View>
@@ -75,7 +83,7 @@ class InfoUser extends Component {
           <Image style={styles.styleImageLevel} source={require('../../assets/images/titanlevel.png')}></Image>
           <Text style={styles.textTitle}>{this.props.user.FullName}</Text>
           <TouchableOpacity style={styles.styleRank}>
-            <Text style={styles.textRank}>Platinum</Text>
+            <Text style={styles.textRank}>{this.props.user.Membership.Name}</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.tabView}>
@@ -93,7 +101,36 @@ class InfoUser extends Component {
               {bookRequest}
             </View>
             <View style={styles.tabBarMenu} tabLabel='Gói thành viên'>
-              <Text>Gói thành viên </Text>
+              {/* <View style={styles.content}>
+                <Image style={styles.styleQRCode} source={require('../../assets/images/platinumGreen.jpg')}></Image>
+                <View style={{ flexDirection: 'column', justifyContent: 'center', marginTop: 15 }}>
+                  <Text style={{ color: '#000000', fontSize: 17, fontFamily: 'SVN-ProximaNova', textAlign: 'center' }}>
+                    Gói thành viên
+                  <Text style={styles.styleMemberShipName}> {(this.props.user.Membership.Name).toUpperCase()} </Text>
+                  </Text>
+                  <Text style={{ color: '#dadada', fontSize: 17, fontFamily: 'SVN-ProximaNova', textAlign: 'center' }}>Hết hạn:<Text style={{ color: '#000000' }}>{this.props.user.MembershipExpiryDate}</Text></Text>
+                </View>
+                <TouchableOpacity >
+                  <Image style={styles.styleSetting} source={this.props.user.Image == null ? require('../../assets/images/arrow.png') : this.props.user.Image}></Image>
+                </TouchableOpacity>
+              </View>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                <Text style={{ right: 0 }}>Giá trị gói</Text>
+                <Text style={{ left: 0 , }}>{this.props.user.Membership.Value}</Text>
+              </View>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                <Text>Gia hạn sách</Text>
+                <Text>{this.props.user.Membership.MaxExtensionTimes} lượt/năm</Text>
+              </View>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                <Text>Yêu cầu sách</Text>
+                <Text>{this.props.user.Membership.MaxRequestTimes} lượt/năm</Text>
+              </View>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                <Text>Giao sách tại nhà</Text>
+                <Text>{this.props.user.Membership.MaxDeliveryTimes} lượt/năm</Text>
+              </View> */}
+              {membership}
             </View>
           </ScrollableTabView>
         </View>
@@ -178,22 +215,38 @@ const styles = StyleSheet.create({
     zIndex: 1,
     height: Dimensions.get('window').height / 2
   },
+  container: {
+    flex: 1,
+  },
+  content: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+    marginBottom: 50
+  },
+  styleMemberShipName: {
+    color: '#89c838',
+    fontWeight: 'bold',
+    fontFamily: 'SVN-ProximaNova',
+    fontSize: 20,
+  }
 })
 
 
-function mapStateToProps(state) {
-  return {
-    isAuthenticated: state.authReducer.isAuthenticated,
-    idUser: state.authReducer.user.Id,
-    token: state.authReducer.token
-  };
-}
+// function mapStateToProps(state) {
+//   return {
+//     isAuthenticated: state.authReducer.isAuthenticated,
+//     idUser: state.authReducer.user.Id,
+//     token: state.authReducer.token
+//   };
+// }
 
-function mapDispatchToProps(dispatch) {
-  return {
-  };
-}
+// function mapDispatchToProps(dispatch) {
+//   return {
+//   };
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(InfoUser);
+// export default connect(mapStateToProps, mapDispatchToProps)(InfoUser);
 
 

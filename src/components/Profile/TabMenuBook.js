@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import callAPI from '../../utils/callAPI';
 
 
-class TabMenuBook extends Component {
+export default class TabMenuBook extends Component {
   constructor(props) {
     super(props);
     this.getBookBorrowing();
@@ -28,9 +28,7 @@ class TabMenuBook extends Component {
     const { token } = this.props;
     try {
       var data = await callAPI(`api/orders`, 'GET', null, token);
-      // console.log('DATA ORDER:', data.data.Orders);
       var books = (data.data.Orders).find(item => item.Status === 'Borrowed')
-      console.log('DATA ORDER', books);
       if (data !== null) {
         this.setState((prevState) => ({
           ...prevState,
@@ -47,7 +45,6 @@ class TabMenuBook extends Component {
     const { idUser, token } = this.props;
     try {
       var data = await callAPI(`api/users/${idUser}`, 'GET', null, token);
-      console.log('DATA ORDER:', data.data.WaitingBooks);
       this.setState((prevState) => ({
         ...prevState,
         index: 2,
@@ -62,8 +59,6 @@ class TabMenuBook extends Component {
     const { idUser, token } = this.props;
     try {
       var data = await callAPI(`api/users/${idUser}/followingbooks`, 'GET', null, token);
-      console.log('DATA ORDER:', data.data.Data);
-
       this.setState((prevState) => ({
         ...prevState,
         index: 3,
@@ -143,18 +138,18 @@ const styles = StyleSheet.create({
   },
 })
 
-function mapStateToProps(state) {
-  return {
-    isAuthenticated: state.authReducer.isAuthenticated,
-    idUser: state.authReducer.user.Id,
-    token: state.authReducer.token
-  };
-}
+// function mapStateToProps(state) {
+//   return {
+//     isAuthenticated: state.authReducer.isAuthenticated,
+//     idUser: state.authReducer.user.Id,
+//     token: state.authReducer.token
+//   };
+// }
 
-function mapDispatchToProps(dispatch) {
-  return {
-  };
-}
+// function mapDispatchToProps(dispatch) {
+//   return {
+//   };
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TabMenuBook);
+// export default connect(mapStateToProps, mapDispatchToProps)(TabMenuBook);
 

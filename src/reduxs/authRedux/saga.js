@@ -60,8 +60,6 @@ export function* Logout() {
 
 export function* updateProfile(action) {
   const { idUser, token } = action.payload;
-  console.log('SAGA UPDATE', action);
-
   try {
     const data = yield call(() => callAPI(`api/users/${idUser}/updateprofile`, 'PUT', action.payload, token));
     yield put({ type: UPDATE_PROFILE_SUCCESSED, payload: data.data });

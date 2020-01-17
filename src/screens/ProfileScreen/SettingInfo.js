@@ -18,10 +18,18 @@ class SettingInfo extends Component {
   constructor(props) {
     super(props);
     Navigation.events().bindComponent(this);
+    this.state = {
+      data: {
+        token: this.props.token,
+        idUser: this.props.idUser,
+        isAuthenticated: this.props.isAuthenticated,
+        user: this.props.user,
+      }
+    }
   }
 
-  navigationScreen = (page, title) => {
-    navigateTo(null, this.props.componentId, page, {
+  navigationScreen = (page, title, data) => {
+    navigateTo(data, this.props.componentId, page, {
       title: {
         text: title,
         alignment: 'center'
@@ -51,7 +59,6 @@ class SettingInfo extends Component {
   }
 
   navigationButtonPressed = ({ buttonId }) => {
-    console.log('VO DAY');
     const { componentId } = this.props;
     if (buttonId === 'close') {
       Navigation.dismissModal(componentId);
@@ -59,12 +66,10 @@ class SettingInfo extends Component {
   };
 
   render() {
-    console.log('PROPS SETTING', this.props.user);
-
     return (
       <View style={styles.container}>
-        <ItemSetting image={infoProfile} title='Thông tin cá nhân' navigationScreen={() => this.navigationScreen('PersonalInfo', 'Chỉnh sửa thông tin')}></ItemSetting>
-        <ItemSetting image={lockIcon} title='Đổi mật khẩu' navigationScreen={() => this.navigationScreen('ChangePass', 'Thay đổi mật khẩu')}></ItemSetting>
+        <ItemSetting image={infoProfile} title='Thông tin cá nhân' navigationScreen={() => this.navigationScreen('PersonalInfo', 'Chỉnh sửa thông tin', null)}></ItemSetting>
+        <ItemSetting image={lockIcon} title='Đổi mật khẩu' navigationScreen={() => this.navigationScreen('ChangePass', 'Thay đổi mật khẩu', this.state.data)}></ItemSetting>
         <ItemSetting image={supportIcon} title='Hỗ trợ' ></ItemSetting>
         <ItemSetting image={feedbackIcon} title='Phản hồi' ></ItemSetting>
         <ItemSetting image={ruleIcon} title='Quy định' ></ItemSetting>
@@ -87,7 +92,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    user: state.authReducer.user
+
   };
 }
 

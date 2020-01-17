@@ -25,8 +25,6 @@ class ItemBook extends Component {
         })
       } else {
         var data = await callAPI(`api/books/${this.props.item.BookCopy.Book.Id}`, 'GET', null, token);
-        console.log('DATA IMAGE', data);
-
         this.setState({
           ImageAppUrl: data.data.Medias[0].ImageUrl
         })
@@ -37,8 +35,6 @@ class ItemBook extends Component {
   }
 
   render() {
-    console.log('LOG', this.props.item);
-
     return (
       <TouchableOpacity style={[styles.book_item]}>
         <Image source={{ uri: this.state.ImageAppUrl }} style={styles.book_img}></Image>

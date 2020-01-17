@@ -5,7 +5,7 @@ import callAPI from '../../utils/callAPI';
 import Error from '../../components/Form/Error'
 import { Navigation } from 'react-native-navigation';
 
-class ChangePass extends Component {
+export default class ChangePass extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -78,13 +78,24 @@ class ChangePass extends Component {
   onPressChangePass = () => {
     if (this.checkValidation() == 0) {
       this.changePass();
-      Navigation.dismissModal(this.props.componentId);
+      Alert.alert(
+        'Thông báo',
+        'Bạn đã thay đổi mật khẩu thành công',
+        [
+          {
+            text: 'OK', onPress: () => {
+              Navigation.dismissModal(this.props.componentId);
+            }
+          },
+        ],
+        { cancelable: false },
+      );
     }
   }
   render() {
     var { currentPassErr, passsErr, confirmedPassErr } = this.state;
     return (
-      <ScrollView style={styles.container}>
+      <View style={styles.container}>
         <Text style={styles.styleTitle}>Currently Password</Text>
         <TextInput
           style={styles.styleInput}
@@ -118,7 +129,7 @@ class ChangePass extends Component {
         <TouchableOpacity style={styles.styleButton} onPress={this.onPressChangePass}>
           <Text style={styles.styleTextButton}>Gửi yêu cầu</Text>
         </TouchableOpacity>
-      </ScrollView>
+      </View>
     )
   }
 }
@@ -154,24 +165,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     left: 0,
     right: 0,
-    bottom: 0
+    bottom: 0,
+    marginTop: 20
   }
 })
-
-
-function mapStateToProps(state) {
-  return {
-    isAuthenticated: state.authReducer.isAuthenticated,
-    idUser: state.authReducer.user.Id,
-    token: state.authReducer.token,
-    user: state.authReducer.user
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ChangePass);
-
