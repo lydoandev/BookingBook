@@ -37,6 +37,8 @@ class FilterScreen extends Component {
   };
 
   navigateToDetail = item => {
+    console.log('Detai', item);
+    console.log('this.props.componentId: ', this.props.componentId);
     navigateTo({item}, this.props.componentId, 'Detail', item.Title);
   };
 
@@ -121,40 +123,8 @@ class FilterScreen extends Component {
   hanldFilterBook = (itemView, key, flex, numColumns, sort, dataBook) => {
     return (
       <View style={itemView}>
-        <View>
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            data={this.hanldSortBook(sort, dataBook)}
-            numColumns={numColumns}
-            key={key}
-            renderItem={({item}) => (
-              <ItemBook
-                item={item}
-                flex={flex}
-                navigateToDetail={this.navigateToDetail}
-              />
-            )}
-            keyExtractor={item => item.id}
-            showsHorizontalScrollIndicator={false}
-          />
-        </View>
-      </View>
-    );
-  };
-
-  hanldFilterBookChosseCategory = (
-    itemView,
-    key,
-    flex,
-    numColumns,
-    sort,
-    dataBook,
-  ) => {
-    return (
-      <View style={itemView}>
         <FlatList
-          contentContainerStyle={{height: 1300}}
-          showsVerticalScrollIndicator={false}
+          showsVerticalScrollIndicator={true}
           data={this.hanldSortBook(sort, dataBook)}
           numColumns={numColumns}
           key={key}
@@ -180,101 +150,97 @@ class FilterScreen extends Component {
     });
     return (
       <View>
-        <View>
-          <View style={styles.header}>
-            <TouchableOpacity onPress={this.onPressBack}>
-              <Image source={require('./../../assets/images/backIcon.png')} />
-            </TouchableOpacity>
-            <Text>
-              {this.state.category !== null ? this.state.category : 'List Sách'}
-            </Text>
-            <TouchableOpacity onPress={this.onPressMoveSearchScreen}>
-              <Image source={require('./../../assets/images/searchIcon.png')} />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.menu}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={this.onPressMoveTypeScreen}>
-              <View style={styles.button}>
-                <Text>Thể Loại</Text>
-                <Image
-                  style={styles.filterIcon}
-                  source={require('./../../assets/images/filterIcon.png')}
-                />
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.sortIcon}
-              onPress={this.onMoveSortScreen}>
-              <View style={styles.button}>
-                <Text style={{marginLeft: 10}}>Sắp xếp</Text>
-                <Image
-                  style={{marginLeft: 60}}
-                  source={require('./../../assets/images/sortIcon.png')}
-                />
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() =>
-                this.setState({
-                  isShow: !this.state.isShow,
-                  listIcon: !this.state.listIcon,
-                })
-              }>
-              {this.state.listIcon === false ? (
-                <View style={styles.button}>
-                  <Image
-                    source={require('./../../assets/images/listIcon.png')}
-                  />
-                </View>
-              ) : (
-                <View style={styles.button}>
-                  <Image
-                    source={require('./../../assets/images/listIconSq.png')}
-                  />
-                </View>
-              )}
-            </TouchableOpacity>
-          </View>
-          {this.state.category === null && this.state.isShow === false
-            ? this.hanldFilterBook(
-                styles.itemView,
-                null,
-                'column',
-                2,
-                sort,
-                dataBook,
-              )
-            : this.state.category === null && this.state.isShow === true
-            ? this.hanldFilterBook(
-                null,
-                this.state.numColumns,
-                'row',
-                1,
-                sort,
-                dataBook,
-              )
-            : this.state.isShow === false
-            ? this.hanldFilterBookChosseCategory(
-                styles.itemView,
-                null,
-                'column',
-                2,
-                sort,
-                categories,
-              )
-            : this.state.isShow === true
-            ? this.hanldFilterBookChosseCategory(
-                null,
-                this.state.numColumns,
-                'row',
-                1,
-                sort,
-                categories,
-              )
-            : console.log('error')}
+        <View style={styles.header}>
+          <TouchableOpacity onPress={this.onPressBack}>
+            <Image source={require('./../../assets/images/backIcon.png')} />
+          </TouchableOpacity>
+          <Text>
+            {this.state.category !== null ? this.state.category : 'List Sách'}
+          </Text>
+          <TouchableOpacity onPress={this.onPressMoveSearchScreen}>
+            <Image source={require('./../../assets/images/searchIcon.png')} />
+          </TouchableOpacity>
         </View>
+        <View style={styles.menu}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={this.onPressMoveTypeScreen}>
+            <View style={styles.button}>
+              <Text>Thể Loại</Text>
+              <Image
+                style={styles.filterIcon}
+                source={require('./../../assets/images/filterIcon.png')}
+              />
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.sortIcon}
+            onPress={this.onMoveSortScreen}>
+            <View style={styles.button}>
+              <Text style={{marginLeft: 10}}>Sắp xếp</Text>
+              <Image
+                style={{marginLeft: 60}}
+                source={require('./../../assets/images/sortIcon.png')}
+              />
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              this.setState({
+                isShow: !this.state.isShow,
+                listIcon: !this.state.listIcon,
+              })
+            }>
+            {this.state.listIcon === false ? (
+              <View style={styles.button}>
+                <Image source={require('./../../assets/images/listIcon.png')} />
+              </View>
+            ) : (
+              <View style={styles.button}>
+                <Image
+                  source={require('./../../assets/images/listIconSq.png')}
+                />
+              </View>
+            )}
+          </TouchableOpacity>
+        </View>
+        {this.state.category === null && this.state.isShow === false
+          ? this.hanldFilterBook(
+              styles.itemView,
+              null,
+              'column',
+              2,
+              sort,
+              dataBook,
+            )
+          : this.state.category === null && this.state.isShow === true
+          ? this.hanldFilterBook(
+              null,
+              this.state.numColumns,
+              'row',
+              1,
+              sort,
+              dataBook,
+            )
+          : this.state.isShow === false
+          ? this.hanldFilterBook(
+              styles.itemView,
+              null,
+              'column',
+              2,
+              sort,
+              categories,
+            )
+          : this.state.isShow === true
+          ? this.hanldFilterBook(
+              null,
+              this.state.numColumns,
+              'row',
+              1,
+              sort,
+              categories,
+            )
+          : console.log('error')}
       </View>
     );
   }
@@ -324,7 +290,7 @@ const styles = StyleSheet.create({
   itemView: {
     flexDirection: 'column',
     alignItems: 'center',
-    marginVertical: 250,
     marginTop: 0,
+    marginBottom: 150,
   },
 });

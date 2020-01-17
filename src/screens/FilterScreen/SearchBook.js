@@ -36,7 +36,9 @@ class SearchBook extends Component {
   };
 
   hanldSearch = item => {
-    if (item.Title.indexOf(this.state.dataSearch) > 0) {
+    var inputData = this.state.dataSearch.toUpperCase();
+    var dataFind = item.Title.toUpperCase();
+    if (dataFind.indexOf(inputData) > 0) {
       return (
         <TouchableOpacity
           onPress={() => {
