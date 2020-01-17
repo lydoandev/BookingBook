@@ -309,7 +309,6 @@ class Detail extends Component {
 
   getLovingBook = async () => {
     const { idUser, token } = this.props;
-    console.log("Get loving");
 
     const { Id } = this.props.item;
     try {

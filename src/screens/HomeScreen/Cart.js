@@ -26,7 +26,6 @@ class Cart extends Component {
     const { token, idUser, idCart } = this.props;
     const { idBookDelete, deleteAll } = this.state;
     const info = { BookId: idBookDelete, UserId: idUser, DeleteAll: deleteAll }
-    console.log("Id: ", this.props.idCart);
 
     try {
       var data = await callAPI('api/basket', 'DELETE', info, token);
@@ -83,7 +82,6 @@ class Cart extends Component {
   changeQuantity = async (BookId, Quantity) => {
     const { token, idUser, idCart } = this.props;
     const info = { BookId, UserId: idUser, Quantity }
-    console.log("Info: ", info);
 
     try {
       var data = await callAPI(`api/basket/${idCart}`, 'PUT', info, token);
@@ -101,11 +99,9 @@ class Cart extends Component {
   order = async () => {
     const { token, idUser, idCart } = this.props;
     const info = { ShippingAddress: '', ShippingRequired: false, UserId: idUser, Note: '' }
-    console.log("Info: ", info);
 
     try {
       var data = await callAPI('api/orders', 'POST', info, token);
-      console.log("Order nè: ", data.data);
 
       this.props.getCart({ basketId: idCart, userId: idUser, token });
       this.setState(prevState => ({
@@ -131,9 +127,7 @@ class Cart extends Component {
   }
 
   render() {
-    console.log("Cart: ", this.props.cart);
     const { askDelete, deleteSuccess, successMess, error } = this.state;
-    console.log("State: ", this.state);
 
     return (
       <>

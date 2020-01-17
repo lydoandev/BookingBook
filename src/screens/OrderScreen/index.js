@@ -53,7 +53,6 @@ class Order extends Component {
         null,
         token
       );
-      console.log("Datat: ", data.data);
 
       var orders = [];
       data.data.Orders.map(order => {
@@ -83,7 +82,6 @@ class Order extends Component {
         idOrder = item.title;
       }
     })
-    console.log("Id: ", idOrder);
 
     const { token } = this.props;
     var info = { OrderItemStatus: status, OrderItemIds: [id] }
@@ -115,7 +113,6 @@ class Order extends Component {
 
     if (isAuthenticated) {
       const { orders, loading } = this.state;
-      console.log("Order: ", orders);
       if (loading) {
         return (
           <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>

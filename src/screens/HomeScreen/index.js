@@ -113,7 +113,6 @@ class Home extends Component {
                 flex='column'
               />
             )}
-            // renderItem={({ item }) => console.log(item)}
             renderSectionHeader={({ section: { type, data } }) => (
               <TitleSection
                 type={type}

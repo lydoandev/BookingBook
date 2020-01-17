@@ -68,7 +68,6 @@ export function* getNotifications(action) {
       null,
       action.payload
     ));
-    console.log("Yy :", data.data.UserNotifications);
     yield put({ type: GET_NOTIFICATIONS_SUCCESSED, payload: data.data.UserNotifications });
   } catch (error) {
     console.log("Error get noti: ", error);

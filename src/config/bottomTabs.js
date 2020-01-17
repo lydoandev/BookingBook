@@ -33,6 +33,7 @@ export const sideMenu = {
                       },
                     },
                     bottomTab: {
+                      selectedTextColor: '#ff6666',
                       titleDisplayMode: 'showWhenActive',
                       text: 'Home',
                       icon: require('../assets/images/home.png'),
@@ -59,6 +60,7 @@ export const sideMenu = {
                       },
                     },
                     bottomTab: {
+                      selectedTextColor: '#ff6666',
                       titleDisplayMode: 'showWhenActive',
                       text: 'Order',
                       icon: require('../assets/images/order.png'),
@@ -82,6 +84,7 @@ export const sideMenu = {
                       },
                     },
                     bottomTab: {
+                      selectedTextColor: '#ff6666',
                       titleDisplayMode: 'showWhenActive',
                       text: 'Profile',
                       icon: require('../assets/images/profile.png'),
@@ -105,6 +108,7 @@ export const sideMenu = {
                       },
                     },
                     bottomTab: {
+                      selectedTextColor: '#ff6666',
                       titleDisplayMode: 'showWhenActive',
                       text: 'Thông báo',
                       icon: require('../assets/images/notification.png'),
@@ -125,6 +129,8 @@ export const sideMenu = {
                       drawBehind: true,
                     },
                     bottomTab: {
+                      animate: true,
+                      selectedTextColor: '#ff6666',
                       titleDisplayMode: 'showWhenActive',
                       text: 'Thư viện',
                       icon: require('../assets/images/library.png'),
@@ -139,6 +145,7 @@ export const sideMenu = {
       ],
       options: {
         bottomTab: {
+          selectedTextColor: '#ff6666',
           titleDisplayMode: 'showWhenActive',
           text: 'Home',
           icon: require('../assets/images/home.png'),

@@ -39,7 +39,6 @@ class Notification extends Component {
       ],
       IsSeenAll: seenAll
     }
-    console.log("Update: ", info);
 
     try {
       var data = await callAPI(
@@ -48,7 +47,6 @@ class Notification extends Component {
         info,
         token
       );
-      console.log("Result: ", data);
 
       this.getNotifications();
     } catch (error) {
@@ -65,7 +63,6 @@ class Notification extends Component {
   }
   render() {
     const { isAuthenticated, notifications, loading } = this.props;
-    console.log("Noti: ", notifications);
     if (isAuthenticated) {
       if (loading) {
         return (
@@ -75,7 +72,7 @@ class Notification extends Component {
         );
       } else {
         return (
-          <View style={{ marginTop: 20 }}>
+          <View style={{ marginTop: 20, marginBottom: 40 }}>
             <TouchableOpacity onPress={this.seenAll}>
               <Text
                 style={{ alignSelf: 'flex-end', color: '#ababab', fontSize: 15, paddingRight: 15, paddingBottom: 15 }}

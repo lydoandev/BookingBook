@@ -54,7 +54,7 @@ export default class ItemOrder extends Component {
           </View>
           <View>
             <View style={{ flexDirection: 'row' }}>
-              <Icon name='sliders' size={20} color='#ff6666' style={styles.icon}></Icon>
+              <Icon name='barcode' size={20} color='#ff6666' style={styles.icon}></Icon>
               <Text style={{ fontSize: 18 }}>{Id.toUpperCase()}</Text>
             </View>
             <View style={{ flexDirection: 'row' }}>
@@ -63,9 +63,8 @@ export default class ItemOrder extends Component {
             </View>
             <Text style={{ color: '#7f7f7f' }}>Hạn trả: <Text style={styles.idText}>{this.cutDate(ExpiryDate)}</Text></Text>
           </View>
-          <View >
-
-            <Text style={{ textAlign: 'right', fontSize: 17, color: color }}>{DisplayStatus}</Text>
+          <View style={{ alignItems: 'flex-end' }}>
+            <Text style={{ textAlign: 'right', fontSize: 17, color: color, }}>{DisplayStatus}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -81,7 +80,6 @@ const styles = StyleSheet.create({
   },
   content: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     marginHorizontal: 15,
     marginVertical: 20
   },
@@ -89,7 +87,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRightColor: '#7f7f7f',
     borderRightWidth: 0.5,
-    paddingRight: 40
+    paddingRight: 30,
+    marginRight: 15,
   },
   idText: {
     fontSize: 17,
