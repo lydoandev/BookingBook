@@ -8,6 +8,7 @@ import {
   FlatList,
   AsyncStorage,
 } from 'react-native';
+import {some, filter} from 'lodash';
 import {Navigation} from 'react-native-navigation';
 import {connect} from 'react-redux';
 import * as bookActions from '../../reduxs/bookRedux/actions';
@@ -109,9 +110,9 @@ class FilterScreen extends Component {
     } else if (sort === 'zta') {
       return dataBook.sort((a, b) => b.Title.localeCompare(a.Title));
     } else if (sort === 'htl') {
-      return dataBook.sort((a, b) => a.Price - b.Price);
-    } else if (sort === 'lth') {
       return dataBook.sort((a, b) => b.Price - a.Price);
+    } else if (sort === 'lth') {
+      return dataBook.sort((a, b) => a.Price - b.Price);
     } else {
       return dataBook;
     }
@@ -151,28 +152,22 @@ class FilterScreen extends Component {
   ) => {
     return (
       <View style={itemView}>
-        <View>
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            data={this.hanldSortBook(sort, dataBook)}
-            numColumns={numColumns}
-            key={key}
-            renderItem={({item}) =>
-              item.Categories[0].Name === this.state.category ||
-              item.Categories[1].Name === this.state.category ? (
-                <ItemBook
-                  item={item}
-                  flex={flex}
-                  navigateToDetail={this.navigateToDetail}
-                />
-              ) : (
-                console.log('null')
-              )
-            }
-            keyExtractor={item => item.id}
-            showsHorizontalScrollIndicator={false}
-          />
-        </View>
+        <FlatList
+          contentContainerStyle={{height: 1300}}
+          showsVerticalScrollIndicator={false}
+          data={this.hanldSortBook(sort, dataBook)}
+          numColumns={numColumns}
+          key={key}
+          renderItem={({item}) => (
+            <ItemBook
+              item={item}
+              flex={flex}
+              navigateToDetail={this.navigateToDetail}
+            />
+          )}
+          keyExtractor={item => item.id}
+          showsHorizontalScrollIndicator={false}
+        />
       </View>
     );
   };
@@ -180,7 +175,9 @@ class FilterScreen extends Component {
   render() {
     const {dataBook} = this.props;
     let {sort} = this.props;
-    console.log(this.state.category);
+    const categories = filter(dataBook, value => {
+      return some(value.Categories, {Name: this.state.category});
+    });
     return (
       <View>
         <View>
@@ -265,7 +262,7 @@ class FilterScreen extends Component {
                 'column',
                 2,
                 sort,
-                dataBook,
+                categories,
               )
             : this.state.isShow === true
             ? this.hanldFilterBookChosseCategory(
@@ -274,7 +271,7 @@ class FilterScreen extends Component {
                 'row',
                 1,
                 sort,
-                dataBook,
+                categories,
               )
             : console.log('error')}
         </View>

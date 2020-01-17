@@ -10,11 +10,11 @@ export default class SortBook extends Component {
       sort: [
         {
           key: 'htl',
-          title: 'Từ thấp đến cao',
+          title: 'Từ cao đến thấp',
         },
         {
           key: 'lth',
-          title: 'Từ cao đến thấp',
+          title: 'Từ thấp đến cao',
         },
         {
           key: 'atz',
