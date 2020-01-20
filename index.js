@@ -8,7 +8,7 @@ import Order from './src/screens/OrderScreen';
 import Profile from './src/screens/ProfileScreen';
 import Slide from './src/screens/SlideScreen';
 import Home from './src/screens/HomeScreen';
-import SideBar from './src/screens/SideBar';
+import SideBar from './src/screens/SideBarScreen';
 import { store, persistor } from './src/reduxs/store';
 import { Provider } from 'react-redux';
 import SeeAll from './src/screens/HomeScreen/SeeAll';
