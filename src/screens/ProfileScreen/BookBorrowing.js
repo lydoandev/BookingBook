@@ -1,22 +1,29 @@
 import React, { Component } from 'react'
-import { FlatList } from 'react-native'
+import { FlatList, ScrollView, StyleSheet, View } from 'react-native'
 import ItemBook from '../../components/Profile/ItemBook';
 
 export default class BookBorrowing extends Component {
+  constructor(props) {
+    super(props);
+  }
   render() {
-    return (
-      <FlatList
-        data={this.props.booksProfile.Basket.Items}
-        numColumns={3}
-        renderItem={({ item }) => (
-          <ItemBook
-            item={item.Book}
-            type="borrow"
+    if (this.props.bookBorrowing) {
+      return (
+        <ScrollView>
+          <FlatList
+            data={this.props.bookBorrowing.Items}
+            numColumns={3}
+            renderItem={({ item }) => (
+              <ItemBook
+                item={item}
+                type="borrow"
+              />
+            )}
+            keyExtractor={item => item.id}
+            showsHorizontalScrollIndicator={false}
           />
-        )}
-        keyExtractor={item => item.id}
-        showsHorizontalScrollIndicator={false}
-      />
-    )
+        </ScrollView>
+      )
+    }
   }
 }

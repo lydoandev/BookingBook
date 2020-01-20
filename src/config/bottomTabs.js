@@ -89,7 +89,11 @@ export const sideMenu = {
                       text: 'Profile',
                       icon: require('../assets/images/profile.png'),
                       testID: 'SECOND_TAB_BAR_BUTTON',
-                    }
+                    },
+                    topBar: {
+                      visible: false,
+                      drawBehind: true,
+                    },
                   },
                 },
               },

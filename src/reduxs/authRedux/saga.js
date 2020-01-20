@@ -1,6 +1,5 @@
 import callAPI from '../../utils/callAPI'
 import { put, takeLatest, call } from 'redux-saga/effects'
-import * as ProfileActions from './actions'
 
 import {
   REGISTER,
@@ -14,18 +13,11 @@ import {
   GET_CART,
   GET_CART_SUCCESSED,
   GET_NOTIFICATIONS,
-  GET_NOTIFICATIONS_SUCCESSED
+  GET_NOTIFICATIONS_SUCCESSED,
+  UPDATE_PROFILE_SUCCESSED,
+  UPDATE_PROFILE_FAILED,
+  UPDATE_PROFILE
 } from './actions';
-
-export function* getProfile(action) {
-  try {
-    var data = yield call(() => callAPI(`api/users/me`, 'GET', null, 'YmVTTFJad01TRHlKcWNHM25obS9Ja3JFNHdvdVlENDNIM2I4TGNmZEVlRnFNd2wwaHpvTmc3UHB3M3E0a2lsaw=='));
-    yield put({ type: ProfileActions.FETCH_PROFILE_SUCCESSED, payload: data.data })
-  } catch (error) {
-    yield put({ type: ProfileActions.FETCH_PROFILE_FAILURE, payload: error })
-  }
-}
-
 
 export function* Register(action) {
   try {
@@ -82,10 +74,22 @@ export function* Logout() {
   yield put({ type: LOGOUT_SUCCESSED });
 }
 
+export function* updateProfile(action) {
+  const { idUser, token } = action.payload;
+  try {
+    const data = yield call(() => callAPI(`api/users/${idUser}/updateprofile`, 'PUT', action.payload, token));
+    yield put({ type: UPDATE_PROFILE_SUCCESSED, payload: data.data });
+  } catch (error) {
+
+    yield put({ type: UPDATE_PROFILE_FAILED, payload: error.response });
+  }
+}
+
 export const watchUserSaga = [
   takeLatest(REGISTER, Register),
   takeLatest(LOGIN, Login),
   takeLatest(LOGOUT, Logout),
   takeLatest(GET_CART, getCart),
-  takeLatest(GET_NOTIFICATIONS, getNotifications)
+  takeLatest(GET_NOTIFICATIONS, getNotifications),
+  takeLatest(UPDATE_PROFILE, updateProfile)
 ]

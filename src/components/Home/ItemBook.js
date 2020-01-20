@@ -29,13 +29,11 @@ export default class ItemBook extends Component {
       Medias,
     } = this.props.item;
 
-
-
     return (
       <TouchableOpacity
         style={[styles.book_item, { flexDirection: flex }, { width: flex == 'column' ? 155 : "100%" }]}
         onPress={this.navigateToDetail}>
-        <Image source={{ uri: Medias[0].ImageAppUrl || '' }} style={styles.book_img} />
+        <Image source={{ uri: Medias[0].ImageAppUrl || 'agagaga' }} style={styles.book_img} />
         <View
           style={{ flexDirection: 'column', marginTop: flex == 'row' ? 20 : 5 }}>
           <Text style={styles.title} numberOfLines={1}>

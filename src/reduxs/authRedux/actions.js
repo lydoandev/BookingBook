@@ -1,7 +1,3 @@
-export const FETCH_PROFILE = 'FETCH_PROFILE';
-export const FETCH_PROFILE_SUCCESS = 'FETCH_PROFILE_SUCCESS';
-export const FETCH_PROFILE_FAILURE = 'FETCH_PROFILE_FAILURE';
-
 export const LOGIN = "LOGIN"
 export const REGISTER = "REGISTER"
 export const REGISTER_SUCCESSED = "REGISTER_SUCCESSED"
@@ -19,6 +15,10 @@ export const GET_NOTIFICATIONS_SUCCESSED = "GET_NOTIFICATIONS_SUCCESSED"
 
 
 export const LOGOUT = "LOGOUT"
+
+export const UPDATE_PROFILE = "UPDATE_PROFILE"
+export const UPDATE_PROFILE_SUCCESSED = "UPDATE_PROFILE_SUCCESSED"
+export const UPDATE_PROFILE_FAILED = "UPDATE_PROFILE_FAILED"
 
 export const login = (user) => {
   return { type: LOGIN, payload: user }
@@ -40,3 +40,6 @@ export const getNotifications = data => {
   return ({ type: GET_NOTIFICATIONS, payload: data });
 }
 
+export const updateProfile = (user) => {
+  return { type: UPDATE_PROFILE, payload: user };
+}

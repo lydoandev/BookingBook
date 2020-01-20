@@ -17,6 +17,9 @@ import Cart from './src/screens/HomeScreen/Cart'
 import FilterScreen from './src/screens/FilterScreen';
 import SortBook from './src/screens/FilterScreen/SortBook';
 import SearchBook from './src/screens/FilterScreen/SearchBook';
+import SettingInfo from './src/screens/ProfileScreen/SettingInfo'
+import PersonalInfo from './src/screens/ProfileScreen/PersonalInfo.js'
+import ChangePass from './src/screens/ProfileScreen/ChangePass'
 
 console.disableYellowBox = true;
 Navigation.registerComponent(
@@ -95,6 +98,24 @@ Navigation.registerComponent(
   'SearchBook',
   () => ReducerComponent(SearchBook),
   () => SearchBook,
+)
+
+Navigation.registerComponent(
+  'SettingInfo',
+  () => ReducerComponent(SettingInfo),
+  () => SettingInfo,
+);
+
+Navigation.registerComponent(
+  'PersonalInfo',
+  () => ReducerComponent(PersonalInfo),
+  () => PersonalInfo,
+);
+
+Navigation.registerComponent(
+  'ChangePass',
+  () => ReducerComponent(ChangePass),
+  () => ChangePass,
 );
 
 Navigation.events().registerAppLaunchedListener(() => {
