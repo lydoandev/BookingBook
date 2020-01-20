@@ -65,19 +65,6 @@ export default class ChangePass extends Component {
       }
       const data = await callAPI(`api/users/${idUser}/password/change`, 'PUT', body, token);
       console.log(data);
-
-    } catch (error) {
-      this.setState((prevState) => ({
-        ...prevState,
-        currentPassErr: "Mật khẩu hiện tại không đúng!"
-      }))
-      console.log('CHANGE PASS:', error.response);
-    }
-  }
-
-  onPressChangePass = () => {
-    if (this.checkValidation() == 0) {
-      this.changePass();
       Alert.alert(
         'Thông báo',
         'Bạn đã thay đổi mật khẩu thành công',
@@ -90,7 +77,18 @@ export default class ChangePass extends Component {
         ],
         { cancelable: false },
       );
+
+    } catch (error) {
+      this.setState((prevState) => ({
+        ...prevState,
+        currentPassErr: "Mật khẩu hiện tại không đúng!"
+      }))
+      console.log('CHANGE PASS:', error.response);
     }
+  }
+
+  onPressChangePass = () => {
+    this.changePass();
   }
   render() {
     var { currentPassErr, passsErr, confirmedPassErr } = this.state;
