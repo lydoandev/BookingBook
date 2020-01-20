@@ -40,6 +40,8 @@ export function* Login(action) {
 
   try {
     const data = yield call(() => callAPI(`api/token`, 'POST', action.payload))
+    console.log("data: ", data);
+
     yield put({ type: LOGIN_SUCCESSED, payload: data.data });
   } catch (error) {
 

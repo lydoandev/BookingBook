@@ -18,6 +18,8 @@ class Notification extends Component {
 
   getNotifications = () => {
     const { token, isAuthenticated } = this.props;
+    console.log("GEt notification");
+
     if (isAuthenticated) {
       this.props.getNotifications(token);
     }

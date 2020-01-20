@@ -3,7 +3,6 @@ import { Text, View, Image, StyleSheet, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import moment from 'moment';
 
-
 export default class ItemOrder extends Component {
 
   cutDate = (date) => {
@@ -63,8 +62,8 @@ export default class ItemOrder extends Component {
             </View>
             <Text style={{ color: '#7f7f7f' }}>Hạn trả: <Text style={styles.idText}>{this.cutDate(ExpiryDate)}</Text></Text>
           </View>
-          <View style={{ alignItems: 'flex-end' }}>
-            <Text style={{ textAlign: 'right', fontSize: 17, color: color, }}>{DisplayStatus}</Text>
+          <View style={{ alignItems: 'flex-end', flex: 1 }}>
+            <Text style={{ textAlign: 'right', fontSize: 17, color: color, paddingRight: 5 }}>{DisplayStatus}</Text>
           </View>
         </View>
       </TouchableOpacity>
