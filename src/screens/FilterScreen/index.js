@@ -43,9 +43,10 @@ class FilterScreen extends Component {
   };
 
   onPressBack = () => {
-    Navigation.showModal({
-      sideMenu,
-    });
+    Navigation.dismissModal(this.props.componentId);
+    // Navigation.showModal({
+    //   sideMenu,
+    // });
   };
 
   onPressMoveTypeScreen = () => {

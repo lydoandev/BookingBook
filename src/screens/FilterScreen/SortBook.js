@@ -38,6 +38,7 @@ export default class SortBook extends Component {
         },
       },
     });
+    //  Navigation.dismissModal(this.props.componentId);
   };
 
   onPressBack = () => {
