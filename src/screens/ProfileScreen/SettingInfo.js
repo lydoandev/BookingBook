@@ -67,7 +67,7 @@ class SettingInfo extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <ItemSetting image={infoProfile} title='Thông tin cá nhân' navigationScreen={() => this.navigationScreen('PersonalInfo', 'Chỉnh sửa thông tin', null)}></ItemSetting>
         <ItemSetting image={lockIcon} title='Đổi mật khẩu' navigationScreen={() => this.navigationScreen('ChangePass', 'Thay đổi mật khẩu', this.state.data)}></ItemSetting>
         <ItemSetting image={supportIcon} title='Hỗ trợ' ></ItemSetting>
@@ -76,7 +76,7 @@ class SettingInfo extends Component {
         <ItemSetting image={historyIcon} title='Lịch sử nâng cấp thành viên' ></ItemSetting>
         <ItemSetting image={shareIcon} title='Chia sẻ' ></ItemSetting>
         <ItemSetting image={logOutIcon} title='Đăng xuất' navigationScreen={this.logoutScreen}></ItemSetting>
-      </View>
+      </ScrollView>
     )
   }
 }
@@ -84,7 +84,7 @@ class SettingInfo extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 15,
+    marginVertical: 15,
     padding: 15,
   }
 })
