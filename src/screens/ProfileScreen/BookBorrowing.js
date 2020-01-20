@@ -7,7 +7,6 @@ export default class BookBorrowing extends Component {
     super(props);
   }
   render() {
-    console.log('Book Borrowing', this.props.bookBorrowing);
     if (this.props.bookBorrowing) {
       return (
         <ScrollView>

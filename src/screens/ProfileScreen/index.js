@@ -15,7 +15,6 @@ class Profile extends Component {
 
 
   navigationButtonPressed = ({ buttonId }) => {
-    console.log('VO DAY');
     const { componentId } = this.props;
     if (buttonId === 'close') {
       Navigation.dismissModal(componentId);

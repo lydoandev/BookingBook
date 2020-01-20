@@ -88,7 +88,9 @@ export default class ChangePass extends Component {
   }
 
   onPressChangePass = () => {
-    this.changePass();
+    if (this.checkValidation() == 0) {
+      this.changePass();
+    }
   }
   render() {
     var { currentPassErr, passsErr, confirmedPassErr } = this.state;

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from './node_modules/react';
 import { Image } from 'react-native';
 import { View, Text, ListItem, Body, Right } from 'native-base';
 

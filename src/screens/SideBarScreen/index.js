@@ -3,7 +3,7 @@ import {Text, View, TouchableOpacity, FlatList} from 'react-native';
 import {Container} from 'native-base';
 import CategoryItem from '../../components/sideBar/categoryItem';
 import {connect} from 'react-redux';
-import {FETCH_CATEGORY} from './../../reduxs/categoryRedux/actions';
+import {FETCH_CATEGORY} from '../../reduxs/categoryRedux/actions';
 
 class SideBar extends Component {
   componentDidMount() {
