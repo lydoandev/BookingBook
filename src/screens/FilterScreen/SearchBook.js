@@ -66,9 +66,6 @@ class SearchBook extends Component {
               this.hanldGetDataFromTextInput('dataSearch', value)
             }
           />
-          {/* <TouchableOpacity onPress={this.onPressMoveSearchScreen}>
-            <Image source={require('./../../assets/images/searchIcon.png')} />
-          </TouchableOpacity> */}
         </View>
         <View style={{marginTop: 20}}>
           <FlatList
