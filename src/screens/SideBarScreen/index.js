@@ -1,23 +1,23 @@
-import React, {Component} from 'react';
-import {Text, View, TouchableOpacity, FlatList} from 'react-native';
-import {Container} from 'native-base';
-import CategoryItem from '../../components/sideBar/categoryItem';
-import {connect} from 'react-redux';
-import {FETCH_CATEGORY} from './../../reduxs/categoryRedux/actions';
+import React, { Component } from 'react';
+import { Text, View, TouchableOpacity, FlatList } from 'react-native';
+import { Container } from 'native-base';
+import CategoryItem from '../../components/SideBar/categoryItem';
+import { connect } from 'react-redux';
+import { FETCH_CATEGORY } from './../../reduxs/categoryRedux/actions';
 
 class SideBar extends Component {
   componentDidMount() {
     this.props.onCategory();
   }
 
-  renderItem = ({item}) => {
+  renderItem = ({ item }) => {
     return <CategoryItem name={item.Name} subList={item.SubCategories} />;
   };
 
   render() {
-    let {categories} = this.props;
+    let { categories } = this.props;
     return (
-      <Container style={{backgroundColor: '#fff', paddingTop: 20}}>
+      <Container style={{ backgroundColor: '#fff', paddingTop: 20 }}>
         <FlatList
           data={categories}
           renderItem={this.renderItem}
@@ -32,7 +32,7 @@ class SideBar extends Component {
                 alignItems: 'center',
                 backgroundColor: '#fc9619',
               }}>
-              <Text style={{color: '#ffffff', fontWeight: 'bold'}}>
+              <Text style={{ color: '#ffffff', fontWeight: 'bold' }}>
                 Tìm kết quả
               </Text>
             </View>
@@ -52,7 +52,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onCategory: () => {
-      dispatch({type: FETCH_CATEGORY});
+      dispatch({ type: FETCH_CATEGORY });
     },
   };
 };
