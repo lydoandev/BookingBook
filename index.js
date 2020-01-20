@@ -14,6 +14,9 @@ import { Provider } from 'react-redux';
 import SeeAll from './src/screens/HomeScreen/SeeAll';
 import Auth from './src/screens/AuthScreen'
 import Cart from './src/screens/HomeScreen/Cart'
+import FilterScreen from './src/screens/FilterScreen';
+import SortBook from './src/screens/FilterScreen/SortBook';
+import SearchBook from './src/screens/FilterScreen/SearchBook';
 
 console.disableYellowBox = true;
 Navigation.registerComponent(
@@ -74,6 +77,24 @@ Navigation.registerComponent(
   'Cart',
   () => ReducerComponent(Cart),
   () => Cart,
+);
+
+Navigation.registerComponent(
+  'FilterScreen',
+  () => ReducerComponent(FilterScreen),
+  () => FilterScreen,
+);
+
+Navigation.registerComponent(
+  'SortBook',
+  () => ReducerComponent(SortBook),
+  () => SortBook,
+);
+
+Navigation.registerComponent(
+  'SearchBook',
+  () => ReducerComponent(SearchBook),
+  () => SearchBook,
 );
 
 Navigation.events().registerAppLaunchedListener(() => {

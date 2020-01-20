@@ -1,13 +1,13 @@
 import callAPI from '../../utils/callAPI';
 import { put, takeLatest, call } from 'redux-saga/effects';
-
 import * as types from './actions';
 
 export function* fetchBooks() {
   try {
-    var data = yield call(() => callAPI('api/books'));
-    yield put({ type: types.FETCH_BOOKS_SUCCESSED, payload: data.data });
+    var books = yield call(() => callAPI('api/books'));
+    yield put({ type: types.FETCH_BOOKS_SUCCESSED, payload: books.data.Books });
   } catch (error) {
+    console.log('Error: ', error);
   }
 }
 

@@ -23,7 +23,25 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.props.fetchCmsHome();
+    Navigation.events().bindComponent(this)
   }
+
+  navigationButtonPressed = ({ buttonId }) => {
+    const { componentId } = this.props;
+    try {
+      if (buttonId === 'SideBar') {
+        Navigation.mergeOptions(componentId, {
+          sideMenu: {
+            left: {
+              visible: true,
+            },
+          },
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   filterData = booksHome => {
     var books = [];

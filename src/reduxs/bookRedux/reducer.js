@@ -24,6 +24,8 @@ export const bookReducer = (state = initialState, action) => {
         bestUsers,
         bestReviewers: bestReviewers.Reviewers
       });
+    case type.FETCH_BOOKS_SUCCESSED:
+      return Object.assign({}, state, { loading: false, books: action.payload });
     default:
       return state;
   }

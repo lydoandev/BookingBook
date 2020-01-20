@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   View,
   Image,
@@ -7,8 +7,8 @@ import {
   StyleSheet,
   ScrollView,
 } from 'react-native';
-import {Navigation} from 'react-native-navigation';
-import {sideMenu} from '../../config/bottomTabs';
+import { Navigation } from 'react-native-navigation';
+import { sideMenu } from '../../config/bottomTabs';
 
 export default class SwiperSlider extends Component {
   constructor(props) {

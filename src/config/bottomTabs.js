@@ -25,7 +25,7 @@ export const sideMenu = {
                   options: {
                     topBar: {
                       leftButtons: {
-                        id: 'sidebar',
+                        id: 'SideBar',
                         component: {
                           name: 'SideBar',
                         },
