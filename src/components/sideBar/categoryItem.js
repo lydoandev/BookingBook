@@ -1,15 +1,15 @@
-import React, {Component} from 'react';
-import {FlatList, Image} from 'react-native';
-import {View, Text, ListItem, Body, Right} from 'native-base';
+import React, { Component } from 'react';
+import { FlatList, Image } from 'react-native';
+import { View, Text, ListItem, Body, Right } from 'native-base';
 import SubCategory from './SubCategory';
 
 export default class categoryItem extends Component {
   constructor(props) {
     super(props);
-    this.state = {isShow: false, isTick: false};
+    this.state = { isShow: false, isTick: false };
   }
 
-  renderItem = ({item}) => {
+  renderItem = ({ item }) => {
     return <SubCategory tick={item.Name} subList={item.Name} />;
   };
 
