@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 import callAPI from '../../utils/callAPI';
 import { Navigation } from 'react-native-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Membership from './Membership';
 
 
 export default class InfoUser extends Component {
@@ -16,7 +15,8 @@ export default class InfoUser extends Component {
     super(props);
     this.getRequestBook();
     this.state = {
-      requestBook: []
+      requestBook: [],
+      display: false
     }
   }
 
@@ -62,10 +62,16 @@ export default class InfoUser extends Component {
       console.log('ERROR GET USER:', error);
     }
   }
+  onPressArrowButton = () => {
+    this.setState((prevState) => ({
+      ...prevState,
+      display: !prevState.display
+    }))
+  }
   render() {
     const tabSubMenu = <TabMenuBook token={this.props.token} idUser={this.props.idUser} isAuthenticated={this.props.isAuthenticated} componentId={this.props.componentId}></TabMenuBook>
     const bookRequest = <BookRequest requestBook={this.state.requestBook}></BookRequest>
-    const membership = <Membership token={this.props.token} idUser={this.props.idUser} isAuthenticated={this.props.isAuthenticated} user={this.props.user}></Membership>
+    const { display } = this.state;
     return (
       <View>
         <Image style={styles.image} source={{ uri: 'https://images.pexels.com/photos/531880/pexels-photo-531880.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500' }}>
@@ -101,39 +107,44 @@ export default class InfoUser extends Component {
               {bookRequest}
             </View>
             <View style={styles.tabBarMenu} tabLabel='Gói thành viên'>
-              {/* <View style={styles.content}>
-                <Image style={styles.styleQRCode} source={require('../../assets/images/platinumGreen.jpg')}></Image>
-                <View style={{ flexDirection: 'column', justifyContent: 'center', marginTop: 15 }}>
-                  <Text style={{ color: '#000000', fontSize: 17, fontFamily: 'SVN-ProximaNova', textAlign: 'center' }}>
-                    Gói thành viên
-                  <Text style={styles.styleMemberShipName}> {(this.props.user.Membership.Name).toUpperCase()} </Text>
-                  </Text>
-                  <Text style={{ color: '#dadada', fontSize: 17, fontFamily: 'SVN-ProximaNova', textAlign: 'center' }}>Hết hạn:<Text style={{ color: '#000000' }}>{this.props.user.MembershipExpiryDate}</Text></Text>
+              <View style={{ borderRadius: 20, backgroundColor: '#fff', marginTop: 20 }}>
+                <View style={styles.content}>
+                  <Image style={styles.styleQRCode} source={require('../../assets/images/platinumGreen.jpg')}></Image>
+                  <View style={{ flexDirection: 'column', justifyContent: 'center', marginTop: 15 }}>
+                    <Text style={{ color: '#000000', fontSize: 17, fontFamily: 'SVN-ProximaNova', textAlign: 'center' }}>
+                      Gói thành viên
+                  <Text style={styles.styleMemberShipName} onPress={this.onPressArrowButton}> {(this.props.user.Membership.Name).toUpperCase()} </Text>
+                    </Text>
+                    <Text style={{ color: '#dadada', fontSize: 17, fontFamily: 'SVN-ProximaNova', textAlign: 'center' }}>Hết hạn:<Text style={{ color: '#000000' }}>{this.props.user.MembershipExpiryDate}</Text></Text>
+                  </View>
+                  <TouchableOpacity onPress={this.onPressArrowButton}>
+                    <Image style={styles.styleSetting} onPress={this.onPressArrowButton} source={this.props.user.Image == null ? require('../../assets/images/arrow.png') : this.props.user.Image}></Image>
+                  </TouchableOpacity>
                 </View>
-                <TouchableOpacity >
-                  <Image style={styles.styleSetting} source={this.props.user.Image == null ? require('../../assets/images/arrow.png') : this.props.user.Image}></Image>
-                </TouchableOpacity>
+
+                <View style={{ borderTopWidth: 1, borderColor: '#f2f2f2', bottom: 20 }}></View>
+                <View style={{ flexDirection: 'column', display: display ? 'flex' : 'none' }}>
+                  <View style={styles.styleRowContent}>
+                    <Text style={styles.styleTextTitle}>Giá trị gói</Text>
+                    <Text style={styles.styleTextData}>{this.props.user.Membership.Value}</Text>
+                  </View>
+                  <View style={styles.styleRowContent}>
+                    <Text style={styles.styleTextTitle}>Gia hạn sách</Text>
+                    <Text style={styles.styleTextData}>{this.props.user.Membership.MaxExtensionTimes} lượt/năm</Text>
+                  </View>
+                  <View style={styles.styleRowContent}>
+                    <Text style={styles.styleTextTitle}>Yêu cầu sách</Text>
+                    <Text style={styles.styleTextData}>{this.props.user.Membership.MaxRequestTimes} lượt/năm</Text>
+                  </View>
+                  <View style={styles.styleRowContent}>
+                    <Text style={styles.styleTextTitle}>Giao sách tại nhà</Text>
+                    <Text style={styles.styleTextData}>{this.props.user.Membership.MaxDeliveryTimes} lượt/năm</Text>
+                  </View>
+                </View>
               </View>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                <Text style={{ right: 0 }}>Giá trị gói</Text>
-                <Text style={{ left: 0 , }}>{this.props.user.Membership.Value}</Text>
-              </View>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                <Text>Gia hạn sách</Text>
-                <Text>{this.props.user.Membership.MaxExtensionTimes} lượt/năm</Text>
-              </View>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                <Text>Yêu cầu sách</Text>
-                <Text>{this.props.user.Membership.MaxRequestTimes} lượt/năm</Text>
-              </View>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                <Text>Giao sách tại nhà</Text>
-                <Text>{this.props.user.Membership.MaxDeliveryTimes} lượt/năm</Text>
-              </View> */}
-              {membership}
             </View>
           </ScrollableTabView>
-        </View>
+        </View >
       </View >
     )
   }
@@ -222,31 +233,34 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 10,
-    marginBottom: 50
+    marginTop: 30,
+    marginBottom: 100,
   },
   styleMemberShipName: {
     color: '#89c838',
     fontWeight: 'bold',
     fontFamily: 'SVN-ProximaNova',
     fontSize: 20,
+  },
+  styleTextTitle: {
+    textAlign: 'left',
+    fontSize: 17,
+    fontFamily: 'SVN-ProximaNova',
+  },
+  styleTextData: {
+    textAlign: 'right',
+    fontFamily: 'SVN-ProximaNova',
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#757575'
+  },
+  styleRowContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20
   }
 })
 
 
-// function mapStateToProps(state) {
-//   return {
-//     isAuthenticated: state.authReducer.isAuthenticated,
-//     idUser: state.authReducer.user.Id,
-//     token: state.authReducer.token
-//   };
-// }
-
-// function mapDispatchToProps(dispatch) {
-//   return {
-//   };
-// }
-
-// export default connect(mapStateToProps, mapDispatchToProps)(InfoUser);
 
 

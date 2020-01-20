@@ -19,11 +19,11 @@ export default class TabMenuBook extends Component {
     }
   }
 
-  onPressBorrowingBook = () => {
-    this.setState({
-      index: 1
-    })
-  }
+  // onPressBorrowingBook = () => {
+  //   this.setState({
+  //     index: 1
+  //   })
+  // }
   getBookBorrowing = async () => {
     const { token } = this.props;
     try {
